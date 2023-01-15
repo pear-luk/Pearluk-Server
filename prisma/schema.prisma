@@ -10,3 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+model User {
+  user_id    String     @id  @db.VarChar(26)
+  email String  @unique
+  
+  @@map("users")
+}
+
