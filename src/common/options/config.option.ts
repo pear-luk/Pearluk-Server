@@ -2,7 +2,7 @@ import { ConfigModuleOptions } from '@nestjs/config';
 import { configScheme } from './../schemes/config.scheme';
 
 export const configOption: ConfigModuleOptions = {
-  envFilePath: [`.${process.env.NODE_ENV}.env`],
+  envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
 
   validationSchema: configScheme,
   validationOptions: {
