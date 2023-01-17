@@ -11,6 +11,7 @@ import * as cookieParser from 'cookie-parser';
 import * as expressBasicAuth from 'express-basic-auth';
 import * as expressSession from 'express-session';
 import * as passport from 'passport';
+import { HttpApiExceptionFilter } from './common/exception/http-api-exception.filter';
 import { SuccessInterceptor } from './common/interceptor/success.interceptor';
 
 export class Application {
@@ -105,7 +106,7 @@ export class Application {
       new SuccessInterceptor(),
     );
 
-    // this.server.useGlobalFilters(new HttpApiExceptionFilter());
+    this.server.useGlobalFilters(new HttpApiExceptionFilter());
   }
 
   async boostrap() {

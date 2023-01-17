@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { BaseResponse } from './common/util/BaseResponse';
 import { baseResponeStatus } from './common/util/baseStatusResponse';
 
@@ -11,7 +11,7 @@ export class AppController {
   @Get()
   getHello(): BaseResponse<string> {
     const result = this.appService.getHello();
-
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }
