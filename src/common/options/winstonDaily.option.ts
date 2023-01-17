@@ -1,6 +1,6 @@
 import * as winstonDaily from 'winston-daily-rotate-file';
 
-const logDir = `${__dirname}/../../logs`;
+const logDir = `logs`;
 
 export const winstonDailyOption = (
   level: string,

@@ -5,9 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { configOption } from './common/options/config.option';
+import { LoginModule } from './login/login.module';
 
 @Module({
-  imports: [PrismaModule, ConfigModule.forRoot(configOption)],
+  imports: [PrismaModule, ConfigModule.forRoot(configOption), LoginModule],
   controllers: [AppController],
   providers: [AppService, Logger],
 })

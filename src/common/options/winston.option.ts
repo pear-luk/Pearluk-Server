@@ -1,4 +1,4 @@
-import { WinstonModuleOptions, utilities } from 'nest-winston';
+import { utilities, WinstonModuleOptions } from 'nest-winston';
 import * as winston from 'winston';
 import * as winstonDaily from 'winston-daily-rotate-file';
 import { winstonDailyOption } from './winstonDaily.option';
