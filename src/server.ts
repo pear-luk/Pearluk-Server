@@ -11,6 +11,7 @@ import * as cookieParser from 'cookie-parser';
 import * as expressBasicAuth from 'express-basic-auth';
 import * as expressSession from 'express-session';
 import * as passport from 'passport';
+import { SuccessInterceptor } from './common/interceptor/success.interceptor';
 
 export class Application {
   private logger = new Logger();
@@ -101,6 +102,7 @@ export class Application {
     this.server.use(passport.session());
     this.server.useGlobalInterceptors(
       new ClassSerializerInterceptor(this.server.get(Reflector)),
+      new SuccessInterceptor(),
     );
 
     // this.server.useGlobalFilters(new HttpApiExceptionFilter());
