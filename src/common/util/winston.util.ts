@@ -16,6 +16,7 @@ export const winstonLogger = WinstonModule.createLogger({
               winston.format.timestamp(),
               utilities.format.nestLike('pearluk', {
                 prettyPrint: true,
+                colors: true,
               }),
             ),
     }),

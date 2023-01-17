@@ -8,7 +8,7 @@ export const configScheme = Joi.object({
   DOMAIN: Joi.string(),
 
   // CORS set
-  CORS: Joi.string().required(),
+  CORS: Joi.string(),
 
   //DB
   DATABASE_URL: Joi.string().required(),
