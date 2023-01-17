@@ -1,7 +1,7 @@
 import * as winstonDaily from 'winston-daily-rotate-file';
 
 const logDir = `logs`;
-console.log(__dirname);
+
 export const winstonDailyOption = (
   level: string,
 ): winstonDaily.DailyRotateFileTransportOptions => {
