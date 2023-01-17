@@ -1,7 +1,8 @@
-import { WinstonModuleOptions } from 'nest-winston';
+import { WinstonModuleOptions, utilities } from 'nest-winston';
 import * as winston from 'winston';
 import * as winstonDaily from 'winston-daily-rotate-file';
 import { winstonDailyOption } from './winstonDaily.option';
+
 const env = process.env.NODE_ENV;
 
 export const winstonOption: WinstonModuleOptions = {
