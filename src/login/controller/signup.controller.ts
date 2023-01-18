@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SocialType as prismaSocialType } from '@prisma/client';
-import { LoginService } from '../provider/login.service';
 import { SignupInputDTO } from './../../auth/dto/signup.dto';
+import { SignupService } from './../provider/signup.service';
 
 @Controller('/signup')
 @ApiTags('Signup API')
 export class SignupController {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private readonly signupService: SignupService) {}
 
   @ApiOperation({
     summary: '회원가입 API',
@@ -17,7 +17,7 @@ export class SignupController {
     각각 필요한 정보가 다릅니다.
     1.local 회원가입 - local signup
       - social_type
-      - name
+      - nickname
       - email
       - password
       
@@ -43,7 +43,7 @@ export class SignupController {
           description: '로컬 회원가입',
           properties: {
             social_type: { type: 'string', enum: ['local'] },
-            name: { type: 'string' },
+            nickname: { type: 'string' },
             email: { type: 'string' },
             password: { type: 'string' },
           },
@@ -62,7 +62,7 @@ export class SignupController {
         description: `로컬 회원가입 예시입니다.`,
         value: {
           social_type: 'kakao',
-          name: '홍길동',
+          nickname: '홍길동',
           email: 'qwer1234@naver.com',
           password: 'qwer1234qewr@',
         },
@@ -71,6 +71,6 @@ export class SignupController {
   })
   @Post('/')
   async signup(@Body() body: SignupInputDTO) {
-    console.log(body);
+    const result = await this.signupService.signup(body);
   }
 }

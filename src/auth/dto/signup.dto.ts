@@ -28,14 +28,14 @@ export class SignupInputDTO {
   social_token?: string;
 
   @ApiProperty({
-    name: 'name',
+    name: 'nickname',
     description: `
       social_type이 local일때 입력.
     `,
   })
   @ValidateIf((o) => o.social_type === SocialType.local)
-  @IsString({ message: '패스워드를 입력해주세요' })
-  name?: string;
+  @IsString({ message: '닉네임을 입력해주세요' })
+  nickname?: string;
 
   @ApiProperty({
     name: 'email',
