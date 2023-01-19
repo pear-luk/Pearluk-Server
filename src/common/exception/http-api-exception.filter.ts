@@ -19,7 +19,7 @@ export class HttpApiExceptionFilter implements ExceptionFilter {
     const { ip, method, originalUrl, body } = req;
     const userAgent = req.get('user-agent');
     this.logger.error(
-      error.toString(),
+      typeof error === 'string' ? error : JSON.stringify(error),
       body,
       `${method} ${originalUrl} ${statusCode} ${ip} ${userAgent}`,
     );

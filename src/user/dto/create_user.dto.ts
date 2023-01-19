@@ -1,8 +1,12 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, SocialType } from '@prisma/client';
 
-export class UserCreateInputDTO
-  implements Omit<Prisma.UserCreateInput, 'user_id'>
+export class CreateSocailUserDTO
+  implements
+    Omit<Prisma.UserCreateInput, 'user_id'>,
+    Prisma.UserSocialInfoCreateWithoutUserInput
 {
   email: string;
-  name: string;
+  nickname: string;
+  social_id: string;
+  social_type: SocialType;
 }
