@@ -1,7 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { IPayload } from '../../auth/interface/jwt.interface';
 import { OauthService } from '../../auth/provider/oauth.service';
-import { SignupInputDTO } from './../../auth/dto/signup.dto';
+import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
+import { SignupInputDTO } from '../dto/signup.dto';
 import { UserRopository } from './../../user/provider/user.ropository';
 import {
   ILocalSignupDTO,
@@ -41,7 +42,7 @@ export class SignupService {
         })
       : null;
     if (socailInfoExist) {
-      throw new HttpException('이미 가입한 회원입니다.', 400);
+      throw new BadRequestException(baseResponeStatus.USER_EXIST);
     }
     try {
       // false ?? 실행

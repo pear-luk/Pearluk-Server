@@ -1,6 +1,6 @@
 import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { BaseResponse } from './common/util/BaseResponse';
-import { baseResponeStatus } from './common/util/baseStatusResponse';
+import { BaseResponse } from './common/util/res/BaseResponse';
+import { baseResponeStatus } from './common/util/res/baseStatusResponse';
 
 import { AppService } from './app.service';
 

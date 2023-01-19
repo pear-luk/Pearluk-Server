@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { baseResponeStatus } from '../../common/util/baseStatusResponse';
+import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
 
 Injectable();
 export class OauthService {

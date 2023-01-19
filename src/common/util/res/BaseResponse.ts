@@ -1,4 +1,4 @@
-import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { baseResponeStatus } from './baseStatusResponse';
 
 export interface IBaseResponse<T> {
@@ -8,7 +8,6 @@ export interface IBaseResponse<T> {
   result?: T;
 }
 
-@ApiExtraModels()
 export class BaseResponse<T> implements IBaseResponse<T> {
   @ApiProperty({ description: '성공여부' })
   readonly is_success: boolean;
