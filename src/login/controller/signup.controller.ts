@@ -2,12 +2,18 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SocialType as prismaSocialType } from '@prisma/client';
 import { SignupInputDTO } from './../../auth/dto/signup.dto';
+import { AuthService } from './../../auth/provider/auth.service';
+import { BaseResponse } from './../../common/util/BaseResponse';
+import { baseResponeStatus } from './../../common/util/baseStatusResponse';
 import { SignupService } from './../provider/signup.service';
 
 @Controller('/signup')
 @ApiTags('Signup API')
 export class SignupController {
-  constructor(private readonly signupService: SignupService) {}
+  constructor(
+    private readonly signupService: SignupService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiOperation({
     summary: '회원가입 API',
@@ -71,6 +77,9 @@ export class SignupController {
   })
   @Post('/')
   async signup(@Body() body: SignupInputDTO) {
-    const result = await this.signupService.signup(body);
+    const payload = await this.signupService.signup(body);
+    const access_token = await this.authService.accessTokenSign(payload);
+    const result = { access_token, user: payload };
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

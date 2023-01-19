@@ -1,4 +1,4 @@
-import { SocialType } from '@prisma/client';
+import * as Prisma from '@prisma/client';
 export interface ILocalSignupDTO {
   social_type: 'local';
   name: string;
@@ -6,6 +6,6 @@ export interface ILocalSignupDTO {
   password: string;
 }
 export interface ISocialSignupDTO {
-  social_type: SocialType;
+  social_type: Prisma.SocialType;
   social_token: string;
 }

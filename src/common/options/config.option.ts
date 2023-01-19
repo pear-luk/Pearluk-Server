@@ -1,6 +1,6 @@
 import { ConfigModuleOptions } from '@nestjs/config';
+import authConfig from '../../config/authConfig';
 import { configScheme } from './../schemes/config.scheme';
-
 export const configOption: ConfigModuleOptions = {
   envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
 
@@ -10,4 +10,5 @@ export const configOption: ConfigModuleOptions = {
     abortEarly: true,
   },
   isGlobal: true,
+  load: [authConfig],
 };

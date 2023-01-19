@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { configOption } from './common/options/config.option';
 import { LoginModule } from './login/login.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LoginModule } from './login/login.module';
     ConfigModule.forRoot(configOption),
     LoginModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],

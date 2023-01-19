@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { IPayload } from '../../auth/interface/jwt.interface';
+import { OauthService } from '../../auth/provider/oauth.service';
 import { SignupInputDTO } from './../../auth/dto/signup.dto';
-import { OauthService } from './../../auth/provider/oauth.setvice';
+import { UserRopository } from './../../user/provider/user.ropository';
 import {
   ILocalSignupDTO,
   ISocialSignupDTO,
@@ -8,19 +10,59 @@ import {
 
 @Injectable()
 export class SignupService {
-  constructor(private readonly oauthService: OauthService) {}
-  async signup(signupDTO: SignupInputDTO) {
+  constructor(
+    private readonly oauthService: OauthService,
+
+    private readonly uesrRepo: UserRopository,
+  ) {}
+  async signup(signupDTO: SignupInputDTO): Promise<IPayload> {
     const { social_type } = signupDTO;
     const result = await this[social_type + 'Signup'](signupDTO);
 
     return result;
   }
+
   async localSignup(localSignupDTO: ILocalSignupDTO) {
     const { social_type, name, email, password } = localSignupDTO;
   }
 
   async kakaoSignup(signupDTO: ISocialSignupDTO) {
     const { social_token, social_type } = signupDTO;
-    const {} = await this.oauthService.getUserInfokakao(social_token);
+    const { email, social_id, nickname } =
+      await this.oauthService.getUserInfokakao(social_token);
+
+    const exist = await this.uesrRepo.uniqueEmail(email);
+    const { user_id } = exist ?? {};
+
+    const socailInfoExist = exist
+      ? await this.uesrRepo.uniqueSocialInfo({
+          user_id,
+          social_id,
+        })
+      : null;
+    if (socailInfoExist) {
+      throw new HttpException('이미 가입한 회원입니다.', 400);
+    }
+    try {
+      // false ?? 실행
+      // true ??
+      const user = !exist
+        ? await this.uesrRepo.socialSignup({
+            social_type,
+            email,
+            social_id,
+            nickname,
+          })
+        : await this.uesrRepo.addSocialInfo({
+            user_id,
+            social_type,
+            social_id,
+          });
+
+      const payload = { ...user, social_type };
+      return payload;
+    } catch (err) {
+      throw new HttpException(err.message, 400);
+    }
   }
 }
