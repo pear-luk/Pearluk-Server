@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseResponse } from './../util/BaseResponse';
+import { BaseResponse } from '../util/res/BaseResponse';
 
-import { baseResponeStatus } from './../util/baseStatusResponse';
+import { baseResponeStatus } from '../util/res/baseStatusResponse';
 
 @Injectable()
 export class SuccessInterceptor implements NestInterceptor {

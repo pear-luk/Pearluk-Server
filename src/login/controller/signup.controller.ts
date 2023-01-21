@@ -1,14 +1,24 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiExtraModels,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { SocialType as prismaSocialType } from '@prisma/client';
-import { SignupInputDTO } from './../../auth/dto/signup.dto';
+import { BaseResponse } from '../../common/util/res/BaseResponse';
+import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
+import { SignupInputDTO } from '../dto/signup.dto';
 import { AuthService } from './../../auth/provider/auth.service';
-import { BaseResponse } from './../../common/util/BaseResponse';
-import { baseResponeStatus } from './../../common/util/baseStatusResponse';
+import { signupResonseEX, SignupResponseDTO } from './../dto/signup.dto';
 import { SignupService } from './../provider/signup.service';
 
 @Controller('/signup')
 @ApiTags('Signup API')
+@ApiExtraModels(BaseResponse, SignupInputDTO, SignupResponseDTO)
 export class SignupController {
   constructor(
     private readonly signupService: SignupService,
@@ -73,6 +83,25 @@ export class SignupController {
           password: 'qwer1234qewr@',
         },
       },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'SUCCESS',
+    schema: {
+      example: new BaseResponse(baseResponeStatus.SUCCESS, signupResonseEX),
+    },
+  })
+  @ApiBadRequestResponse({
+    description: '이미 존재하는 유저',
+    schema: {
+      example: baseResponeStatus.USER_EXIST,
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: '소셜 token 인증 실패',
+    schema: {
+      example: baseResponeStatus.OAUTH_TOKEN_FAILURE,
     },
   })
   @Post('/')
