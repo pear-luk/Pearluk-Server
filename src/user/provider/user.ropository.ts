@@ -30,7 +30,7 @@ export class UserRopository {
 
   async uniqueEmail(email: string) {
     const exist = await this.prisma.user.findUnique({
-      select: { user_id: true },
+      select: { user_id: true, nickname: true },
       where: { email },
     });
     return exist;
