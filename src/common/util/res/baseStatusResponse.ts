@@ -8,7 +8,7 @@
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
 const { AUTH, USER } = INDEX;
-const { EXIST, NOT_EXIST, FAILURE } = RES_ERR_CODE;
+const { EXIST, NOT_EXIST, FAILURE, EXPIRED } = RES_ERR_CODE;
 export const baseResponeStatus = {
   SUCCESS: { is_success: true, code: 1000000, message: '성공' },
 
@@ -18,9 +18,17 @@ export const baseResponeStatus = {
     message: '소셜 인증 실패',
   },
 
-  
+  AUTH_ACCESS_TOKEN_FAILURE: {
+    is_success: false,
+    code: RESCODE + AUTH + FAILURE,
+    message: 'ACCESS_TOKEN이 유효하지 않습니다.',
+  },
 
-
+  AUTH_ACCESS_TOKEN_EXPIRED: {
+    is_success: false,
+    code: RESCODE + AUTH + EXPIRED,
+    message: 'ACCESS_TOKEN가 만료되었습니다.',
+  },
 
   USER_NOT_EXIST: {
     is_success: false,

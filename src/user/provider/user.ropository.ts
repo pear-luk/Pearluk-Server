@@ -67,4 +67,13 @@ export class UserRopository {
     });
     return { ...socailInfo.user };
   }
+
+  async checkUserJWT({ user_id }) {
+    const checkUser = await this.prisma.user.findUnique({
+      select: { nickname: true, user_id: true, email: true },
+      where: { user_id },
+    });
+
+    return checkUser;
+  }
 }
