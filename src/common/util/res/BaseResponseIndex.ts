@@ -11,6 +11,7 @@ export const REQ_ERR_CODE = {};
 export const RES_ERR_CODE = {
   FAILURE: 0,
   EXPIRED: 1,
+  NOT_AUTHORIZED: 2,
   EXIST: 0,
   NOT_EXIST: 1,
 };

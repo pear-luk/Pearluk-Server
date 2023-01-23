@@ -70,7 +70,7 @@ export class UserRopository {
 
   async checkUserJWT({ user_id }) {
     const checkUser = await this.prisma.user.findUnique({
-      select: { nickname: true, user_id: true, email: true },
+      select: { nickname: true, user_id: true, email: true, admin: true },
       where: { user_id },
     });
 
