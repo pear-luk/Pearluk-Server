@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { SocialType } from '../../login/interface/socialType';
 import { IPayload } from './../interface/jwt.interface';
-import { SocialType } from './../interface/socialType';
 export class Payload implements IPayload {
   @ApiProperty({ description: '소셜 타입' })
   social_type: SocialType;

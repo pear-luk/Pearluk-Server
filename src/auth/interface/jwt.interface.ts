@@ -1,4 +1,4 @@
-import { SocialType } from './socialType';
+import { SocialType } from '../../login/interface/socialType';
 export interface IPayload {
   social_type: SocialType;
   nickname: string;

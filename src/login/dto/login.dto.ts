@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsString, ValidateIf } from 'class-validator';
-import { SocialType } from './../../auth/interface/socialType';
+import { SocialType } from '../interface/socialType';
 export class LoginInputDTO {
   @ApiProperty({
     name: 'social_type',

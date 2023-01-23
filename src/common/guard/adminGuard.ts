@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { UserRole } from '@prisma/client';
 import { baseResponeStatus } from '../util/res/baseStatusResponse';
 
 @Injectable()
@@ -15,9 +16,9 @@ export class AdminAuthGuard implements CanActivate {
     const req = ctx.switchToHttp().getRequest();
     // const req = ctx.switchToHttp().getRequest();
 
-    const { admin } = req.user;
+    const { role } = req.user;
 
-    if (admin !== 1) {
+    if (role === UserRole.user) {
       throw new UnauthorizedException(baseResponeStatus.AUTH_NOT_AUTHORIZED);
     }
     return true;
