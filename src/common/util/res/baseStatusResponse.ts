@@ -7,8 +7,9 @@
 
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
-const { AUTH, USER, ARCHIVE } = INDEX;
-const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED } = RES_ERR_CODE;
+const { AUTH, USER, ARCHIVE, CATEGORY } = INDEX;
+const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED, INVALID } =
+  RES_ERR_CODE;
 export const baseResponeStatus = {
   SUCCESS: { is_success: true, code: 1000000, message: '성공' },
 
@@ -46,6 +47,7 @@ export const baseResponeStatus = {
     code: RESCODE + USER + EXIST,
     message: '이미 존재하는 유저입니다.',
   },
+
   ARCHIVE_NOT_EXIST: {
     is_success: false,
     code: RESCODE + ARCHIVE + NOT_EXIST,
@@ -55,5 +57,21 @@ export const baseResponeStatus = {
     is_success: false,
     code: RESCODE + ARCHIVE + EXIST,
     message: '이미 존재하는 아카이브입니다.',
+  },
+
+  CATEGORY_NOT_EXIST: {
+    is_success: false,
+    code: RESCODE + CATEGORY + NOT_EXIST,
+    message: '존재하지 않는 카테고리입니다.',
+  },
+  CATEGORY_EXIST: {
+    is_success: false,
+    code: RESCODE + CATEGORY + EXIST,
+    message: '이미 존재하는 카테고리입니다.',
+  },
+  CATEGORY_INVALID: {
+    is_success: false,
+    code: RESCODE + CATEGORY + INVALID,
+    message: '유효하지않은 카테고리 정보입니다.',
   },
 };
