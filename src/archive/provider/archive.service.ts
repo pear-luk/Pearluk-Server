@@ -37,8 +37,19 @@ export class ArchiveService {
       throw new BadRequestException(baseResponeStatus.ARCHIVE_NOT_EXIST);
     }
 
-    const updateArchive = await this.archiveRepo.updateArchive(info);
+    const updatedArchive = await this.archiveRepo.updateArchive(info);
 
-    return updateArchive;
+    return updatedArchive;
+  }
+
+  async deleteStatusArchive(info: ArchiveUpdateParamsDTO) {
+    const { archive_id } = info;
+
+    const exist = await this.archiveRepo.findOneArcive({ archive_id });
+    if (!exist) {
+      throw new BadRequestException(baseResponeStatus.ARCHIVE_NOT_EXIST);
+    }
+    const deletedArchive = await this.archiveRepo.deleteStatusArchive(info);
+    return deletedArchive;
   }
 }

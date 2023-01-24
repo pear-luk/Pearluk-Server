@@ -4,6 +4,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from '../common/decorator/current-user.decorator';
@@ -41,6 +42,16 @@ export class ArchiveController {
     const result = await this.archiveService.updateArchive({
       archive_id,
       ...archiveUpdateInputDTO,
+    });
+
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Put('/:archive_id')
+  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  async deleteStatusArchive(@Param('archive_id') archive_id) {
+    const result = await this.archiveService.deleteStatusArchive({
+      archive_id,
     });
 
     return new BaseResponse(baseResponeStatus.SUCCESS, result);

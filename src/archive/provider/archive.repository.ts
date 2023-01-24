@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 import {
@@ -26,10 +26,21 @@ export class ArchiveRepository {
 
   async updateArchive(info: ArchiveUpdateInputDTO & ArchiveUpdateParamsDTO) {
     const { archive_id, ...data } = info;
-    const updateArchie = await this.prisma.archive.update({
+    const updatedArchive = await this.prisma.archive.update({
       where: { archive_id },
       data,
     });
-    return updateArchie;
+    return updatedArchive;
+  }
+
+  async deleteStatusArchive(info: ArchiveUpdateParamsDTO) {
+    const { archive_id } = info;
+    const deletedArchie = await this.prisma.archive.update({
+      where: { archive_id },
+      data: {
+        status: E_status.DELETED,
+      },
+    });
+    return deletedArchie;
   }
 }
