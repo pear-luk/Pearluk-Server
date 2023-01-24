@@ -55,4 +55,12 @@ export class CategoryRepository {
     });
     return categories;
   }
+
+  async deleteStatusCategory(info: Prisma.CategoryWhereUniqueInput) {
+    const deletedCategory = await this.prisma.category.update({
+      where: info,
+      data: { status: E_status.DELETED },
+    });
+    return deletedCategory;
+  }
 }

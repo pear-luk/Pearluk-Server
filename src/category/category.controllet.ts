@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -48,5 +49,11 @@ export class CategoryController {
       ...categoryUpdateInputDTO,
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Put('/:category_id')
+  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  async deleteStatusCategory(@Param('category_id') category_id) {
+    return this.categoryService.deleteStatusCategory({ category_id });
   }
 }

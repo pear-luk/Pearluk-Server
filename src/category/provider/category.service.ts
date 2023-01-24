@@ -70,4 +70,13 @@ export class CategoryService {
     const updatedCategory = await this.categoryRepo.updateCategory(info);
     return updatedCategory;
   }
+
+  async deleteStatusCategory(info: Prisma.CategoryWhereUniqueInput) {
+    const exist = await this.categoryRepo.findOneCategory(info);
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.CATEGORY_NOT_EXIST);
+
+    const deletedCategory = await this.categoryRepo.deleteStatusCategory(info);
+    return deletedCategory;
+  }
 }
