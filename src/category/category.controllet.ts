@@ -12,10 +12,10 @@ import {
   ApiBody,
   ApiExtraModels,
   ApiOperation,
-  ApiResponse,
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
+import { ApiResponseDTO } from './../common/decorator/ApiResponse';
 import { AdminAuthGuard } from './../common/guard/adminGuard';
 import { JwtAccessAuthGuard } from './../common/guard/JWT/jwt.guard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
@@ -64,36 +64,26 @@ export class CategoryController {
       },
     },
   })
-  @ApiResponse({
-    status: 201,
-    schema: {
-      example: new BaseResponse(
-        baseResponeStatus.SUCCESS,
-        CategoryCreateResponseEX,
-      ),
-    },
-  })
-  @ApiResponse({
-    status: 400.3,
-    description: '부모 카테고리가 최상위 카테고리가 아닐때',
-    schema: {
-      example: { status_code: 400, ...baseResponeStatus.CATEGORY_INVALID },
-    },
-  })
-  @ApiResponse({
-    status: 400.2,
-    description: '부모 카테고리가 존재하지않을때',
-    schema: {
-      example: { status_code: 400, ...baseResponeStatus.CATEGORY_NOT_EXIST },
-    },
-  })
-  @ApiResponse({
-    status: 400.1,
-    description: '이미 존재하는 카테고리 이름일경우(다른부모에서는 상관없음)',
-    schema: {
-      example: { status_code: 400, ...baseResponeStatus.CATEGORY_EXIST },
-    },
-  })
+  @ApiResponseDTO(
+    201,
+    new BaseResponse(baseResponeStatus.SUCCESS, CategoryCreateResponseEX),
+    'SUCCESS',
+  )
+  @ApiResponseDTO(
+    400.3,
+    baseResponeStatus.CATEGORY_INVALID,
+    '부모 카테고리가 최상위 카테고리가 아닐때',
+  )
+  @ApiResponseDTO(
+    400.2,
+    baseResponeStatus.CATEGORY_NOT_EXIST,
+    '부모 카테고리가 존재하지않을때',
+  )
+  @ApiResponseDTO(
+    400.1,
+    baseResponeStatus.CATEGORY_EXIST,
+    '이미 존재하는 카테고리 이름일경우(다른부모에서는 상관없음)',
+  )
   @Post('/')
   @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   async createCategory(@Body() categoryCreateInputDto: CategoryCreateInputDTO) {
