@@ -4,6 +4,7 @@ export const RESCODE = 3000000;
 export const INDEX = {
   AUTH: 0,
   USER: 10000,
+  ARCHIVE: 20000,
 };
 
 export const REQ_ERR_CODE = {};

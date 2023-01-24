@@ -7,7 +7,7 @@
 
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
-const { AUTH, USER } = INDEX;
+const { AUTH, USER, ARCHIVE } = INDEX;
 const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED } = RES_ERR_CODE;
 export const baseResponeStatus = {
   SUCCESS: { is_success: true, code: 1000000, message: '성공' },
@@ -45,5 +45,11 @@ export const baseResponeStatus = {
     is_success: false,
     code: RESCODE + USER + EXIST,
     message: '이미 존재하는 유저입니다.',
+  },
+
+  ARCHIVE_EXIST: {
+    is_success: false,
+    code: RESCODE + ARCHIVE + EXIST,
+    message: '이미 존재하는 아카이브입니다.',
   },
 };
