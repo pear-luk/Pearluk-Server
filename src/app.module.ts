@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ArchiveModule } from './archive/archive.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { configOption } from './common/options/config.option';
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
     LoginModule,
     AuthModule,
     UserModule,
+    ArchiveModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],

@@ -26,7 +26,6 @@ export class JwtAccessStrategy extends PassportStrategy(
   }
 
   async validate(payLoad: JwtPayload) {
-    console.log(payLoad);
     const { user_id } = payLoad;
     const user = await this.userRepo.checkUserJWT({ user_id });
 
