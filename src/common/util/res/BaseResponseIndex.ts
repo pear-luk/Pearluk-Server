@@ -16,4 +16,5 @@ export const RES_ERR_CODE = {
   NOT_AUTHORIZED: 2,
   EXIST: 0,
   NOT_EXIST: 1,
+  INVALID: 2,
 };

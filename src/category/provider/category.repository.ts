@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
+import { CategoryUpdateInputDTO } from './../dto/update_category.dto';
 @Injectable()
 export class CategoryRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -22,5 +23,36 @@ export class CategoryRepository {
     });
 
     return category;
+  }
+
+  async updateCategory(
+    info: CategoryUpdateInputDTO & Prisma.CategoryWhereUniqueInput,
+  ) {
+    const { category_id, ...data } = info;
+    const updatedCategory = await this.prisma.category.update({
+      where: { category_id },
+      data,
+    });
+    return updatedCategory;
+  }
+
+  async getCategoryList() {
+    const categories = await this.prisma.category.findMany({
+      select: {
+        category_id: true,
+        name: true,
+        status: true,
+        child_categories: {
+          select: {
+            category_id: true,
+            name: true,
+            status: true,
+            child_categories: true,
+          },
+        },
+      },
+      where: { status: E_status.ACTIVE, parent_category_id: null },
+    });
+    return categories;
   }
 }

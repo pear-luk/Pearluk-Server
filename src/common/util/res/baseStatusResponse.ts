@@ -8,7 +8,8 @@
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
 const { AUTH, USER, ARCHIVE, CATEGORY } = INDEX;
-const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED } = RES_ERR_CODE;
+const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED, INVALID } =
+  RES_ERR_CODE;
 export const baseResponeStatus = {
   SUCCESS: { is_success: true, code: 1000000, message: '성공' },
 
@@ -67,5 +68,10 @@ export const baseResponeStatus = {
     is_success: false,
     code: RESCODE + CATEGORY + EXIST,
     message: '이미 존재하는 카테고리입니다.',
+  },
+  CATEGORY_INVALID: {
+    is_success: false,
+    code: RESCODE + CATEGORY + INVALID,
+    message: '유효하지않은 카테고리 정보입니다.',
   },
 };
