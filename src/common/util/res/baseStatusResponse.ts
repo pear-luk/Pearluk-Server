@@ -46,7 +46,11 @@ export const baseResponeStatus = {
     code: RESCODE + USER + EXIST,
     message: '이미 존재하는 유저입니다.',
   },
-
+  ARCHIVE_NOT_EXIST: {
+    is_success: false,
+    code: RESCODE + ARCHIVE + NOT_EXIST,
+    message: '존재하지 않는 아카이브입니다.',
+  },
   ARCHIVE_EXIST: {
     is_success: false,
     code: RESCODE + ARCHIVE + EXIST,

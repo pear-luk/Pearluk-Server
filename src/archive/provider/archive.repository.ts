@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
+import {
+  ArchiveUpdateInputDTO,
+  ArchiveUpdateParamsDTO,
+} from './../dto/update_archive.dto';
 
 @Injectable()
 export class ArchiveRepository {
@@ -18,5 +22,14 @@ export class ArchiveRepository {
     });
 
     return newArchive;
+  }
+
+  async updateArchive(info: ArchiveUpdateInputDTO & ArchiveUpdateParamsDTO) {
+    const { archive_id, ...data } = info;
+    const updateArchie = await this.prisma.archive.update({
+      where: { archive_id },
+      data,
+    });
+    return updateArchie;
   }
 }

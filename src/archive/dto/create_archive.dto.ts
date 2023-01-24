@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
-export class ArchiveInputDTO
+export class ArchiveCreateInputDTO
   implements Omit<Prisma.ArchiveCreateInput, 'archive_id'>
 {
   @IsString()
