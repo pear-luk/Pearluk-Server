@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsInt, IsNumber, IsString, Min } from 'class-validator';
+import { IsEnum, IsNumber, IsString, Min } from 'class-validator';
 import { IsULID } from '../../common/decorator/IsULID';
 import { E_ProductStatus } from '../interface/product_status.enum';
 
@@ -10,8 +10,8 @@ export class ProductCreateInputDTO
   @IsString()
   name: string;
 
-  @IsInt()
-  @Transform(({ value }) => Number(value))
+  @IsNumber()
+  @Min(1000)
   price: number | bigint;
 
   @IsString()
