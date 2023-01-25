@@ -7,6 +7,6 @@ import { ArchiveService } from './provider/archive.service';
   imports: [],
   providers: [ArchiveService, ArchiveRepository],
   controllers: [ArchiveController],
-  exports: [],
+  exports: [ArchiveService, ArchiveRepository],
 })
 export class ArchiveModule {}

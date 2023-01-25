@@ -7,7 +7,7 @@
 
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
-const { AUTH, USER, ARCHIVE, CATEGORY } = INDEX;
+const { AUTH, USER, ARCHIVE, CATEGORY, PRODUCT } = INDEX;
 const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED, INVALID } =
   RES_ERR_CODE;
 export const baseResponeStatus = {
@@ -73,5 +73,11 @@ export const baseResponeStatus = {
     is_success: false,
     code: RESCODE + CATEGORY + INVALID,
     message: '유효하지않은 카테고리 정보입니다.',
+  },
+
+  PRODUCT_NOT_EXIST: {
+    is_success: false,
+    code: RESCODE + PRODUCT + NOT_EXIST,
+    message: '존재하지 않는 상품입니다.',
   },
 };
