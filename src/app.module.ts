@@ -9,6 +9,7 @@ import { CategoryModule } from './category/category.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { configOption } from './common/options/config.option';
 import { LoginModule } from './login/login.module';
+import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -20,6 +21,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     ArchiveModule,
     CategoryModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
