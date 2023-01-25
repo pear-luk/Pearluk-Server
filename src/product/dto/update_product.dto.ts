@@ -24,3 +24,7 @@ export class ProductUpdateInputDTO extends PartialType(ProductCreateInputDTO) {
   @IsOptional()
   category_id?: string;
 }
+
+export const updateProductInputEX = {
+  name: '반들반들 반짝반짝 진주 목걸이',
+};
