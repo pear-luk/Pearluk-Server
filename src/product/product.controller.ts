@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiExtraModels,
@@ -9,6 +17,8 @@ import {
 } from '@nestjs/swagger';
 import { E_status } from '@prisma/client';
 import { ApiResponseDTO } from './../common/decorator/ApiResponse';
+import { AdminAuthGuard } from './../common/guard/adminGuard';
+import { JwtAccessAuthGuard } from './../common/guard/JWT/jwt.guard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import {
@@ -67,6 +77,7 @@ export class ProductController {
     baseResponeStatus.CATEGORY_NOT_EXIST,
     '카테고리가 존재하지 않을때',
   )
+  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   @Post('/')
   async createProduct(@Body() productCreateInputDTO: ProductCreateInputDTO) {
     const result = await this.productService.createProduct(
@@ -123,6 +134,7 @@ export class ProductController {
     baseResponeStatus.CATEGORY_NOT_EXIST,
     '카테고리가 존재하지 않을때',
   )
+  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   @Patch('/:product_id')
   async updateProduct(
     @Param('product_id') product_id: string,
@@ -163,6 +175,7 @@ export class ProductController {
     baseResponeStatus.PRODUCT_NOT_EXIST,
     '상품이 존재하지 않을때',
   )
+  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   @Put('/:product_id')
   async deleteStatusProduct(@Param('product_id') product_id: string) {
     const result = await this.productService.deleteStatusProduct({
