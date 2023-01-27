@@ -87,8 +87,8 @@ model Product {
   created_at     DateTime @default(now())
   updated_at     DateTime @default(now()) @updatedAt
   status         E_status @default(ACTIVE)
-  archive        Archive  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
-  category       Category @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
+  archive        Archive?  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
+  category       Category? @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
 
   @@index([archive_id], map: "products_archive_id_fkey")
   @@index([category_id], map: "products_category_id_fkey")
