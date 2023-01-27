@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id         String           @id @db.Char(26)
+  email           String           @unique @db.VarChar(100)
+  created_at      DateTime         @default(now())
+  nickname        String           @db.VarChar(10)
+  updated_at      DateTime         @default(now()) @updatedAt
+  status          E_status         @default(ACTIVE)
+  role            UserRole         @default(user)
+  addresses       UserAddress[]
+  userSocialInfos UserSocialInfo[]
+
+  @@map("users")
+}
+
+model UserSocialInfo {
+  user_id     String     @db.Char(26)
+  social_type SocialType
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now()) @updatedAt
+  status      E_status   @default(ACTIVE)
+  social_id   String     @db.VarChar(50)
+  user        User       @relation(fields: [user_id], references: [user_id], map: "USER_SOCIAL_INFO")
+
+  @@id([user_id, social_id])
+  @@unique([social_id, social_type], map: "SOCIAL_ID_AND_SOCIAL_TYPE_UNIQUE")
+  @@map("user_social_infos")
+}
+
+model UserAddress {
+  addresses_id String   @id @db.Char(26)
+  uesr_id      String   @db.Char(26)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+  status       E_status @default(ACTIVE)
+  user         User     @relation(fields: [uesr_id], references: [user_id], map: "USER_ADDRESS")
+
+  @@index([uesr_id], map: "USER_ADDRESS")
+  @@map("user_addresses")
+}
+
+model Archive {
+  archive_id String    @id @db.Char(26)
+  title      String    @db.VarChar(50)
+  year       Int       @db.Year
+  introduce  String?   @db.Text
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
+  status     E_status  @default(ACTIVE)
+  products   Product[] @relation("PRODUCT_ARCHIVE")
+
+  @@map("archives")
+}
+
+model Category {
+  category_id        String     @id @db.Char(26)
+  name               String     @db.VarChar(30)
+  parent_category_id String?    @db.Char(26)
+  created_at         DateTime   @default(now())
+  updated_at         DateTime   @default(now()) @updatedAt
+  status             E_status   @default(ACTIVE)
+  parent_category    Category?  @relation("PARENT_CHILD_CATEGORY", fields: [parent_category_id], references: [category_id])
+  child_categories   Category[] @relation("PARENT_CHILD_CATEGORY")
+  products           Product[]  @relation("PRODUCT_CATEGORY")
+
+  @@index([parent_category_id], map: "categories_parent_category_id_fkey")
+  @@map("categories")
+}
+
+model Product {
+  product_id     String    @id @db.Char(26)
+  name           String    @db.VarChar(100)
+  price          BigInt
+  introduce      String    @db.Text
+  quantity       Int
+  product_status Int       @db.TinyInt
+  archive_id     String    @db.Char(26)
+  category_id    String    @db.Char(26)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now()) @updatedAt
+  status         E_status  @default(ACTIVE)
+  archive        Archive?  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
+  category       Category? @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
+
+  @@index([archive_id], map: "products_archive_id_fkey")
+  @@index([category_id], map: "products_category_id_fkey")
+  @@map("products")
+}
+
+model Answer {
+  answer_id   String    @id @db.Char(26)
+  question_id String    @db.Char(26)
+  product_id  String?   @db.Char(26)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
+  status      E_status  @default(ACTIVE)
+  question    Question? @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
+
+  @@index([question_id], map: "answers_question_id_fkey")
+  @@map("answers")
+}
+
+model Question {
+  question_id String   @id @db.Char(26)
+  type        Int?     @db.TinyInt
+  product_id  String?  @db.Char(26)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  status      E_status @default(ACTIVE)
+  answers     Answer[] @relation("ANSWER_QUESTION")
+
+  @@map("questions")
+}
+
+enum E_status {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum SocialType {
+  kakao
+}
+
+enum UserRole {
+  user
+  admin
+  developer
+}

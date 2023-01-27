@@ -21,8 +21,10 @@
     "test:e2e": "dotenv -e src/config/env/.test.env -- jest --config ./test/jest-e2e.json",
     "db:dev:push": "dotenv -e src/config/env/.development.env -- npx prisma db push",
     "db:dev:pull": "dotenv -e src/config/env/.development.env -- npx prisma db pull",
+    "db:dev:generate": "dotenv -e src/config/env/.development.env -- npx prisma generate",
     "db:prod:push": "dotenv -e dist/config/env/.production.env -- npx prisma db push",
-    "db:prod:pull": "dotenv -e dist/config/env/.production.env -- npx prisma db pull"
+    "db:prod:pull": "dotenv -e dist/config/env/.production.env -- npx prisma db pull",
+    "db:prod:generate": "dotenv -e dist/config/env/.production.env -- npx prisma generate"
   },
   "dependencies": {
     "@nestjs/axios": "^1.0.1",
