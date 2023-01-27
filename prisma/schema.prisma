@@ -76,23 +76,48 @@ model Category {
 }
 
 model Product {
-  product_id     String   @id @db.Char(26)
-  name           String   @db.VarChar(100)
+  product_id     String    @id @db.Char(26)
+  name           String    @db.VarChar(100)
   price          BigInt
-  introduce      String   @db.Text
+  introduce      String    @db.Text
   quantity       Int
-  product_status Int      @db.TinyInt
-  archive_id     String   @db.Char(26)
-  category_id    String   @db.Char(26)
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
-  status         E_status @default(ACTIVE)
+  product_status Int       @db.TinyInt
+  archive_id     String    @db.Char(26)
+  category_id    String    @db.Char(26)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now()) @updatedAt
+  status         E_status  @default(ACTIVE)
   archive        Archive?  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
   category       Category? @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
 
   @@index([archive_id], map: "products_archive_id_fkey")
   @@index([category_id], map: "products_category_id_fkey")
   @@map("products")
+}
+
+model Answer {
+  answer_id   String    @id @db.Char(26)
+  question_id String    @db.Char(26)
+  product_id  String?   @db.Char(26)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
+  status      E_status  @default(ACTIVE)
+  question    Question? @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
+
+  @@index([question_id], map: "answers_question_id_fkey")
+  @@map("answers")
+}
+
+model Question {
+  question_id String   @id @db.Char(26)
+  type        Int?     @db.TinyInt
+  product_id  String?  @db.Char(26)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  status      E_status @default(ACTIVE)
+  answers     Answer[] @relation("ANSWER_QUESTION")
+
+  @@map("questions")
 }
 
 enum E_status {
