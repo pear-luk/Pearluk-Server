@@ -11,15 +11,14 @@ export class AnswerController {
 
   @ApiBearerAuth()
   @ApiOperation({
-    summary: '아카이브 생성 API',
+    summary: '답변 생성 API',
     description: `
-      아카이브 생성 API입니다.
+      답변 생성 API입니다.
       관리자만 접근이 가능합니다.
 
       필요한 정보
-      - title : 아카이브 이름 String
-      - year : 아카이브 해당 년도 Int
-      - introduce ?: 아카이브 소개 String 
+      - question_id: 질문 - String ULID
+      - product_id: 상품 - String ULID
     `,
   })
   @Post('/')
