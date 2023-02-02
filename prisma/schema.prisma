@@ -76,17 +76,17 @@ model Category {
 }
 
 model Product {
-  product_id     String   @id @db.Char(26)
-  name           String   @db.VarChar(100)
+  product_id     String    @id @db.Char(26)
+  name           String    @db.VarChar(100)
   price          BigInt
-  introduce      String   @db.Text
+  introduce      String    @db.Text
   quantity       Int
-  product_status Int      @db.TinyInt
-  archive_id     String   @db.Char(26)
-  category_id    String   @db.Char(26)
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
-  status         E_status @default(ACTIVE)
+  product_status Int       @db.TinyInt
+  archive_id     String    @db.Char(26)
+  category_id    String    @db.Char(26)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now()) @updatedAt
+  status         E_status  @default(ACTIVE)
   archive        Archive?  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
   category       Category? @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
 
@@ -96,7 +96,6 @@ model Product {
 }
 
 model Answer {
-
   answer_id   String    @id @db.Char(26)
   contents    String    @db.Text
   question_id String    @db.Char(26)
@@ -106,24 +105,23 @@ model Answer {
   status      E_status  @default(ACTIVE)
   question    Question? @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
 
-
   @@index([question_id], map: "answers_question_id_fkey")
   @@map("answers")
 }
 
 model Question {
   question_id String   @id @db.Char(26)
-
   contents    String   @db.Text
   type        Int?     @db.TinyInt
   secret_mode Int      @db.TinyInt
+  password    String   @db.VarChar(100)
+  user_id     String   @db.Char(26)
   product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   status      E_status @default(ACTIVE)
 
   answers Answer[] @relation("ANSWER_QUESTION")
-
 
   @@map("questions")
 }
@@ -141,10 +139,10 @@ model Order {
   status         E_status @default(ACTIVE)
 
   order_products OrderProduct[]      @relation("ORDER_PRODUCT")
-  customer_info   OrderCustomerInfo?  @relation("ORDER_CUSTOMER_INFO")
-  recipient_info  OrderRecipientInfo? @relation("ORDER_RECIPIENT_INFO")
-  shipping        Shipping?           @relation("ORDER_SHIPPING")
-  payment_info    PaymentInfo?        @relation("ORDER_PAYMENT")
+  customer_info  OrderCustomerInfo?  @relation("ORDER_CUSTOMER_INFO")
+  recipient_info OrderRecipientInfo? @relation("ORDER_RECIPIENT_INFO")
+  shipping       Shipping?           @relation("ORDER_SHIPPING")
+  payment_info   PaymentInfo?        @relation("ORDER_PAYMENT")
 
   @@map("orders")
 }
@@ -210,7 +208,6 @@ model Shipping {
 }
 
 model PaymentInfo {
-
   order_id String @id @db.Char(26)
   key      String @db.VarChar(200)
 
@@ -223,7 +220,6 @@ model PaymentInfo {
   status     E_status @default(ACTIVE)
 
   order Order @relation("ORDER_PAYMENT", fields: [order_id], references: [order_id])
-
 
   @@map("payment_infos")
 }
