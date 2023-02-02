@@ -96,6 +96,7 @@ model Product {
 }
 
 model Answer {
+
   answer_id   String    @id @db.Char(26)
   question_id String    @db.Char(26)
   product_id  String?   @db.Char(26)
@@ -110,16 +111,117 @@ model Answer {
 
 model Question {
   question_id String   @id @db.Char(26)
+
   type        Int?     @db.TinyInt
   secret_mode Int      @db.TinyInt
   product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   status      E_status @default(ACTIVE)
+
   answers     Answer[] @relation("ANSWER_QUESTION")
 
   @@map("questions")
 }
+
+
+model Order {
+  order_id String @id @db.Char(26)
+  user_id  String @db.Char(26)
+
+  name String @db.Char(100)
+
+  use_point   BigInt? @db.BigInt
+  total_price BigInt  @db.BigInt
+
+  order_status Int @db.TinyInt
+
+  payment_status Int @db.TinyInt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  status     E_status @default(ACTIVE)
+
+  @@map("orders")
+}
+
+model OrderProduct {
+  order_id   String @id @db.Char(26)
+  product_id String @db.Char(26)
+  count      Int    @db.Int
+
+  use_coppone String? @db.Char(26)
+
+  price BigInt @db.BigInt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  status     E_status @default(ACTIVE)
+
+  @@map("order_products")
+}
+
+model OrderCostomerInfo {
+  order_id String @id @db.Char(26)
+
+  name         String @db.VarChar(10)
+  phone_number String @db.VarChar(12)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  status     E_status @default(ACTIVE)
+
+  @@map("order_costomer_infos")
+}
+
+model OrderRecipientInfo {
+  order_id String @id @db.Char(26)
+
+  name         String @db.VarChar(10)
+  phone_number String @db.VarChar(12)
+
+  full_address   String @db.VarChar(250)
+  address        String @db.VarChar(200)
+  detail_address String @db.VarChar(50)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  status     E_status @default(ACTIVE)
+
+  @@map("order_recipient_infos")
+}
+
+model Shipping {
+  order_id String @id @db.Char(26)
+
+  courier        Int    @db.TinyInt
+  waybill_number String @db.VarChar(45)
+
+  shipping_status Int @db.TinyInt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  status     E_status @default(ACTIVE)
+
+  @@map("shipping")
+}
+
+model PaymentInfo {
+  order_id String @id @db.Char(26)
+  key String @db.VarChar(200)
+
+
+
+  method String @db.VarChar(60)
+
+  payment_status String @db.VarChar(20)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  status     E_status @default(ACTIVE)
+  @@map("payment_infos")
+}
+
 
 enum E_status {
   ACTIVE
