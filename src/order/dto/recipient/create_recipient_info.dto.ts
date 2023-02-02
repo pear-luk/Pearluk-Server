@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 export class RecipientInfoCreateInputDTO
-  implements Omit<Prisma.OrderRecipientInfoCreateInput, 'order_id'>
+  implements Prisma.OrderRecipientInfoCreateWithoutOrderInput
 {
   name: string;
   phone_number: string;

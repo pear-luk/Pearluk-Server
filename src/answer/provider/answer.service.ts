@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+// import { Injectable } from '@nestjs/common';
 
-@Injectable()
-export class AnswerService {
-    constructor(
-        private readonly answerRepo: 
-    )
-}
+// @Injectable()
+// export class AnswerService {
+//     constructor(
+//         private readonly answerRepo:
+//     )
+// }
