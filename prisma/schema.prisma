@@ -76,19 +76,19 @@ model Category {
 }
 
 model Product {
-  product_id     String    @id @db.Char(26)
-  name           String    @db.VarChar(100)
+  product_id     String   @id @db.Char(26)
+  name           String   @db.VarChar(100)
   price          BigInt
-  introduce      String    @db.Text
+  introduce      String   @db.Text
   quantity       Int
-  product_status Int       @db.TinyInt
-  archive_id     String    @db.Char(26)
-  category_id    String    @db.Char(26)
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @default(now()) @updatedAt
-  status         E_status  @default(ACTIVE)
-  archive        Archive?  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
-  category       Category? @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
+  product_status Int      @db.TinyInt
+  archive_id     String   @db.Char(26)
+  category_id    String   @db.Char(26)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+  status         E_status @default(ACTIVE)
+  archive        Archive  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
+  category       Category @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
 
   @@index([archive_id], map: "products_archive_id_fkey")
   @@index([category_id], map: "products_category_id_fkey")
@@ -96,6 +96,7 @@ model Product {
 }
 
 model Answer {
+
   answer_id   String    @id @db.Char(26)
   contents    String    @db.Text
   question_id String    @db.Char(26)
@@ -105,12 +106,14 @@ model Answer {
   status      E_status  @default(ACTIVE)
   question    Question? @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
 
+
   @@index([question_id], map: "answers_question_id_fkey")
   @@map("answers")
 }
 
 model Question {
   question_id String   @id @db.Char(26)
+
   contents    String   @db.Text
   type        Int?     @db.TinyInt
   secret_mode Int      @db.TinyInt
@@ -121,64 +124,63 @@ model Question {
 
   answers Answer[] @relation("ANSWER_QUESTION")
 
+
   @@map("questions")
 }
 
 model Order {
-  order_id String @id @db.Char(26)
-  user_id  String @db.Char(26)
+  order_id       String   @id @db.Char(26)
+  user_id        String   @db.Char(26)
+  name           String   @db.Char(100)
+  use_point      BigInt?
+  total_price    BigInt
+  order_status   Int      @db.TinyInt
+  payment_status Int      @db.TinyInt
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+  status         E_status @default(ACTIVE)
 
-  name String @db.Char(100)
-
-  use_point   BigInt? @db.BigInt
-  total_price BigInt  @db.BigInt
-
-  order_status Int @db.TinyInt
-
-  payment_status Int @db.TinyInt
-
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  status     E_status @default(ACTIVE)
+  order_poroducts OrderProduct[]      @relation("ORDER_PRODUCT")
+  customer_info   OrderCustomerInfo?  @relation("ORDER_CUSTOMER_INFO")
+  recipient_info  OrderRecipientInfo? @relation("ORDER_RECIPIENT_INFO")
+  shipping        Shipping?           @relation("ORDER_SHIPPING")
+  payment_info    PaymentInfo?        @relation("ORDER_PAYMENT")
 
   @@map("orders")
 }
 
 model OrderProduct {
-  order_id   String @id @db.Char(26)
-  product_id String @db.Char(26)
-  count      Int    @db.Int
+  order_id    String   @id @db.Char(26)
+  product_id  String   @db.Char(26)
+  count       Int
+  use_coppone String?  @db.Char(26)
+  price       BigInt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  status      E_status @default(ACTIVE)
 
-  use_coppone String? @db.Char(26)
-
-  price BigInt @db.BigInt
-
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  status     E_status @default(ACTIVE)
+  order Order @relation("ORDER_PRODUCT", fields: [order_id], references: [order_id])
 
   @@map("order_products")
 }
 
-model OrderCostomerInfo {
-  order_id String @id @db.Char(26)
+model OrderCustomerInfo {
+  order_id     String   @id @db.Char(26)
+  name         String   @db.VarChar(10)
+  phone_number String   @db.VarChar(12)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+  status       E_status @default(ACTIVE)
 
-  name         String @db.VarChar(10)
-  phone_number String @db.VarChar(12)
+  order Order @relation("ORDER_CUSTOMER_INFO", fields: [order_id], references: [order_id])
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  status     E_status @default(ACTIVE)
-
-  @@map("order_costomer_infos")
+  @@map("order_customer_infos")
 }
 
 model OrderRecipientInfo {
-  order_id String @id @db.Char(26)
-
-  name         String @db.VarChar(10)
-  phone_number String @db.VarChar(12)
-
+  order_id       String @id @db.Char(26)
+  name           String @db.VarChar(10)
+  phone_number   String @db.VarChar(12)
   full_address   String @db.VarChar(250)
   address        String @db.VarChar(200)
   detail_address String @db.VarChar(50)
@@ -187,25 +189,28 @@ model OrderRecipientInfo {
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
 
+  order Order @relation("ORDER_RECIPIENT_INFO", fields: [order_id], references: [order_id])
+
   @@map("order_recipient_infos")
 }
 
 model Shipping {
-  order_id String @id @db.Char(26)
-
-  courier        Int    @db.TinyInt
-  waybill_number String @db.VarChar(45)
-
-  shipping_status Int @db.TinyInt
+  order_id        String @id @db.Char(26)
+  courier         Int    @db.TinyInt
+  waybill_number  String @db.VarChar(45)
+  shipping_status Int    @db.TinyInt
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
 
+  order Order @relation("ORDER_SHIPPING", fields: [order_id], references: [order_id])
+
   @@map("shipping")
 }
 
 model PaymentInfo {
+
   order_id String @id @db.Char(26)
   key      String @db.VarChar(200)
 
@@ -216,6 +221,7 @@ model PaymentInfo {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
+
 
   @@map("payment_infos")
 }
