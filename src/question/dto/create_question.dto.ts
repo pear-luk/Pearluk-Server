@@ -20,6 +20,8 @@ export class QuestionCreateInputDTO
   @Transform(({ value }) =>
     !isNaN(Number(value)) ? Number(value) : E_QuestionType[value],
   )
+  type: E_QuestionType = 0;
+
   @ApiProperty({
     name: 'product_id',
     description: '상품 id',
@@ -28,3 +30,15 @@ export class QuestionCreateInputDTO
   @IsULID()
   product_id: string;
 }
+
+export const questionCreateInputEX: QuestionCreateInputDTO = {
+  type: 0,
+  product_id: '12345',
+};
+export const questionCreateResponseEX = {
+  type: 0,
+  product_id: '12345',
+  created_at: '2023-01-25T09:50:16.383Z',
+  updated_at: '2023-01-25T09:50:16.383Z',
+  status: 'ACTIVE',
+};

@@ -13,3 +13,7 @@ export class QuestionUpdateInputDTO
   @IsOptional()
   product_id?: string;
 }
+export const updateQuestionInputEX = {
+  type: 1,
+  product_id: '123455555',
+};

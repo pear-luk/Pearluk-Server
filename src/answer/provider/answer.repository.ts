@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
+import { AnswerUpdateInputDTO } from '../dto/update_answer.dto';
 import { PrismaService } from './../../prisma/prisma.service';
 
 @Injectable()
@@ -15,5 +16,11 @@ export class AnswerRepository {
       },
     });
     return newAnswer;
+  }
+
+  async updateAnswer(
+    info: AnswerUpdateInputDTO & Prisma.ProductWhereUniqueInput,
+  ) {
+    const { answer_id, ...data } = info;
   }
 }
