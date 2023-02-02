@@ -222,6 +222,8 @@ model PaymentInfo {
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
 
+  order Order @relation("ORDER_PAYMENT", fields: [order_id], references: [order_id])
+
 
   @@map("payment_infos")
 }
