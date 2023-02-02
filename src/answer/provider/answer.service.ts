@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class AnswerService {}
+export class AnswerService {
+    constructor(
+        private readonly answerRepo: 
+    )
+}

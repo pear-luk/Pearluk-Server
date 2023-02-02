@@ -27,6 +27,6 @@ export class AnswerController {
   @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   async createAnswer(@Body() answerInputDTO: AnswerCreateInputDTO) {
     const result = await this.answerService.createAnswer(answerInputDTO);
-    return new BaseResponse(baseResponseStatus.SUCCESS, result);
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

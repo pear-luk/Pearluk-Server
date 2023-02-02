@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsNumber } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { IsULID } from 'src/common/decorator/IsULID';
 import { E_QuestionType } from '../interface/question_type.enum';
 
@@ -27,8 +27,9 @@ export class QuestionCreateInputDTO
     description: '상품 id',
     type: 'string',
   })
+  @IsOptional()
   @IsULID()
-  product_id: string;
+  product_id?: string;
 }
 
 export const questionCreateInputEX: QuestionCreateInputDTO = {
