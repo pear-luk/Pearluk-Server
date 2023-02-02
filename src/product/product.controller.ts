@@ -77,7 +77,7 @@ export class ProductController {
     baseResponeStatus.CATEGORY_NOT_EXIST,
     '카테고리가 존재하지 않을때',
   )
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   @Post('/')
   async createProduct(@Body() productCreateInputDTO: ProductCreateInputDTO) {
     const result = await this.productService.createProduct(
