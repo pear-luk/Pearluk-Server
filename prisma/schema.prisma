@@ -140,7 +140,7 @@ model Order {
   updated_at     DateTime @default(now()) @updatedAt
   status         E_status @default(ACTIVE)
 
-  order_poroducts OrderProduct[]      @relation("ORDER_PRODUCT")
+  order_products OrderProduct[]      @relation("ORDER_PRODUCT")
   customer_info   OrderCustomerInfo?  @relation("ORDER_CUSTOMER_INFO")
   recipient_info  OrderRecipientInfo? @relation("ORDER_RECIPIENT_INFO")
   shipping        Shipping?           @relation("ORDER_SHIPPING")

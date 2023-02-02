@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 export class OrderProductCreatInputDTO
-  implements Omit<Prisma.OrderProductCreateManyOrderInput, 'order_id'>
+  implements Prisma.OrderProductCreateWithoutOrderInput
 {
   product_id: string;
   count: number;
