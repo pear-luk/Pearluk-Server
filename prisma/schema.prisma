@@ -141,6 +141,8 @@ model Order {
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
 
+  order_products OrderProduct[] @relation(map: "ORDER_PRODUCTS")
+  customer OrderCustomerInfo? 
   @@map("orders")
 }
 
@@ -156,11 +158,12 @@ model OrderProduct {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
+  order      Order    @relation(map: "ORDER_PRODUCTS", fields: [order_id], references: [order_id])
 
   @@map("order_products")
 }
 
-model OrderCostomerInfo {
+model OrderCustomerInfo {
   order_id String @id @db.Char(26)
 
   name         String @db.VarChar(10)
@@ -170,7 +173,9 @@ model OrderCostomerInfo {
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
 
-  @@map("order_costomer_infos")
+  order      Order   @relation(map:"CUSTOMER_INFO",fields: [order_id], references: [order_id])
+
+  @@map("order_customer_infos")
 }
 
 model OrderRecipientInfo {
@@ -207,9 +212,7 @@ model Shipping {
 
 model PaymentInfo {
   order_id String @id @db.Char(26)
-  key String @db.VarChar(200)
-
-
+  key      String @db.VarChar(200)
 
   method String @db.VarChar(60)
 
@@ -218,6 +221,7 @@ model PaymentInfo {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
+
   @@map("payment_infos")
 }
 
