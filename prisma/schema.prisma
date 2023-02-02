@@ -96,8 +96,8 @@ model Product {
 }
 
 model Answer {
-
   answer_id   String    @id @db.Char(26)
+  contents    String    @db.Text
   question_id String    @db.Char(26)
   product_id  String?   @db.Char(26)
   created_at  DateTime  @default(now())
@@ -111,18 +111,18 @@ model Answer {
 
 model Question {
   question_id String   @id @db.Char(26)
-
+  contents    String   @db.Text
   type        Int?     @db.TinyInt
+  secret_mode Int      @db.TinyInt
   product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   status      E_status @default(ACTIVE)
 
-  answers     Answer[] @relation("ANSWER_QUESTION")
+  answers Answer[] @relation("ANSWER_QUESTION")
 
   @@map("questions")
 }
-
 
 model Order {
   order_id String @id @db.Char(26)
@@ -207,9 +207,7 @@ model Shipping {
 
 model PaymentInfo {
   order_id String @id @db.Char(26)
-  key String @db.VarChar(200)
-
-
+  key      String @db.VarChar(200)
 
   method String @db.VarChar(60)
 
@@ -218,9 +216,9 @@ model PaymentInfo {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
   status     E_status @default(ACTIVE)
+
   @@map("payment_infos")
 }
-
 
 enum E_status {
   ACTIVE
