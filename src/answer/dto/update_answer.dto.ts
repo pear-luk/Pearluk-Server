@@ -1,24 +1,15 @@
 import { PartialType } from '@nestjs/swagger';
-import { E_status, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { IsOptional } from 'class-validator';
-import { IsULID } from '../../common/decorator/IsULID';
-import { ArchiveCreateInputDTO } from './create_archive.dto';
+import { AnswerCreateInputDTO } from './create_answer.dto';
 
-export class ArchiveUpdateInputDTO
-  extends PartialType(ArchiveCreateInputDTO)
-  implements Prisma.ArchiveUpdateInput
+export class AnswerUpdateInputDTO
+  extends PartialType(AnswerCreateInputDTO)
+  implements Prisma.AnswerUpdateInput
 {
   @IsOptional()
-  title?: string;
+  question_id?: string;
 
   @IsOptional()
-  year?: number;
-
-  @IsOptional()
-  introduce?: string;
-}
-
-export class ArchiveUpdateParamsDTO implements Prisma.ArchiveWhereUniqueInput {
-  @IsULID()
-  archive_id: string;
+  product_id?: string;
 }
