@@ -111,6 +111,7 @@ model Answer {
 model Question {
   question_id String   @id @db.Char(26)
   type        Int?     @db.TinyInt
+  secret_mode Int      @db.TinyInt
   product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
