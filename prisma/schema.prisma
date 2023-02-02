@@ -96,13 +96,14 @@ model Product {
 }
 
 model Answer {
-  answer_id   String   @id @db.Char(26)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
-  status      E_status @default(ACTIVE)
-  product_id  String?  @db.Char(26)
-  question_id String   @db.Char(26)
-  question    Question @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
+
+  answer_id   String    @id @db.Char(26)
+  question_id String    @db.Char(26)
+  product_id  String?   @db.Char(26)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
+  status      E_status  @default(ACTIVE)
+  question    Question? @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
 
   @@index([question_id], map: "answers_question_id_fkey")
   @@map("answers")
@@ -110,15 +111,18 @@ model Answer {
 
 model Question {
   question_id String   @id @db.Char(26)
+
+  type        Int?     @db.TinyInt
+  product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   status      E_status @default(ACTIVE)
-  product_id  String?  @db.Char(26)
-  type        Int?     @db.TinyInt
+
   answers     Answer[] @relation("ANSWER_QUESTION")
 
   @@map("questions")
 }
+
 
 model Order {
   order_id String @id @db.Char(26)
@@ -216,6 +220,7 @@ model PaymentInfo {
   status     E_status @default(ACTIVE)
   @@map("payment_infos")
 }
+
 
 enum E_status {
   ACTIVE
