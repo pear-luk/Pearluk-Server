@@ -2,6 +2,8 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminAuthGuard } from 'src/common/guard/adminGuard';
 import { JwtAccessAuthGuard } from 'src/common/guard/JWT/jwt.guard';
+import { BaseResponse } from 'src/common/util/res/BaseResponse';
+import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import { AnswerService } from './provider/answer.service';
 
 @ApiTags('Answer API')
@@ -23,5 +25,8 @@ export class AnswerController {
   })
   @Post('/')
   @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
-  async createAnswer(@Body() answerInputDTO: AnswerCreateInputDTO) {}
+  async createAnswer(@Body() answerInputDTO: AnswerCreateInputDTO) {
+    const result = await this.answerService.createAnswer(answerInputDTO);
+    return new BaseResponse(baseResponseStatus.SUCCESS, result);
+  }
 }
