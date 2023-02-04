@@ -114,7 +114,7 @@ model Question {
   user_id     String   @db.Char(26)
   type        Int?     @db.TinyInt
   secret_mode Int?     @db.TinyInt
-  password    String?   @db.VarChar(100)
+  password    String?  @db.VarChar(100)
   product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt

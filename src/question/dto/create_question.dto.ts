@@ -17,7 +17,7 @@ export class QuestionCreateInputDTO
 
   @ApiProperty({
     name: 'type',
-    description: '질문 유형',
+    description: '질문 유형ㅗ',
     type: 'number',
     enum: E_QuestionType,
   })
@@ -50,7 +50,7 @@ export class QuestionCreateInputDTO
     type: 'string',
   })
   @IsULID()
-  user_id?: string;
+  user_id: string;
 
   @ApiProperty({
     name: 'product_id',
