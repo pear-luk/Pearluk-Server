@@ -23,6 +23,7 @@ export class JwtAccessAuthGuard extends AuthGuard('JWT-ACCESS-TOKEN') {
     status?: any,
   ): TUser {
     // try {
+
     if (err) {
       throw new UnauthorizedException(err.response);
     }

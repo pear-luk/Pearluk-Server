@@ -7,6 +7,7 @@ import { AuthService } from './../../../auth/provider/auth.service';
 import { UserRopository } from './../../../user/provider/user.ropository';
 
 import { JwtPayload } from './jtw.payload';
+import { jwtExtractorFromCookies } from './jwtExtractorFromCookeis';
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(
   Strategy,
@@ -20,7 +21,7 @@ export class JwtAccessStrategy extends PassportStrategy(
     super({
       // jwtFromRequest: ExtractJwt.fromExtractors([jwtExtractorFromCookies]),
 
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([jwtExtractorFromCookies]),
       secretOrKey: configService.get('ACCESS_TOKEN_SECRET'),
     });
   }
