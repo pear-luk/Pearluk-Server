@@ -1,7 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+import { BaseResponse } from 'src/common/util/res/BaseResponse';
 import { LoginService } from '../provider/login.service';
 import { AuthService } from './../../auth/provider/auth.service';
+import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
 import { LoginInputDTO } from './../dto/login.dto';
 
 @Controller('/login')
@@ -13,10 +16,18 @@ export class LoginController {
   ) {}
 
   @Post()
-  async login(@Body() loginInputDTO: LoginInputDTO) {
-    console.log(loginInputDTO);
+  async login(
+    @Body() loginInputDTO: LoginInputDTO,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     const payload = await this.loginService.login(loginInputDTO);
+    console.log(payload);
     const access_token = await this.authService.accessTokenSign(payload);
-    return { access_token };
+
+    response.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: false,
+    });
+    return new BaseResponse(baseResponeStatus.SUCCESS, payload);
   }
 }

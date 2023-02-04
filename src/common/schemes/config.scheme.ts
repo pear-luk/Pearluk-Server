@@ -13,6 +13,9 @@ export const configScheme = Joi.object({
   //DB
   DATABASE_URL: Joi.string().required(),
 
+  KAKAO_REST_API_KEY: Joi.string().required(),
+  KAKAO_REDIRECT_URI: Joi.string().required(),
+
   //JWT
   ACCESS_TOKEN_SECRET: Joi.string().required(),
   REFRESH_TOKEN_SECRET: Joi.string().required(),

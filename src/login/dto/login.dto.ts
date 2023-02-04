@@ -13,18 +13,18 @@ export class LoginInputDTO {
   social_type: SocialType;
 
   @ApiProperty({
-    name: 'social_token',
+    name: 'social_code',
     description: `
         social_type이 local이 아닐때 입력.
-        외부토큰을 입력
+        외부 코드를 입력
       `,
   })
   @ValidateIf(
     ({ social_type }) =>
       social_type !== SocialType.local && social_type in SocialType,
   )
-  @IsString({ message: '소셜 토큰에러' })
-  social_token?: string;
+  @IsString({ message: '소셜 코드에러' })
+  social_code?: string;
 
   @ApiProperty({
     name: 'email',

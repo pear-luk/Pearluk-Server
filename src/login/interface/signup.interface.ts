@@ -7,5 +7,7 @@ export interface ILocalSignupDTO {
 }
 export interface ISocialSignupDTO {
   social_type: Prisma.SocialType;
-  social_token: string;
+  social_id: string;
+  email: string;
+  nickname: string;
 }

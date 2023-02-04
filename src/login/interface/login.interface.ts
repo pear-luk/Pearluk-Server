@@ -6,5 +6,5 @@ export interface ILocalLoginDTO {
 }
 export interface ISocialLoginDTO {
   social_type: Prisma.SocialType;
-  social_token: string;
+  social_code: string;
 }
