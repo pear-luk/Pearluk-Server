@@ -21,13 +21,14 @@ export class LoginController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const payload = await this.loginService.login(loginInputDTO);
-    console.log(payload);
+  
     const access_token = await this.authService.accessTokenSign(payload);
 
     response.cookie('access_token', access_token, {
       httpOnly: true,
       secure: false,
     });
+
     return new BaseResponse(baseResponeStatus.SUCCESS, payload);
   }
 }
