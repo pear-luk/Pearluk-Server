@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { Transform } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { IsULID } from 'src/common/decorator/IsULID';
 import { E_QuestionType } from '../interface/question_type.enum';
@@ -21,23 +20,37 @@ export class QuestionCreateInputDTO
     description: '질문 유형',
     type: 'number',
     enum: E_QuestionType,
-    default: 0,
   })
+  @IsOptional()
   @IsNumber()
   @IsEnum(E_QuestionType)
-  @Transform(({ value }) =>
-    !isNaN(Number(value)) ? Number(value) : E_QuestionType[value],
-  )
-  type: E_QuestionType = 0;
+  type?: number;
 
   @ApiProperty({
     name: 'secret_mode',
     description: '질문 비공개 유무',
     type: 'number',
-    default: 0,
   })
+  @IsOptional()
   @IsNumber()
-  secret_mode: number;
+  secret_mode?: number;
+
+  @ApiProperty({
+    name: 'password',
+    description: '질문 비공개 열람시 필요 비밀번호',
+    type: 'string',
+  })
+  @IsOptional()
+  @IsULID()
+  password?: string;
+
+  @ApiProperty({
+    name: 'user_id',
+    description: '유저 id',
+    type: 'string',
+  })
+  @IsULID()
+  user_id?: string;
 
   @ApiProperty({
     name: 'product_id',
