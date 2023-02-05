@@ -23,6 +23,8 @@ export class QuestionCreateInputDTO
   @IsULID()
   user_id: string;
 
+  title: string;
+
   @ApiProperty({
     name: 'type',
     description: '질문 유형',
@@ -65,6 +67,7 @@ export class QuestionCreateInputDTO
 export const questionCreateInputEX: QuestionCreateInputDTO = {
   contents: '질문있어요오오오오',
   user_id: '3333333',
+  title: 'ㅁㄴㅇㄹ',
   type: 0,
   secret_mode: 0,
   password: '23232323',
