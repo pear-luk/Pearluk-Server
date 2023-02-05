@@ -114,6 +114,7 @@ model Answer {
 
 model Question {
   question_id String   @id @db.Char(26)
+  title       String   @db.VarChar(100)
   contents    String   @db.Text
   user_id     String   @db.Char(26)
   type        Int?     @db.TinyInt
