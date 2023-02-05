@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
+import { ProductCreateInputDTO } from './../dto/create_product.dto';
 import { ProductUpdateInputDTO } from './../dto/update_product.dto';
 
 @Injectable()
 export class ProductRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createProduct(info: Omit<Prisma.ProductCreateInput, 'product_id'>) {
+  async createProduct(info: ProductCreateInputDTO) {
     const newProduct = await this.prisma.product.create({
       data: {
         product_id: ulid(),

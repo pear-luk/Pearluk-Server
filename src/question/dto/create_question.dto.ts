@@ -8,6 +8,13 @@ export class QuestionCreateInputDTO
   implements Omit<Prisma.QuestionCreateInput, 'question_id'>
 {
   @ApiProperty({
+    name: 'title',
+    description: '질문 제목',
+    type: 'string',
+  })
+  title: string;
+
+  @ApiProperty({
     name: 'contents',
     description: '질문 내용',
     type: 'string',
@@ -49,7 +56,6 @@ export class QuestionCreateInputDTO
     type: 'string',
   })
   @IsOptional()
-  @IsULID()
   password?: string;
 
   @ApiProperty({
@@ -63,6 +69,7 @@ export class QuestionCreateInputDTO
 }
 
 export const questionCreateInputEX: QuestionCreateInputDTO = {
+  title: '질문제목1',
   contents: '질문있어요오오오오',
   user_id: '3333333',
   type: 0,
