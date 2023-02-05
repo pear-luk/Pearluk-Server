@@ -6,7 +6,8 @@ import { IsULID } from '../../common/decorator/IsULID';
 import { E_ProductStatus } from '../interface/product_status.enum';
 
 export class ProductCreateInputDTO
-  implements Omit<Prisma.ProductCreateInput, 'product_id'>
+  implements
+    Omit<Prisma.ProductCreateInput, 'product_id' | 'archive' | 'category'>
 {
   @ApiProperty({
     name: 'name',

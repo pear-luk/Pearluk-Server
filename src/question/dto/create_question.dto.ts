@@ -51,7 +51,6 @@ export class QuestionCreateInputDTO
     type: 'string',
   })
   @IsOptional()
-  @IsULID()
   password?: string;
 
   @ApiProperty({
