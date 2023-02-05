@@ -16,6 +16,14 @@ export class QuestionCreateInputDTO
   contents: string;
 
   @ApiProperty({
+    name: 'user_id',
+    description: '유저 id',
+    type: 'string',
+  })
+  @IsULID()
+  user_id: string;
+
+  @ApiProperty({
     name: 'type',
     description: '질문 유형',
     type: 'number',
@@ -45,14 +53,6 @@ export class QuestionCreateInputDTO
   password?: string;
 
   @ApiProperty({
-    name: 'user_id',
-    description: '유저 id',
-    type: 'string',
-  })
-  @IsULID()
-  user_id?: string;
-
-  @ApiProperty({
     name: 'product_id',
     description: '상품 id',
     type: 'string',
@@ -63,9 +63,11 @@ export class QuestionCreateInputDTO
 }
 
 export const questionCreateInputEX: QuestionCreateInputDTO = {
-  type: 0,
   contents: '질문있어요오오오오',
+  user_id: '3333333',
+  type: 0,
   secret_mode: 0,
+  password: '23232323',
   product_id: '12345',
 };
 export const questionCreateResponseEX = {

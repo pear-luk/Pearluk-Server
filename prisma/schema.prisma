@@ -18,6 +18,8 @@ model User {
   addresses       UserAddress[]
   userSocialInfos UserSocialInfo[]
 
+  questions Question[] @relation("QUESTION_USER")
+
   @@map("users")
 }
 
@@ -90,6 +92,8 @@ model Product {
   archive        Archive?  @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
   category       Category? @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
 
+  questions Question[] @relation("QUESTION_PRODUCT")
+
   @@index([archive_id], map: "products_archive_id_fkey")
   @@index([category_id], map: "products_category_id_fkey")
   @@map("products")
@@ -110,18 +114,23 @@ model Answer {
 
 model Question {
   question_id String   @id @db.Char(26)
+  title       String   @db.VarChar(100)
   contents    String   @db.Text
   user_id     String   @db.Char(26)
   type        Int?     @db.TinyInt
   secret_mode Int?     @db.TinyInt
-  password    String?   @db.VarChar(100)
+  password    String?  @db.VarChar(100)
   product_id  String?  @db.Char(26)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   status      E_status @default(ACTIVE)
+  user        User?    @relation("QUESTION_USER", fields: [user_id], references: [user_id])
+  product     Product? @relation("QUESTION_PRODUCT", fields: [product_id], references: [product_id])
 
   answers Answer[] @relation("ANSWER_QUESTION")
 
+  @@index([user_id], map: "questions_user_id_fkey")
+  @@index([product_id], map: "questions_product_id_fkey")
   @@map("questions")
 }
 
