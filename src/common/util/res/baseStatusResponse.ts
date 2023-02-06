@@ -80,4 +80,14 @@ export const baseResponeStatus = {
     code: RESCODE + PRODUCT + NOT_EXIST,
     message: '존재하지 않는 상품입니다.',
   },
+  QUESTION_NOT_EXIST: {
+    is_success: false,
+    code: RESCODE + ARCHIVE + NOT_EXIST,
+    message: '존재하지 않는 질문입니다.',
+  },
+  QUESTION_EXIST: {
+    is_success: false,
+    code: RESCODE + ARCHIVE + EXIST,
+    message: '이미 존재하는 질문입니다.',
+  },
 };
