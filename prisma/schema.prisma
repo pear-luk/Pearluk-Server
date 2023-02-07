@@ -125,7 +125,7 @@ model Question {
   title       String   @db.VarChar(100)
   answers     Answer[] @relation("ANSWER_QUESTION")
   product     Product? @relation(fields: [product_id], references: [product_id])
-  user        User?     @relation(fields: [user_id], references: [user_id])
+  user        User?    @relation(fields: [user_id], references: [user_id])
 
   @@index([product_id], map: "questions_product_id_fkey")
   @@index([user_id], map: "questions_user_id_fkey")
@@ -184,6 +184,7 @@ model OrderRecipientInfo {
   order_id       String   @id @db.Char(26)
   name           String   @db.VarChar(10)
   phone_number   String   @db.VarChar(12)
+  post_code      String   @db.VarChar(20)
   full_address   String   @db.VarChar(250)
   address        String   @db.VarChar(200)
   detail_address String   @db.VarChar(50)
