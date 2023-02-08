@@ -61,6 +61,7 @@ export class QuestionCreateInputDTO
   @IsOptional()
   @IsULID()
   product_id?: string;
+
 }
 
 export const questionCreateInputEX: QuestionCreateInputDTO = {

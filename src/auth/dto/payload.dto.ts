@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 import { SocialType } from '../../login/interface/socialType';
 import { IPayload } from './../interface/jwt.interface';
 export class Payload implements IPayload {

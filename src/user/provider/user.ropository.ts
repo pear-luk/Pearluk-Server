@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 import { CreateSocailUserDTO } from './../dto/create_user.dto';
+import { CurrentUserDTO } from './../dto/current_user.dto';
 @Injectable()
 export class UserRopository {
   constructor(private readonly prisma: PrismaService) {}
@@ -75,5 +76,26 @@ export class UserRopository {
     });
 
     return checkUser;
+  }
+
+  async getUserInfoWithAddress({ user_id }: CurrentUserDTO) {
+    const userInfoWithAddress = await this.prisma.user.findFirst({
+      select: {
+        user_id: true,
+        nickname: true,
+        email: true,
+        phone_number: true,
+        address: {
+          select: {
+            post_code: true,
+            full_address: true,
+            address: true,
+            detail_address: true,
+          },
+        },
+      },
+      where: { user_id },
+    });
+    return userInfoWithAddress;
   }
 }

@@ -87,7 +87,7 @@ export class CategoryController {
     '이미 존재하는 카테고리 이름일경우(다른부모에서는 상관없음)',
   )
   @Post('/')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
   async createCategory(@Body() categoryCreateInputDto: CategoryCreateInputDTO) {
     const result = await this.categoryService.createCategory(
       categoryCreateInputDto,
