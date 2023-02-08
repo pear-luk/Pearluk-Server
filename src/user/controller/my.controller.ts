@@ -15,8 +15,8 @@ export class MyController {
   @Get('/')
   @UseGuards(DevGuard)
   async getMyInfo(@CurrentUser() user: CurrentUserDTO) {
-    console.log(user);
     const result = await this.uesrService.getMyInfo(user);
-    return new BaseResponse(baseResponeStatus.SUCCESS);
+    console.log(result);
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

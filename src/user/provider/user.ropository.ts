@@ -84,6 +84,7 @@ export class UserRopository {
         user_id: true,
         nickname: true,
         email: true,
+        phone_number: true,
         address: {
           select: {
             post_code: true,

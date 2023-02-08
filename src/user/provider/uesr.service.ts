@@ -7,6 +7,6 @@ export class UserService {
   constructor(private readonly userRepo: UserRopository) {}
 
   async getMyInfo(user: CurrentUserDTO) {
-    const userInfo = await this.userRepo;
+    return await this.userRepo.getUserInfoWithAddress(user);
   }
 }
