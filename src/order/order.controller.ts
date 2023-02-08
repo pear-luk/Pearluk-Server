@@ -5,7 +5,6 @@ import { CurrentUser } from './../common/decorator/current-user.decorator';
 import { DevGuard } from './../common/guard/devGuard';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import { OrderCreateInputDTO } from './dto/create_order.dto';
-import { order_mock } from './mock/index';
 import { OrderService } from './provider/order.service';
 
 @Controller('/orders')
@@ -18,14 +17,22 @@ export class OrderController {
     @CurrentUser()
     user: CurrentUserDTO,
   ) {
-
-    return new BaseResponse(baseResponeStatus.SUCCESS);
+    const result = await this.orderService.getMyOrderListAllInfo(user);
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
   @Post('/')
-  async createOrder(@Body() orderCreateInputDTO: OrderCreateInputDTO) {
-    // console.log(orderCreateInputDTO);
-
-    return order_mock;
+  @UseGuards(DevGuard)
+  async createOrder(
+    @CurrentUser()
+    user: CurrentUserDTO,
+    @Body() orderCreateInputDTO: OrderCreateInputDTO,
+  ) {
+    console.log(orderCreateInputDTO);
+    const result = await this.orderService.createOrder({
+      user,
+      order_info: orderCreateInputDTO,
+    });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

@@ -173,15 +173,16 @@ model Order {
 }
 
 model OrderProduct {
-  order_id   String   @id @db.Char(26)
-  product_id String   @db.Char(26)
-  count      Int
-  use_coupon String?  @db.Char(26)
-  price      BigInt
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  status     E_status @default(ACTIVE)
-  order      Order    @relation("ORDER_PRODUCT_LIST", fields: [order_id], references: [order_id])
+  order_product_id String   @id @db.Char(26)
+  order_id         String   @db.Char(26)
+  product_id       String   @db.Char(26)
+  count            Int
+  use_coupon       String?  @db.Char(26)
+  price            BigInt
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now()) @updatedAt
+  status           E_status @default(ACTIVE)
+  order            Order    @relation("ORDER_PRODUCT_LIST", fields: [order_id], references: [order_id])
 
   product Product? @relation("ORDER_PRODUCT", fields: [product_id], references: [product_id])
 

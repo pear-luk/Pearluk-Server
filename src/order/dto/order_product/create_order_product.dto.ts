@@ -3,7 +3,8 @@ import { IsNumber, IsOptional } from 'class-validator';
 import { IsULID } from 'src/common/decorator/IsULID';
 
 export class OrderProductCreatInputDTO
-  implements Prisma.OrderProductCreateWithoutOrderInput
+  implements
+    Omit<Prisma.OrderProductCreateWithoutOrderInput, 'order_product_id'>
 {
   @IsULID()
   product_id: string;
