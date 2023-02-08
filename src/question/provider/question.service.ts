@@ -7,12 +7,9 @@ import { Prisma } from '@prisma/client';
 export class QuestionService {
   constructor(private readonly productRepo: ProductRepository) {}
 
-  //   async createQuestion(info: QuestionCreateInputDTO) {
-  //     const productExist = await this.productRepo.findOneProduct({
-  //       product_id,
-  //     });
-  //     if(!)
-  //   }
+  async createQuestion(info: QuestionCreateInputDTO) {
+    return 'createQuestion';
+  }
 
   //   async updateQuestion(
   //     info: QuestionCreateInputDTO & Prisma.QuestionWhereUniqueInput,

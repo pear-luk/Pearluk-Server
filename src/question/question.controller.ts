@@ -23,7 +23,7 @@ import { QuestionService } from './provider/question.service';
 
 @ApiExtraModels(QuestionCreateInputDTO, QuestionUpdateInputDTO)
 @ApiTags('Question API')
-@Controller('question')
+@Controller('questions')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
@@ -58,33 +58,34 @@ export class QuestionController {
   //   return new BaseResponse(baseResponeStatus.SUCCESS, result);
   // }
 
-  @ApiResponse({
-    status: 201,
-    description: 'SUCCESS',
-    schema: {
-      example: new BaseResponse(
-        baseResponeStatus.SUCCESS,
-        questionCreateResponseEX,
-      ),
-    },
-  })
-  @ApiBadRequestResponse({
-    description: '이미 존재하는 아카이브 이름',
-    schema: {
-      example: baseResponeStatus.QUESTION_EXIST,
-    },
-  })
-  @Get('qa')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @ApiResponse({
+  //   status: 201,
+  //   description: 'SUCCESS',
+  //   schema: {
+  //     example: new BaseResponse(
+  //       baseResponeStatus.SUCCESS,
+  //       questionCreateResponseEX,
+  //     ),
+  //   },
+  // })
+  // @ApiBadRequestResponse({
+  //   description: '이미 존재하는 아카이브 이름',
+  //   schema: {
+  //     example: baseResponeStatus.QUESTION_EXIST,
+  //   },
+  // })
+  @Get('/')
   async getQuestionList() {
     const result = '성공';
     return result;
   }
 
-  @Post('qa')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
-  async createQuestion() {
-    return 'createquestion';
+  @Post('/qa')
+  async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
+    console.log('success');
+
+    // const result = await this.questionService.createQuestion(questionInputDTO);
+    // return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
   @Get()
