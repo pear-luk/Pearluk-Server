@@ -82,10 +82,19 @@ export class UserRopository {
     const userInfoWithAddress = await this.prisma.user.findFirst({
       select: {
         user_id: true,
+        nickname: true,
         email: true,
-        addresses: true,
+        address: {
+          select: {
+            post_code: true,
+            full_address: true,
+            address: true,
+            detail_address: true,
+          },
+        },
       },
       where: { user_id },
     });
+    return userInfoWithAddress;
   }
 }
