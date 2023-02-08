@@ -17,7 +17,7 @@ model User {
   status          E_status         @default(ACTIVE)
   role            UserRole         @default(user)
   questions       Question[]
-  addresse       UserAddress? @relation("USER_ADDRESS")
+  address       UserAddress? @relation("USER_ADDRESS")
   userSocialInfos UserSocialInfo[]
 
   @@map("users")
@@ -39,7 +39,7 @@ model UserSocialInfo {
 
 model UserAddress {
   uesr_id      String   @id @db.Char(26)
-  
+
   post_code      String   @db.VarChar(20)
   full_address   String   @db.VarChar(250)
   address        String   @db.VarChar(200)
