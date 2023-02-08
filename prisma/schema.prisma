@@ -12,11 +12,12 @@ model User {
   email           String           @unique @db.VarChar(100)
   created_at      DateTime         @default(now())
   nickname        String           @db.VarChar(10)
+  phone_number    String?       @db.VarChar(15)
   updated_at      DateTime         @default(now()) @updatedAt
   status          E_status         @default(ACTIVE)
   role            UserRole         @default(user)
   questions       Question[]
-  addresses       UserAddress[]
+  addresse       UserAddress? @relation("USER_ADDRESS")
   userSocialInfos UserSocialInfo[]
 
   @@map("users")
@@ -37,12 +38,18 @@ model UserSocialInfo {
 }
 
 model UserAddress {
-  addresses_id String   @id @db.Char(26)
-  uesr_id      String   @db.Char(26)
+  uesr_id      String   @id @db.Char(26)
+  
+  post_code      String   @db.VarChar(20)
+  full_address   String   @db.VarChar(250)
+  address        String   @db.VarChar(200)
+  detail_address String   @db.VarChar(50)
+
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now()) @updatedAt
   status       E_status @default(ACTIVE)
-  user         User     @relation(fields: [uesr_id], references: [user_id], map: "USER_ADDRESS")
+  user         User     @relation("USER_ADDRESS",fields: [uesr_id], references: [user_id])
+
 
   @@index([uesr_id], map: "USER_ADDRESS")
   @@map("user_addresses")

@@ -1,0 +1,22 @@
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { BaseResponse } from 'src/common/util/res/BaseResponse';
+import { CurrentUser } from '../../common/decorator/current-user.decorator';
+import { DevGuard } from '../../common/guard/devGuard';
+import { UserService } from '../provider/uesr.service';
+import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
+import { CurrentUserDTO } from './../dto/current_user.dto';
+
+@ApiTags('My API')
+@Controller('my')
+export class MyController {
+  constructor(private readonly uesrService: UserService) {}
+
+  @Get('/')
+  @UseGuards(DevGuard)
+  async getMyInfo(@CurrentUser() user: CurrentUserDTO) {
+    console.log(user);
+    const result = await this.uesrService.getMyInfo(user);
+    return new BaseResponse(baseResponeStatus.SUCCESS);
+  }
+}
