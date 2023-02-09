@@ -7,6 +7,9 @@ export class RecipientInfoCreateInputDTO
   @IsString()
   name: string;
 
+  @IsString()
+  post_code: string;
+
   @IsPhoneNumber('KR')
   @Transform(({ value }) => value.replace(/-/g, ''))
   phone_number: string;

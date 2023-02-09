@@ -27,54 +27,7 @@ import { QuestionService } from './provider/question.service';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  // @ApiBearerAuth()
-  // @ApiOperation({
-  //   summary: '질문 생성 API',
-  //   description: `
-  //     질문 생성 API입니다.
-
-  //     필요한 정보
-  //     - type: 질문 유형
-  //     - product_id: 상품 - String ULID
-  //   `,
-  // })
-  // @ApiBody({
-  //   schema: { $ref: getSchemaPath(QuestionCreateInputDTO) },
-  //   examples: {
-  //     PRODUCT: {
-  //       description: `상품생성 예시`,
-  //       value: questionCreateInputEX,
-  //     },
-  //   },
-  // })
-  //ApiResponseDTO
-  // @Post('/')
-  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
-  // async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
-  //   const result = await this.questionService.createQuestion(
-  //     QuestionCreateInputDTO,
-  //   );
-
-  //   return new BaseResponse(baseResponeStatus.SUCCESS, result);
-  // }
-
-  // @ApiResponse({
-  //   status: 201,
-  //   description: 'SUCCESS',
-  //   schema: {
-  //     example: new BaseResponse(
-  //       baseResponeStatus.SUCCESS,
-  //       questionCreateResponseEX,
-  //     ),
-  //   },
-  // })
-  // @ApiBadRequestResponse({
-  //   description: '이미 존재하는 아카이브 이름',
-  //   schema: {
-  //     example: baseResponeStatus.QUESTION_EXIST,
-  //   },
-  // })
-  @Get('/')
+  @Get('/qa')
   async getQuestionList() {
     const result = '성공';
     return result;
@@ -82,10 +35,8 @@ export class QuestionController {
 
   @Post('/qa')
   async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
-    console.log('success');
-
-    // const result = await this.questionService.createQuestion(questionInputDTO);
-    // return new BaseResponse(baseResponeStatus.SUCCESS, result);
+    const result = await this.questionService.createQuestion(questionInputDTO);
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
   @Get()

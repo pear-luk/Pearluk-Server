@@ -19,8 +19,8 @@ export class CategoryCreateInputDTO
     default: null,
     required: false,
   })
-  @IsULID()
   @IsOptional()
+  @IsULID()
   parent_category_id?: string = null;
 }
 

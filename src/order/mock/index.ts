@@ -23,6 +23,7 @@ export const customer_info_mock: CustomerInfoCreateInputDTO = {
 
 export const recipient_info_mock: RecipientInfoCreateInputDTO = {
   name: '박준혁',
+  post_code: '010203',
   phone_number: '01073616616',
   full_address: '서울특별시 광진구 군자동 ooo-oo, xxx호',
   address: '서울특별시 광진구 군자동 ooo-oo',

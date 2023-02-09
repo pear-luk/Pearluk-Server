@@ -12,6 +12,7 @@ export class QuestionCreateInputDTO
     description: '질문 제목',
     type: 'string',
   })
+  @IsString()
   title: string;
 
   @ApiProperty({

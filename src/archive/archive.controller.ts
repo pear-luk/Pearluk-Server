@@ -16,6 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AdminAuthGuard } from './../common/guard/adminGuard';
+import { DevGuard } from './../common/guard/devGuard';
 import { JwtAccessAuthGuard } from './../common/guard/JWT/jwt.guard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
@@ -66,7 +67,8 @@ export class ArchiveController {
     },
   })
   @Post('/')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  @UseGuards(DevGuard)
   async creatArchive(@Body() archiveInputDTO: ArchiveCreateInputDTO) {
     const result = await this.archiveService.createArchive(archiveInputDTO);
 
