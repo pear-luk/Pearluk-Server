@@ -2,7 +2,7 @@ import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Payload } from './../../auth/dto/payload.dto';
 import { AuthService } from './../../auth/provider/auth.service';
 import { OauthService } from './../../auth/provider/oauth.service';
-import { UserRopository } from './../../user/provider/user.ropository';
+import { UserRopository } from '../../user/provider/user.repository';
 import { LoginInputDTO } from './../dto/login.dto';
 import { ISocialLoginDTO } from './../interface/login.interface';
 import { SignupService } from './signup.service';

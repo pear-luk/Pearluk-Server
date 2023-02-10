@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { baseResponeStatus } from '../../util/res/baseStatusResponse';
 import { AuthService } from './../../../auth/provider/auth.service';
-import { UserRopository } from './../../../user/provider/user.ropository';
+import { UserRopository } from '../../../user/provider/user.repository';
 
 import { JwtPayload } from './jtw.payload';
 import { jwtExtractorFromCookies } from './jwtExtractorFromCookeis';

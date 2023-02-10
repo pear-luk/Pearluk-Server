@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { BaseResponse } from 'src/common/util/res/BaseResponse';
 import { CurrentUser } from '../../common/decorator/current-user.decorator';
 import { DevGuard } from '../../common/guard/devGuard';
-import { UserService } from '../provider/uesr.service';
+import { UserService } from '../provider/user.service';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
 import { CurrentUserDTO } from './../dto/current_user.dto';
 

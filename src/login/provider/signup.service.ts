@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { IPayload } from '../../auth/interface/jwt.interface';
 import { OauthService } from '../../auth/provider/oauth.service';
 import { SignupInputDTO } from '../dto/signup.dto';
-import { UserRopository } from './../../user/provider/user.ropository';
+import { UserRopository } from '../../user/provider/user.repository';
 import {
   ILocalSignupDTO,
   ISocialSignupDTO,
