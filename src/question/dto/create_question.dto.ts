@@ -72,15 +72,15 @@ export class QuestionCreateInputDTO
 export const questionCreateInputEX: QuestionCreateInputDTO = {
   title: '질문제목1',
   contents: '질문있어요오오오오',
-  user_id: '3333333',
+  user_id: '01GRHG8YXFWVHZ6272EZPGXRD9',
   type: 0,
   secret_mode: 0,
   password: '23232323',
-  product_id: '12345',
+  product_id: '01GRQS1264SEPMJ4ERPW97SJ38',
 };
 export const questionCreateResponseEX = {
   type: 0,
-  product_id: '12345',
+  product_id: '01GRQS1264SEPMJ4ERPW97SJ38',
   created_at: '2023-01-25T09:50:16.383Z',
   updated_at: '2023-01-25T09:50:16.383Z',
   status: 'ACTIVE',

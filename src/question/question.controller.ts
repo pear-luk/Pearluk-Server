@@ -27,13 +27,13 @@ import { QuestionService } from './provider/question.service';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Get('/qa')
+  @Get('/qa') //질문리스트 조회
   async getQuestionList() {
     const result = '성공';
     return result;
   }
 
-  @Post('/qa')
+  @Post('/qa') //질문하기
   async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
     const result = await this.questionService.createQuestion(questionInputDTO);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
