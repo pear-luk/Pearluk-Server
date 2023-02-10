@@ -18,6 +18,11 @@ export class QuestionRepository {
     return newQuestion;
   }
 
+  async findOneQuestion(info: Prisma.QuestionWhereInput) {
+    const question = await this.prisma.question.findFirst({ where: info });
+    return question;
+  }
+
   async get() {
     const questions = await this.prisma.question.findMany();
     return questions;
