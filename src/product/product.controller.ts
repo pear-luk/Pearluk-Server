@@ -191,11 +191,11 @@ export class ProductController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  // @Post('/faker')
-  // async fakerData() {
-  //   const result = await this.productFaker.createProduct();
-  //   return result;
-  // }
+  @Post('/faker')
+  async fakerData() {
+    const result = await this.productFaker.createProduct();
+    return result;
+  }
 
   @Get('/')
   async getProductLsit(@Query() qurey) {

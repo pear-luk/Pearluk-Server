@@ -21,14 +21,14 @@ export class ProductFaker {
     const archives = await this.archiveRepo.getArchiveListAll();
     const fakerData: Prisma.ProductUncheckedCreateInput[] = new Array(10000)
       .fill(0)
-      .map(() => {
+      .map((l, i) => {
         return {
           product_id: ulid(),
 
           name: faker.lorem.words(3),
-          price: faker.datatype.number({ min: 1000, max: 1000000 }),
+          price: i + 1,
           introduce: faker.lorem.lines(3),
-          quantity: faker.datatype.number({ min: 1, max: 100 }),
+          quantity: i + 1,
           product_status: faker.datatype.number({ min: 0, max: 3 }),
           archive_id:
             archives[
