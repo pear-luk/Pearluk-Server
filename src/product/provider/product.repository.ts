@@ -49,4 +49,19 @@ export class ProductRepository {
     });
     return deletedProduct;
   }
+
+  async getProductLsit({ page, archive }: { page: string; archive: string }) {
+    const archive_id =
+      archive && archive === 'all' ? undefined : archive ? archive : undefined;
+    const productList = await this.prisma.product.findMany({
+      where: { archive_id: archive_id && '' },
+      skip: (Number([page]) - 1) * 10,
+      take: 10,
+      orderBy: {
+        // created_at: 'asc',
+        archive_id: 'asc',
+      },
+    });
+    return productList;
+  }
 }
