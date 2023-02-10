@@ -13,6 +13,7 @@ export class MyController {
   constructor(private readonly uesrService: UserService) {}
 
   @Get('/')
+  //   @UseGuards(JwtAccessAuthGuard)
   @UseGuards(DevGuard)
   async getMyInfo(@CurrentUser() user: CurrentUserDTO) {
     const result = await this.uesrService.getMyInfo(user);

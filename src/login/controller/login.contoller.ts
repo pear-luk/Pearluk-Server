@@ -20,15 +20,18 @@ export class LoginController {
     @Body() loginInputDTO: LoginInputDTO,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const payload = await this.loginService.login(loginInputDTO);
-  
-    const access_token = await this.authService.accessTokenSign(payload);
+    const user = await this.loginService.login(loginInputDTO);
+
+    const access_token = await this.authService.accessTokenSign(user);
 
     response.cookie('access_token', access_token, {
       httpOnly: true,
       secure: false,
     });
 
-    return new BaseResponse(baseResponeStatus.SUCCESS, payload);
+    return new BaseResponse(baseResponeStatus.SUCCESS, {
+      user,
+      is_login: true,
+    });
   }
 }

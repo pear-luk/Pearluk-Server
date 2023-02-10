@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -179,6 +180,13 @@ export class ArchiveController {
       archive_id,
     });
 
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Get('/')
+  async getArchiveList() {
+    console.log('아카이브 AssPIs  s1');
+    const result = await this.archiveService.getArchiveListAll();
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }
