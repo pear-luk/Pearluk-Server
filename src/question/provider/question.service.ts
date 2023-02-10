@@ -68,4 +68,13 @@ export class QuestionService {
     const updatedQuestion = await this.questionRepo.updateQuestion(info);
     return updatedQuestion;
   }
+
+  async deleteStatusQuestion(info: Prisma.QuestionWhereUniqueInput) {
+    const exist = await this.questionRepo.findOneQuestion(info);
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
+
+    const deletedQuestion = await this.questionRepo.deleteStatusQuestion(info);
+    return deletedQuestion;
+  }
 }

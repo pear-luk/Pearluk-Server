@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -43,14 +44,14 @@ export class QuestionController {
     return result;
   }
 
-  @Post('/qa') //질문하기
+  @Post('/qa') //질문 생성
   @UseGuards(DevGuard)
   async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
     const result = await this.questionService.createQuestion(questionInputDTO);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  @Patch('/:question_id')
+  @Patch('/:question_id') //질문 수정
   @UseGuards(DevGuard)
   async updateQuestion(
     @Param('question_id') question_id: string,
@@ -63,9 +64,12 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  // @Get()
-  // @UseGuards(DevGuard)
-  // async getQA() {
-  //   return 'getQA!';
-  // }
+  @Put('/:question_id') //질문 삭제
+  @UseGuards(DevGuard)
+  async deleteStatusQuestion(@Param('question_id') question_id: string) {
+    const result = await this.questionService.deleteStatusQuestion({
+      question_id,
+    });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
 }
