@@ -1,12 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ProductRepository } from './../../product/provider/product.repository';
-import { UserRepository } from '../../user/provider/user.repository';
-import { QuestionCreateInputDTO } from '../dto/create_question.dto';
 import { Prisma } from '@prisma/client';
 import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
-import { QuestionRepository } from './question.repository';
+import { UserRepository } from '../../user/provider/user.repository';
+import { QuestionCreateInputDTO } from '../dto/create_question.dto';
 import { QuestionUpdateInputDTO } from '../dto/update_question.dto';
-import { throwIfEmpty } from 'rxjs';
+import { ProductRepository } from './../../product/provider/product.repository';
+import { QuestionRepository } from './question.repository';
 
 @Injectable()
 export class QuestionService {
