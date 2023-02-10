@@ -98,4 +98,12 @@ export class UserRepository {
     });
     return userInfoWithAddress;
   }
+
+  async findOneUser(info: Prisma.UserWhereInput) {
+    const user = await this.prisma.user.findFirst({
+      where: info,
+    });
+
+    return user;
+  }
 }
