@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
-import { PrismaService } from './../../prisma/prisma.service';
-import { CreateSocailUserDTO } from './../dto/create_user.dto';
-import { CurrentUserDTO } from './../dto/current_user.dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { CreateSocailUserDTO } from '../dto/create_user.dto';
+import { CurrentUserDTO } from '../dto/current_user.dto';
 @Injectable()
-export class UserRopository {
+export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async socialSignup(socialSignup: CreateSocailUserDTO) {
@@ -97,5 +97,13 @@ export class UserRopository {
       where: { user_id },
     });
     return userInfoWithAddress;
+  }
+
+  async findOneUser(info: Prisma.UserWhereInput) {
+    const user = await this.prisma.user.findFirst({
+      where: info,
+    });
+
+    return user;
   }
 }

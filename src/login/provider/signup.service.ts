@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { IPayload } from '../../auth/interface/jwt.interface';
 import { OauthService } from '../../auth/provider/oauth.service';
 import { SignupInputDTO } from '../dto/signup.dto';
-import { UserRopository } from './../../user/provider/user.ropository';
+import { UserRepository } from '../../user/provider/user.repository';
 import {
   ILocalSignupDTO,
   ISocialSignupDTO,
@@ -13,7 +13,7 @@ export class SignupService {
   constructor(
     private readonly oauthService: OauthService,
 
-    private readonly uesrRepo: UserRopository,
+    private readonly uesrRepo: UserRepository,
   ) {}
   async signup(signupDTO: SignupInputDTO): Promise<IPayload> {
     const { social_type } = signupDTO;

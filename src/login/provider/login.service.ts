@@ -2,7 +2,7 @@ import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Payload } from './../../auth/dto/payload.dto';
 import { AuthService } from './../../auth/provider/auth.service';
 import { OauthService } from './../../auth/provider/oauth.service';
-import { UserRopository } from './../../user/provider/user.ropository';
+import { UserRepository } from '../../user/provider/user.repository';
 import { LoginInputDTO } from './../dto/login.dto';
 import { ISocialLoginDTO } from './../interface/login.interface';
 import { SignupService } from './signup.service';
@@ -13,7 +13,7 @@ export class LoginService {
     @Inject(AuthService)
     private readonly authService: AuthService,
     private readonly oauthService: OauthService,
-    private readonly uesrRepo: UserRopository,
+    private readonly uesrRepo: UserRepository,
     private readonly signupService: SignupService,
   ) {}
 
@@ -24,7 +24,7 @@ export class LoginService {
     return result;
   }
 
-  async localLogin() {}
+  //async localLogin() {}
 
   async kakaoLogin(socialLoginDTO: ISocialLoginDTO): Promise<Payload> {
     const { social_code, social_type } = socialLoginDTO;

@@ -11,6 +11,7 @@ import { configOption } from './common/options/config.option';
 import { LoginModule } from './login/login.module';
 import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
+import { QuestionModule } from './question/question.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     CategoryModule,
     ProductModule,
     OrderModule,
+    QuestionModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
