@@ -16,6 +16,9 @@ export class AuthController {
   async getLoginStatus(@CurrentUser() user: Payload) {
     console.log(user);
 
-    return new BaseResponse(baseResponeStatus.SUCCESS, user);
+    return new BaseResponse(baseResponeStatus.SUCCESS, {
+      user,
+      is_login: true,
+    });
   }
 }

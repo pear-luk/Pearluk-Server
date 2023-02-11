@@ -102,6 +102,6 @@ export class OrderRepository {
         // ...order_info,
       },
     });
-    // return newOrder;
+    return newOrder;
   }
 }
