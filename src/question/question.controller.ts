@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -35,7 +36,14 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  //
+  @Get('/:question_id') //질문 한개 조회
+  @UseGuards(DevGuard)
+  async getQuestion(@Param('question_id') question_id: string) {
+    const result = await this.questionService.getQuestion({
+      question_id,
+    });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
 
   @Patch('/:question_id') //질문 수정
   @UseGuards(DevGuard)
