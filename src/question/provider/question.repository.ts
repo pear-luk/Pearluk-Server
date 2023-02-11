@@ -23,12 +23,6 @@ export class QuestionRepository {
     return question;
   }
 
-  async findOneQuestionSecret(info: Prisma.QuestionWhereInput) {
-    const secret = await (
-      await this.prisma.question.findFirst({ where: info })
-    ).secret_mode;
-    return secret;
-  }
   async get() {
     const questions = await this.prisma.question.findMany();
     return questions;
