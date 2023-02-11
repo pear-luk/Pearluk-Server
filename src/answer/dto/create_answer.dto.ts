@@ -15,7 +15,7 @@
 
 //   @ApiProperty({
 //     name: 'product_id',
-//     description: '상품 id',
+//     descriptzion: '상품 id',
 //     type: 'string',
 //   })
 //   @IsULID()

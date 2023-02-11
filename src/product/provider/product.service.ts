@@ -73,4 +73,8 @@ export class ProductService {
       archive,
     });
   }
+
+  async getProduct({ product_id }: Prisma.ProductWhereUniqueInput) {
+    return await this.productRepo.findOneProduct({ product_id });
+  }
 }

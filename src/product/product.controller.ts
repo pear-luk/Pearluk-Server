@@ -202,4 +202,13 @@ export class ProductController {
     const result = await this.productService.getProductList(qurey);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
+
+  /**
+   * 상품 질문을 나눠서 가져오는것이 좋을까 한번에 가져오는것이 좋을까.
+   */
+  @Get('/:product_id')
+  async getProduct(@Param('product_id') product_id: string) {
+    const result = await this.productService.getProduct({ product_id });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
 }

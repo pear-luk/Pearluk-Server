@@ -4,7 +4,10 @@ import { IsULID } from 'src/common/decorator/IsULID';
 
 export class OrderProductCreatInputDTO
   implements
-    Omit<Prisma.OrderProductCreateWithoutOrderInput, 'order_product_id'>
+    Omit<
+      Prisma.OrderProductUncheckedCreateInput,
+      'order_id' | 'order_product_id'
+    >
 {
   @IsULID()
   product_id: string;

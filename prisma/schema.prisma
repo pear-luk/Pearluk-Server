@@ -12,11 +12,11 @@ model User {
   email           String           @unique @db.VarChar(100)
   created_at      DateTime         @default(now())
   nickname        String           @db.VarChar(10)
-  phone_number    String?          @db.VarChar(15)
   updated_at      DateTime         @default(now()) @updatedAt
   status          E_status         @default(ACTIVE)
   role            UserRole         @default(user)
-  questions       Question[]
+  phone_number    String?          @db.VarChar(15)
+  questions       Question[]       @relation("QUESTION_USER")
   address         UserAddress?     @relation("USER_ADDRESS")
   userSocialInfos UserSocialInfo[]
 
@@ -38,17 +38,15 @@ model UserSocialInfo {
 }
 
 model UserAddress {
-  uesr_id String @id @db.Char(26)
-
-  post_code      String @db.VarChar(20)
-  full_address   String @db.VarChar(250)
-  address        String @db.VarChar(200)
-  detail_address String @db.VarChar(50)
-
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  status     E_status @default(ACTIVE)
-  user       User     @relation("USER_ADDRESS", fields: [uesr_id], references: [user_id])
+  uesr_id        String   @id @db.Char(26)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+  status         E_status @default(ACTIVE)
+  address        String   @db.VarChar(200)
+  detail_address String   @db.VarChar(50)
+  full_address   String   @db.VarChar(250)
+  post_code      String   @db.VarChar(20)
+  user           User     @relation("USER_ADDRESS", fields: [uesr_id], references: [user_id])
 
   @@index([uesr_id], map: "USER_ADDRESS")
   @@map("user_addresses")
@@ -83,24 +81,22 @@ model Category {
 }
 
 model Product {
-  product_id     String @id @db.Char(26)
-  name           String @db.VarChar(100)
+  product_id     String         @id @db.Char(26)
+  name           String         @db.VarChar(100)
   price          BigInt
-  introduce      String @db.Text
+  introduce      String         @db.Text
   quantity       Int
-  product_status Int    @db.TinyInt
-  archive_id     String @db.Char(26)
-  category_id    String @db.Char(26)
-
-  archive        Archive        @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
-  category       Category       @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
-  questions      Question[]
+  product_status Int            @db.TinyInt
+  archive_id     String         @db.Char(26)
+  category_id    String         @db.Char(26)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @default(now()) @updatedAt
+  status         E_status       @default(ACTIVE)
   order_products OrderProduct[] @relation("ORDER_PRODUCT")
   imgs           ProductImg[]   @relation("PRODUCT_PRODUCT_IMG")
-
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  status     E_status @default(ACTIVE)
+  archive        Archive        @relation("PRODUCT_ARCHIVE", fields: [archive_id], references: [archive_id])
+  category       Category       @relation("PRODUCT_CATEGORY", fields: [category_id], references: [category_id])
+  questions      Question[]     @relation("QUESTION_PRODUCT")
 
   @@index([archive_id], map: "products_archive_id_fkey")
   @@index([category_id], map: "products_category_id_fkey")
@@ -108,13 +104,13 @@ model Product {
 }
 
 model ProductImg {
-  product_img_id String @id @db.Char(26)
-  product_id     String @db.Char(26)
+  product_img_id String  @id @db.Char(26)
+  product_id     String  @db.Char(26)
   sequence       Int
-  url            String @db.VarChar(65535)
+  url            String  @db.MediumText
+  product        Product @relation("PRODUCT_PRODUCT_IMG", fields: [product_id], references: [product_id])
 
-  product Product @relation("PRODUCT_PRODUCT_IMG", fields: [product_id], references: [product_id])
-
+  @@index([product_id], map: "product_imgs_product_id_fkey")
   @@map("product_imgs")
 }
 
@@ -135,7 +131,7 @@ model Question {
   question_id String   @id @db.Char(26)
   contents    String   @db.Text
   type        Int?     @db.TinyInt
-  secret_mode Int?     @db.TinyInt @default(0)
+  secret_mode Int?     @default(0) @db.TinyInt
   password    String?  @db.VarChar(100)
   user_id     String   @db.Char(26)
   product_id  String?  @db.Char(26)
@@ -144,8 +140,8 @@ model Question {
   status      E_status @default(ACTIVE)
   title       String   @db.VarChar(100)
   answers     Answer[] @relation("ANSWER_QUESTION")
-  product     Product? @relation(fields: [product_id], references: [product_id])
-  user        User?    @relation(fields: [user_id], references: [user_id])
+  product     Product? @relation("QUESTION_PRODUCT", fields: [product_id], references: [product_id])
+  user        User     @relation("QUESTION_USER", fields: [user_id], references: [user_id])
 
   @@index([product_id], map: "questions_product_id_fkey")
   @@index([user_id], map: "questions_user_id_fkey")
@@ -183,9 +179,10 @@ model OrderProduct {
   updated_at       DateTime @default(now()) @updatedAt
   status           E_status @default(ACTIVE)
   order            Order    @relation("ORDER_PRODUCT_LIST", fields: [order_id], references: [order_id])
+  product          Product  @relation("ORDER_PRODUCT", fields: [product_id], references: [product_id])
 
-  product Product? @relation("ORDER_PRODUCT", fields: [product_id], references: [product_id])
-
+  @@index([order_id], map: "order_products_order_id_fkey")
+  @@index([product_id], map: "order_products_product_id_fkey")
   @@map("order_products")
 }
 

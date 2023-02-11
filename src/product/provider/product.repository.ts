@@ -79,6 +79,7 @@ export class ProductRepository {
 
     return { products, total_count };
   }
+
   async getProductLsitCount({ archive }: { archive: string }) {
     const archive_id =
       archive && archive === 'all' ? undefined : archive ? archive : undefined;
