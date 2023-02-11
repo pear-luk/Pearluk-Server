@@ -60,9 +60,9 @@ export class ProductRepository {
   async getProductLsit({ page, archive }: { page: string; archive: string }) {
     const archive_id =
       archive && archive === 'all' ? undefined : archive ? archive : undefined;
-    const skip = page && (Number([page]) - 1) * 10;
+    const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
 
-    const productList = await this.prisma.product.findMany({
+    const products = await this.prisma.product.findMany({
       where: { archive_id },
       skip,
       take: 10,
@@ -70,13 +70,26 @@ export class ProductRepository {
         product_id: 'desc',
       },
     });
+    const total_count = await this.prisma.product.count({
+      where: {
+        archive_id,
+        status: 'ACTIVE',
+      },
+    });
+
+    return { products, total_count };
+  }
+  async getProductLsitCount({ archive }: { archive: string }) {
+    const archive_id =
+      archive && archive === 'all' ? undefined : archive ? archive : undefined;
+
     const count = await this.prisma.product.count({
       where: {
         archive_id,
         status: 'ACTIVE',
       },
     });
-    console.log(count);
-    return productList;
+
+    return count;
   }
 }

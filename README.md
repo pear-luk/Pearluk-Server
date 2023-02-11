@@ -1,73 +1,157 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
 ```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+.
+├── answer
+│   ├── answer.controller.ts
+│   ├── answer.module.ts
+│   ├── dto
+│   │   ├── create_answer.dto.ts
+│   │   └── update_answer.dto.ts
+│   └── provider
+│       └── answer.repository.ts
+├── app.controller.ts
+├── app.module.ts
+├── app.service.ts
+├── archive
+│   ├── archive.controller.ts
+│   ├── archive.module.ts
+│   ├── dto
+│   │   ├── create_archive.dto.ts
+│   │   └── update_archive.dto.ts
+│   ├── interface
+│   └── provider
+│       ├── archive.repository.ts
+│       └── archive.service.ts
+├── auth
+│   ├── auth.controller.ts
+│   ├── auth.module.ts
+│   ├── dto
+│   │   └── payload.dto.ts
+│   ├── interface
+│   │   └── jwt.interface.ts
+│   └── provider
+│       ├── auth.service.ts
+│       └── oauth.service.ts
+├── category
+│   ├── category.controllet.ts
+│   ├── category.module.ts
+│   ├── dto
+│   │   ├── create_category.dto.ts
+│   │   └── update_category.dto.ts
+│   ├── interface
+│   └── provider
+│       ├── category.repository.ts
+│       └── category.service.ts
+├── common
+│   ├── decorator
+│   │   ├── ApiResponse.ts
+│   │   ├── IsULID.ts
+│   │   └── current-user.decorator.ts
+│   ├── exception
+│   │   ├── http-api-exception.filter.ts
+│   │   └── unauthorizedException.filter.ts
+│   ├── guard
+│   │   ├── JWT
+│   │   │   ├── jtw.payload.ts
+│   │   │   ├── jwt.guard.ts
+│   │   │   ├── jwt.strategy.ts
+│   │   │   └── jwtExtractorFromCookeis.ts
+│   │   ├── adminGuard.ts
+│   │   └── devGuard.ts
+│   ├── interceptor
+│   │   └── success.interceptor.ts
+│   ├── middleware
+│   │   └── logger.middleware.ts
+│   ├── options
+│   │   ├── config.option.ts
+│   │   ├── winston.option.ts
+│   │   └── winstonDaily.option.ts
+│   ├── schemes
+│   │   └── config.scheme.ts
+│   └── util
+│       ├── res
+│       │   ├── BaseResponse.ts
+│       │   ├── BaseResponseIndex.ts
+│       │   └── baseStatusResponse.ts
+│       └── winston.util.ts
+├── config
+│   ├── authConfig.ts
+│   └── env
+├── login
+│   ├── controller
+│   │   ├── login.contoller.ts
+│   │   ├── logout.controller.ts
+│   │   └── signup.controller.ts
+│   ├── dto
+│   │   ├── login.dto.ts
+│   │   └── signup.dto.ts
+│   ├── interface
+│   │   ├── login.interface.ts
+│   │   ├── signup.interface.ts
+│   │   └── socialType.ts
+│   ├── login.module.ts
+│   └── provider
+│       ├── login.service.ts
+│       └── signup.service.ts
+├── main.ts
+├── order
+│   ├── dto
+│   │   ├── create_order.dto.ts
+│   │   ├── customer
+│   │   │   └── create_customer.dto.ts
+│   │   ├── order_product
+│   │   │   └── create_order_product.dto.ts
+│   │   ├── payment
+│   │   │   └── create_payment_info.dto.ts
+│   │   └── recipient
+│   │       └── create_recipient_info.dto.ts
+│   ├── interface
+│   ├── mock
+│   │   └── index.ts
+│   ├── order.controller.ts
+│   ├── order.module.ts
+│   └── provider
+│       ├── order.repository.ts
+│       └── order.service.ts
+├── prisma
+│   ├── prisma.module.ts
+│   └── prisma.service.ts
+├── product
+│   ├── dto
+│   │   ├── create_product.dto.ts
+│   │   └── update_product.dto.ts
+│   ├── interface
+│   │   └── product_status.enum.ts
+│   ├── product.controller.ts
+│   ├── product.module.ts
+│   └── provider
+│       ├── product.faker.ts
+│       ├── product.repository.ts
+│       └── product.service.ts
+├── question
+│   ├── dto
+│   │   ├── create_question.dto.ts
+│   │   └── update_question.dto.ts
+│   ├── interface
+│   │   └── question_type.enum.ts
+│   ├── provider
+│   │   ├── question.repository.ts
+│   │   └── question.service.ts
+│   ├── question.controller.ts
+│   └── question.module.ts
+├── server.ts
+└── user
+    ├── controller
+    │   ├── my.controller.ts
+    │   └── user.controller.ts
+    ├── dto
+    │   ├── create_user.dto.ts
+    │   └── current_user.dto.ts
+    ├── interface
+    │   └── create_user.interface.ts
+    ├── mock
+    │   └── user.mock.ts
+    ├── provider
+    │   ├── user.repository.ts
+    │   └── user.service.ts
+    └── user.module.ts
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
