@@ -8,7 +8,9 @@ import { QuestionUpdateInputDTO } from '../dto/update_question.dto';
 export class QuestionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createQuestion(info: Omit<Prisma.QuestionCreateInput, 'question_id'>) {
+  async createQuestion(
+    info: Omit<Prisma.QuestionUncheckedCreateInput, 'question_id'>,
+  ) {
     const newQuestion = await this.prisma.question.create({
       data: {
         question_id: ulid(),

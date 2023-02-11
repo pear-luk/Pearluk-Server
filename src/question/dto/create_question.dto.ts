@@ -5,7 +5,7 @@ import { IsULID } from 'src/common/decorator/IsULID';
 import { E_QuestionType } from '../interface/question_type.enum';
 
 export class QuestionCreateInputDTO
-  implements Omit<Prisma.QuestionCreateInput, 'question_id'>
+  implements Omit<Prisma.QuestionUncheckedCreateInput, 'question_id'>
 {
   @ApiProperty({
     name: 'title',
