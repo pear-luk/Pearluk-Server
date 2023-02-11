@@ -82,16 +82,15 @@ export class QuestionService {
 
   async getQuestion(info: Prisma.QuestionWhereUniqueInput) {
     const exist = await this.questionRepo.findOneQuestion(info);
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
     const value = {
       question_id: exist.question_id,
       title: exist.title,
       secret_mode: exist.secret_mode,
     };
-    if (!exist)
-      throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
-
-    if (exist.secret_mode) throw new BadRequestException('비밀글입니다');
-    else return value;
+    if (exist.secret_mode) return value;
+    return exist;
   }
   //hash
   async transformPassword({ password }: Pick<Question, 'password'>) {
