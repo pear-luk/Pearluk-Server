@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -178,6 +179,13 @@ export class ArchiveController {
     const result = await this.archiveService.deleteStatusArchive({
       archive_id,
     });
+
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Get('/')
+  async getArchiveList() {
+    const result = await this.archiveService.getArchiveListAll();
 
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }

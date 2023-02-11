@@ -43,4 +43,8 @@ export class ArchiveRepository {
     });
     return deletedArchie;
   }
+
+  async getArchiveListAll() {
+    return await this.prisma.archive.findMany();
+  }
 }

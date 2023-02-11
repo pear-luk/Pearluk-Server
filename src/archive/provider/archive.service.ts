@@ -52,4 +52,8 @@ export class ArchiveService {
     const deletedArchive = await this.archiveRepo.deleteStatusArchive(info);
     return deletedArchive;
   }
+
+  async getArchiveListAll() {
+    return await this.archiveRepo.getArchiveListAll();
+  }
 }

@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -30,13 +32,18 @@ import {
   ProductUpdateInputDTO,
   updateProductInputEX,
 } from './dto/update_product.dto';
+import { ProductFaker } from './provider/product.faker';
 import { ProductService } from './provider/product.service';
 
 @ApiExtraModels(ProductCreateInputDTO, ProductUpdateInputDTO)
 @ApiTags('Product API')
 @Controller('/products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+
+    private readonly productFaker: ProductFaker,
+  ) {}
 
   @ApiOperation({
     summary: '상품 생성 API',
@@ -181,6 +188,18 @@ export class ProductController {
     const result = await this.productService.deleteStatusProduct({
       product_id,
     });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Post('/faker')
+  async fakerData() {
+    const result = await this.productFaker.createProduct();
+    return result;
+  }
+
+  @Get('/')
+  async getProductLsit(@Query() qurey) {
+    const result = await this.productService.getProductList(qurey);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

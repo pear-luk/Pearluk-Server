@@ -66,4 +66,11 @@ export class ProductService {
 
     return deletedProduct;
   }
+
+  async getProductList({ page, archive }: { page: string; archive: string }) {
+    return await this.productRepo.getProductLsit({
+      page,
+      archive,
+    });
+  }
 }
