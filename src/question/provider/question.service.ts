@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ProductRepository } from './../../product/provider/product.repository';
+import { ConfigService } from '@nestjs/config';
+import { Prisma, Question } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
 import { UserRepository } from '../../user/provider/user.repository';
 import { QuestionCreateInputDTO } from '../dto/create_question.dto';
-import { Prisma } from '@prisma/client';
-import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
-import { QuestionRepository } from './question.repository';
 import { QuestionUpdateInputDTO } from '../dto/update_question.dto';
-import { throwIfEmpty } from 'rxjs';
+import { ProductRepository } from './../../product/provider/product.repository';
+import { QuestionRepository } from './question.repository';
 
 @Injectable()
 export class QuestionService {
@@ -14,6 +15,7 @@ export class QuestionService {
     private readonly questionRepo: QuestionRepository,
     private readonly productRepo: ProductRepository,
     private readonly userRepo: UserRepository,
+    private readonly config: ConfigService,
   ) {}
 
   async createQuestion(info: QuestionCreateInputDTO) {
@@ -76,5 +78,36 @@ export class QuestionService {
 
     const deletedQuestion = await this.questionRepo.deleteStatusQuestion(info);
     return deletedQuestion;
+  }
+
+  async getQuestion(info: Prisma.QuestionWhereUniqueInput) {
+    const exist = await this.questionRepo.findOneQuestion(info);
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
+    const value = {
+      question_id: exist.question_id,
+      title: exist.title,
+      secret_mode: exist.secret_mode,
+    };
+    if (exist.secret_mode) return value;
+    return exist;
+  }
+  //hash
+  async transformPassword({ password }: Pick<Question, 'password'>) {
+    const hashed_password = await bcrypt.hash(
+      password,
+      Number(this.config.get('HASH_SALT')),
+    );
+    return hashed_password;
+  }
+
+  async comparePassword({
+    password,
+    hashed_password,
+  }: {
+    password: string;
+    hashed_password: string;
+  }): Promise<boolean> {
+    return await bcrypt.compare(password, hashed_password);
   }
 }
