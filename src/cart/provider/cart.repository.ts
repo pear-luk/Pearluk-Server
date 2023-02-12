@@ -7,6 +7,12 @@ import { PrismaService } from './../../prisma/prisma.service';
 export class CartRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getCartProductList(user_id: string) {
+    return this.prisma.cartProduct.findMany({
+      where: { user_id },
+    });
+  }
+
   async createCartProduct(
     info: Omit<Prisma.CartProductUncheckedCreateInput, 'cart_product_id'>,
   ) {

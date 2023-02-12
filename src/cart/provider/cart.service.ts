@@ -12,6 +12,10 @@ export class CartService {
     private readonly productRepo: ProductRepository,
   ) {}
 
+  async getCartProductList(user_id: string) {
+    return await this.cartRepo.getCartProductList(user_id);
+  }
+
   async cartProductCreate(
     info: Omit<Prisma.CartProductUncheckedCreateInput, 'cart_product_id'>,
   ) {
