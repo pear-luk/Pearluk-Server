@@ -99,6 +99,12 @@ export class QuestionService {
     return exist;
   }
 
+  async getQuestionList({ page }: { page: string }) {
+    return await this.questionRepo.getQuestionList({
+      page,
+    });
+  }
+
   async getSecretQuestion(
     info: Prisma.QuestionWhereUniqueInput & QuestionSecretInputDTO,
   ) {
