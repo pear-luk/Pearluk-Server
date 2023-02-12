@@ -7,7 +7,7 @@
 
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
-const { AUTH, USER, ARCHIVE, CATEGORY, PRODUCT } = INDEX;
+const { AUTH, USER, ARCHIVE, CATEGORY, PRODUCT, CART } = INDEX;
 const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED, INVALID } =
   RES_ERR_CODE;
 export const baseResponeStatus = {
@@ -89,5 +89,17 @@ export const baseResponeStatus = {
     is_success: false,
     code: RESCODE + ARCHIVE + EXIST,
     message: '이미 존재하는 질문입니다.',
+  },
+
+  CART_PRODUCT_NOT_EXIST: {
+    is_success: false,
+    code: RESCODE + CART + NOT_EXIST,
+    message: '장바구니에 존재하지않는 상품입니다.',
+  },
+
+  CART_PRODUCT_INVALID: {
+    is_success: false,
+    code: RESCODE + CART + INVALID,
+    message: '유효하지않는 접근입니다',
   },
 };
