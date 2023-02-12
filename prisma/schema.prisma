@@ -244,12 +244,15 @@ model PaymentInfo {
 }
 
 model CartProduct {
-  cart_product_id String  @id @db.Char(26)
-  user_id         String  @db.Char(26)
-  product_id      String  @db.Char(26)
+  cart_product_id String   @id @db.Char(26)
+  user_id         String   @db.Char(26)
+  product_id      String   @db.Char(26)
   count           Int
-  product         Product @relation("CART_PRODUCT", fields: [product_id], references: [product_id])
-  user            User    @relation("CART_PRODUCT_USER", fields: [user_id], references: [user_id])
+  created_at      DateTime @default(now())
+  status          E_status @default(ACTIVE)
+  updated_at      DateTime @default(now()) @updatedAt
+  product         Product  @relation("CART_PRODUCT", fields: [product_id], references: [product_id])
+  user            User     @relation("CART_PRODUCT_USER", fields: [user_id], references: [user_id])
 
   @@index([product_id], map: "cart_products_product_id_fkey")
   @@index([user_id], map: "cart_products_user_id_fkey")

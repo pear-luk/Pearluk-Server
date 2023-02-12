@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArchiveModule } from './archive/archive.module';
 import { AuthModule } from './auth/auth.module';
+import { CartModule } from './cart/cart.module';
 import { CategoryModule } from './category/category.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { configOption } from './common/options/config.option';
@@ -26,6 +27,7 @@ import { UserModule } from './user/user.module';
     ProductModule,
     OrderModule,
     QuestionModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
