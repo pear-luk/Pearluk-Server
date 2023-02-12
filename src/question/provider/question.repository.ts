@@ -52,36 +52,27 @@ export class QuestionRepository {
   }
 
   /*** 조회 ***/
-  // async getQuestionList({
-  //   page,
-  //   product,
-  //   user,
-  //   type,
-  // }: {
-  //   page: string;
-  //   product: string;
-  //   user: string;
-  //   type: number;
-  // }) {
-  //   const product_id =
-  //     product && product === 'all' ? undefined : product ? product : undefined;
-  //   const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
+  async getQuestionList({ page }: { page: string }) {
+    const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
+    const questions = await this.prisma.question.findMany({
+      skip,
+      take: 10,
+    });
+    const total_count = await this.prisma.question.count({
+      where: {
+        status: 'ACTIVE',
+      },
+    });
 
-  //   const questions = await this.prisma.product.findMany({
-  //     where: { archive_id },
-  //     skip,
-  //     take: 10,
-  //     orderBy: {
-  //       product_id: 'desc',
-  //     },
-  //   });
-  //   const total_count = await this.prisma.product.count({
-  //     where: {
-  //       product_id,
-  //       status: 'ACTIVE',
-  //     },
-  //   });
+    return { questions, total_count };
+  }
 
-  //   return {}
-  // }
+  async getQuestionListCount() {
+    const count = await this.prisma.question.count({
+      where: {
+        status: 'ACTIVE',
+      },
+    });
+    return count;
+  }
 }
