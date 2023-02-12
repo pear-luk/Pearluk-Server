@@ -25,7 +25,7 @@ export class CartController {
   @UseGuards(DevGuard)
   async getCartProductList(@CurrentUser() user: CurrentUserDTO) {
     const result = await this.cartService.getCartProductList(user.user_id);
-
+    console.log(result);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 

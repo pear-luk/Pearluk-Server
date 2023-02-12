@@ -19,10 +19,17 @@ export class CartService {
   async createCartProduct(
     info: Omit<Prisma.CartProductUncheckedCreateInput, 'cart_product_id'>,
   ) {
-    const { product_id } = info;
+    const { product_id, user_id } = info;
     const exist_product = await this.productRepo.findOneProduct({ product_id });
     if (!exist_product)
       throw new BadRequestException(baseResponeStatus.PRODUCT_NOT_EXIST);
+    const exist_cart_product = await this.cartRepo.findOneCartProduct({
+      user_id,
+      product_id,
+      status: 'ACTIVE',
+    });
+    if (exist_cart_product)
+      throw new BadRequestException(baseResponeStatus.CART_PRODUCT_EXIST);
 
     return await this.cartRepo.createCartProduct(info);
   }
