@@ -93,7 +93,8 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  @Post('/faker')
+  @Post('/faker/post')
+  @UseGuards(DevGuard)
   async fakerData() {
     const result = await this.questionFaker.createQuestion();
     return result;
