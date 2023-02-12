@@ -45,6 +45,19 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
+  @Post('/:question_id') //비밀글 조회
+  @UseGuards(DevGuard)
+  async secretQuestion(
+    @Param('question_id') question_id: string,
+    @Body() password: string,
+  ) {
+    const result = await this.questionService.getSecretQuestion(
+      { question_id },
+      password,
+    );
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
   @Patch('/:question_id') //질문 수정
   @UseGuards(DevGuard)
   async updateQuestion(
