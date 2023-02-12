@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 
@@ -9,7 +9,7 @@ export class CartRepository {
 
   async getCartProductList(user_id: string) {
     return this.prisma.cartProduct.findMany({
-      where: { user_id },
+      where: { user_id, status: 'ACTIVE' as E_status },
     });
   }
 
@@ -34,6 +34,13 @@ export class CartRepository {
     return await this.prisma.cartProduct.update({
       where: { cart_product_id },
       data: update_info,
+    });
+  }
+
+  async deleteCartProduct(cart_product_id: string) {
+    return await this.prisma.cartProduct.update({
+      where: { cart_product_id },
+      data: { status: 'DELETED' },
     });
   }
 }

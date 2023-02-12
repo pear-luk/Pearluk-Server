@@ -16,7 +16,7 @@ export class CartService {
     return await this.cartRepo.getCartProductList(user_id);
   }
 
-  async cartProductCreate(
+  async createCartProduct(
     info: Omit<Prisma.CartProductUncheckedCreateInput, 'cart_product_id'>,
   ) {
     const { product_id } = info;
@@ -27,7 +27,7 @@ export class CartService {
     return await this.cartRepo.createCartProduct(info);
   }
 
-  async cartProductUpdate(
+  async updateCartProduct(
     info: CartProductUpdateInputDTO &
       Pick<Prisma.CartProductUncheckedCreateInput, 'user_id'>,
   ) {
@@ -45,5 +45,24 @@ export class CartService {
       cart_product_id,
       ...update_info,
     });
+  }
+
+  async deleteCartProduct({
+    user_id,
+    cart_product_id,
+  }: {
+    user_id: string;
+    cart_product_id: string;
+  }) {
+    const exist = await this.cartRepo.findOneCartProduct({
+      cart_product_id,
+    });
+
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.CART_PRODUCT_NOT_EXIST);
+    if (user_id !== exist.user_id)
+      throw new BadRequestException(baseResponeStatus.CART_PRODUCT_INVALID);
+
+    return await this.cartRepo.deleteCartProduct(cart_product_id);
   }
 }
