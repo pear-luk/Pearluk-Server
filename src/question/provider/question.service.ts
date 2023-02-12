@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Prisma, Question } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
 import { UserRepository } from '../../user/provider/user.repository';
@@ -38,7 +38,6 @@ export class QuestionService {
       );
     if (secret_mode == 1 && !password)
       throw new BadRequestException('비밀글에 비밀번호가 필요합니다');
-
     const newQuestion = await this.questionRepo.createQuestion(info);
     return newQuestion;
   }
@@ -92,8 +91,26 @@ export class QuestionService {
     if (exist.secret_mode) return value;
     return exist;
   }
-  //hash
-  async transformPassword({ password }: Pick<Question, 'password'>) {
+
+  async getSecretQuestion(info: Prisma.QuestionWhereInput, password: string) {
+    const exist = await this.questionRepo.findOneQuestion(info);
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
+    const hashed_password = exist.password;
+    if (!password) throw new BadRequestException('비밀번호를 입력해주세요');
+    if (
+      !this.comparePassword({
+        password,
+        hashed_password,
+      })
+    )
+      throw new BadRequestException('비밀번호가 틀렸습니다');
+    return exist;
+  }
+
+  /**** hash ****/
+
+  async transformPassword(password: string) {
     const hashed_password = await bcrypt.hash(
       password,
       Number(this.config.get('HASH_SALT')),
@@ -108,6 +125,6 @@ export class QuestionService {
     password: string;
     hashed_password: string;
   }): Promise<boolean> {
-    return await bcrypt.compare(password, hashed_password);
+    return await bcrypt.compare(`` + password, hashed_password);
   }
 }
