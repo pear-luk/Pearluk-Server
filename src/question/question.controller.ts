@@ -13,6 +13,7 @@ import { DevGuard } from '../common/guard/devGuard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import { QuestionCreateInputDTO } from './dto/create_question.dto';
+import { QuestionSecretInputDTO } from './dto/secret_question.dto';
 import { QuestionUpdateInputDTO } from './dto/update_question.dto';
 import { QuestionService } from './provider/question.service';
 
@@ -49,12 +50,12 @@ export class QuestionController {
   @UseGuards(DevGuard)
   async secretQuestion(
     @Param('question_id') question_id: string,
-    @Body() password: string,
+    @Body() questionSecretInputDTO: QuestionSecretInputDTO,
   ) {
-    const result = await this.questionService.getSecretQuestion(
-      { question_id },
-      password,
-    );
+    const result = await this.questionService.getSecretQuestion({
+      question_id,
+      ...questionSecretInputDTO,
+    });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
@@ -62,11 +63,11 @@ export class QuestionController {
   @UseGuards(DevGuard)
   async updateQuestion(
     @Param('question_id') question_id: string,
-    @Body() QuestionUpdateInputDTO: QuestionUpdateInputDTO,
+    @Body() questionUpdateInputDTO: QuestionUpdateInputDTO,
   ) {
     const result = await this.questionService.updateQuestion({
       question_id,
-      ...QuestionUpdateInputDTO,
+      ...questionUpdateInputDTO,
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
@@ -79,4 +80,9 @@ export class QuestionController {
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
+  // @Get('/')
+  // async getQuestionList(@Query() query) {
+  //   const result = await this.questionService.getQuestionList(query);
+  //   return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  // }
 }
