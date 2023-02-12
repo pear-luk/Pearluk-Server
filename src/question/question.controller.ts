@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
@@ -46,6 +47,13 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
+  @Get('/') //질문 조회
+  @UseGuards(DevGuard)
+  async getQuestionList(@Query() query) {
+    const result = await this.questionService.getQuestionList(query);
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
   @Post('/:question_id') //비밀글 조회
   @UseGuards(DevGuard)
   async secretQuestion(
@@ -80,9 +88,4 @@ export class QuestionController {
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
-  // @Get('/')
-  // async getQuestionList(@Query() query) {
-  //   const result = await this.questionService.getQuestionList(query);
-  //   return new BaseResponse(baseResponeStatus.SUCCESS, result);
-  // }
 }
