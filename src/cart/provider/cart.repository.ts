@@ -10,6 +10,12 @@ export class CartRepository {
   async getCartProductList(user_id: string) {
     return this.prisma.cartProduct.findMany({
       where: { user_id, status: 'ACTIVE' as E_status },
+      select: {
+        cart_product_id: true,
+        product_id: true,
+        count: true,
+        product: true,
+      },
     });
   }
 
@@ -21,7 +27,7 @@ export class CartRepository {
     });
   }
 
-  async findOneCartProduct(info: Prisma.CartProductWhereInput) {
+  async findOneCartProduct(info: Partial<Prisma.CartProductWhereInput>) {
     return await this.prisma.cartProduct.findFirst({ where: info });
   }
 
