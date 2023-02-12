@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
@@ -13,14 +14,19 @@ import { DevGuard } from '../common/guard/devGuard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import { QuestionCreateInputDTO } from './dto/create_question.dto';
+import { QuestionSecretInputDTO } from './dto/secret_question.dto';
 import { QuestionUpdateInputDTO } from './dto/update_question.dto';
+import { QuestionFaker } from './provider/question.faker';
 import { QuestionService } from './provider/question.service';
 
 @ApiExtraModels(QuestionCreateInputDTO, QuestionUpdateInputDTO)
 @ApiTags('Question API')
 @Controller('questions')
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService) {}
+  constructor(
+    private readonly questionService: QuestionService,
+    private readonly questionFaker: QuestionFaker,
+  ) {}
 
   // @Get('/') //질문리스트 조회
   // @UseGuards(DevGuard)
@@ -45,15 +51,35 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
+  @Get('/') //질문 조회
+  @UseGuards(DevGuard)
+  async getQuestionList(@Query() query) {
+    const result = await this.questionService.getQuestionList(query);
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Post('/:question_id') //비밀글 조회
+  @UseGuards(DevGuard)
+  async secretQuestion(
+    @Param('question_id') question_id: string,
+    @Body() questionSecretInputDTO: QuestionSecretInputDTO,
+  ) {
+    const result = await this.questionService.getSecretQuestion({
+      question_id,
+      ...questionSecretInputDTO,
+    });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
   @Patch('/:question_id') //질문 수정
   @UseGuards(DevGuard)
   async updateQuestion(
     @Param('question_id') question_id: string,
-    @Body() QuestionUpdateInputDTO: QuestionUpdateInputDTO,
+    @Body() questionUpdateInputDTO: QuestionUpdateInputDTO,
   ) {
     const result = await this.questionService.updateQuestion({
       question_id,
-      ...QuestionUpdateInputDTO,
+      ...questionUpdateInputDTO,
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
@@ -65,5 +91,12 @@ export class QuestionController {
       question_id,
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Post('/faker/post')
+  @UseGuards(DevGuard)
+  async fakerData() {
+    const result = await this.questionFaker.createQuestion();
+    return result;
   }
 }

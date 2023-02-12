@@ -50,4 +50,29 @@ export class QuestionRepository {
     });
     return deletedQuestion;
   }
+
+  /*** 조회 ***/
+  async getQuestionList({ page }: { page: string }) {
+    const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
+    const questions = await this.prisma.question.findMany({
+      skip,
+      take: 10,
+    });
+    const total_count = await this.prisma.question.count({
+      where: {
+        status: 'ACTIVE',
+      },
+    });
+
+    return { questions, total_count };
+  }
+
+  async getQuestionListCount() {
+    const count = await this.prisma.question.count({
+      where: {
+        status: 'ACTIVE',
+      },
+    });
+    return count;
+  }
 }

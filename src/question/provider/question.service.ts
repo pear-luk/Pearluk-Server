@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Prisma, Question } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
 import { UserRepository } from '../../user/provider/user.repository';
 import { QuestionCreateInputDTO } from '../dto/create_question.dto';
+import { QuestionSecretInputDTO } from '../dto/secret_question.dto';
 import { QuestionUpdateInputDTO } from '../dto/update_question.dto';
 import { ProductRepository } from './../../product/provider/product.repository';
 import { QuestionRepository } from './question.repository';
@@ -39,6 +40,11 @@ export class QuestionService {
     if (secret_mode == 1 && !password)
       throw new BadRequestException('비밀글에 비밀번호가 필요합니다');
 
+    //const hashed_password = this.transformPassword(password);
+    info = {
+      ...info,
+      password: await this.transformPassword(password),
+    };
     const newQuestion = await this.questionRepo.createQuestion(info);
     return newQuestion;
   }
@@ -92,8 +98,41 @@ export class QuestionService {
     if (exist.secret_mode) return value;
     return exist;
   }
-  //hash
-  async transformPassword({ password }: Pick<Question, 'password'>) {
+
+  async getQuestionList({ page }: { page: string }) {
+    return await this.questionRepo.getQuestionList({
+      page,
+    });
+  }
+
+  async getSecretQuestion(
+    info: Prisma.QuestionWhereUniqueInput & QuestionSecretInputDTO,
+  ) {
+    const { question_id, password } = info;
+    const exist = await this.questionRepo.findOneQuestion({
+      question_id,
+    });
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
+    if (!password) throw new BadRequestException('비밀번호를 입력해주세요');
+
+    if (
+      !(await this.comparePassword({
+        password,
+        hashed_password: exist.password,
+      }))
+    )
+      throw new BadRequestException('비밀번호가 틀렸습니다');
+    return exist;
+  }
+
+  // async getQuestionList({page,product,user,type}:{page:string; product:string; user:string;type:number;}){
+  //   return await this.questionRepo.
+  // }
+
+  /**** hash ****/
+
+  async transformPassword(password: string) {
     const hashed_password = await bcrypt.hash(
       password,
       Number(this.config.get('HASH_SALT')),
