@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { baseResponeStatus } from '../../common/util/res/baseStatusResponse';
 import { UserRepository } from '../../user/provider/user.repository';
 import { QuestionCreateInputDTO } from '../dto/create_question.dto';
+import { QuestionSecretInputDTO } from '../dto/secret_question.dto';
 import { QuestionUpdateInputDTO } from '../dto/update_question.dto';
 import { ProductRepository } from './../../product/provider/product.repository';
 import { QuestionRepository } from './question.repository';
@@ -38,6 +39,12 @@ export class QuestionService {
       );
     if (secret_mode == 1 && !password)
       throw new BadRequestException('비밀글에 비밀번호가 필요합니다');
+
+    //const hashed_password = this.transformPassword(password);
+    info = {
+      ...info,
+      password: await this.transformPassword(password),
+    };
     const newQuestion = await this.questionRepo.createQuestion(info);
     return newQuestion;
   }
@@ -92,21 +99,30 @@ export class QuestionService {
     return exist;
   }
 
-  async getSecretQuestion(info: Prisma.QuestionWhereInput, password: string) {
-    const exist = await this.questionRepo.findOneQuestion(info);
+  async getSecretQuestion(
+    info: Prisma.QuestionWhereUniqueInput & QuestionSecretInputDTO,
+  ) {
+    const { question_id, password } = info;
+    const exist = await this.questionRepo.findOneQuestion({
+      question_id,
+    });
     if (!exist)
       throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
-    const hashed_password = exist.password;
     if (!password) throw new BadRequestException('비밀번호를 입력해주세요');
+
     if (
-      !this.comparePassword({
+      !(await this.comparePassword({
         password,
-        hashed_password,
-      })
+        hashed_password: exist.password,
+      }))
     )
       throw new BadRequestException('비밀번호가 틀렸습니다');
     return exist;
   }
+
+  // async getQuestionList({page,product,user,type}:{page:string; product:string; user:string;type:number;}){
+  //   return await this.questionRepo.
+  // }
 
   /**** hash ****/
 
@@ -125,6 +141,6 @@ export class QuestionService {
     password: string;
     hashed_password: string;
   }): Promise<boolean> {
-    return await bcrypt.compare(`` + password, hashed_password);
+    return await bcrypt.compare(password, hashed_password);
   }
 }

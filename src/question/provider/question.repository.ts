@@ -50,4 +50,38 @@ export class QuestionRepository {
     });
     return deletedQuestion;
   }
+
+  /*** 조회 ***/
+  // async getQuestionList({
+  //   page,
+  //   product,
+  //   user,
+  //   type,
+  // }: {
+  //   page: string;
+  //   product: string;
+  //   user: string;
+  //   type: number;
+  // }) {
+  //   const product_id =
+  //     product && product === 'all' ? undefined : product ? product : undefined;
+  //   const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
+
+  //   const questions = await this.prisma.product.findMany({
+  //     where: { archive_id },
+  //     skip,
+  //     take: 10,
+  //     orderBy: {
+  //       product_id: 'desc',
+  //     },
+  //   });
+  //   const total_count = await this.prisma.product.count({
+  //     where: {
+  //       product_id,
+  //       status: 'ACTIVE',
+  //     },
+  //   });
+
+  //   return {}
+  // }
 }
