@@ -94,7 +94,7 @@ export class ProductRepository {
     return count;
   }
 
-  /*quesion 더미데이터용 */
+  /*question 더미데이터용 */
   async getDummyData() {
     const products = await this.prisma.product.findMany({
       take: 100,
