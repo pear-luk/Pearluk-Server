@@ -7,6 +7,7 @@ export const INDEX = {
   ARCHIVE: 20000,
   CATEGORY: 30000,
   PRODUCT: 40000,
+  CART: 50000,
 };
 
 export const REQ_ERR_CODE = {};

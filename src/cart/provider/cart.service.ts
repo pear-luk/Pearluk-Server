@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
 import { ProductRepository } from './../../product/provider/product.repository';
+import { CartProductUpdateInputDTO } from './../dto/update_cart_product.dto';
 import { CartRepository } from './cart.repository';
 
 @Injectable()
@@ -20,5 +21,25 @@ export class CartService {
       throw new BadRequestException(baseResponeStatus.PRODUCT_NOT_EXIST);
 
     return await this.cartRepo.createCartProduct(info);
+  }
+
+  async cartProductUpdate(
+    info: CartProductUpdateInputDTO &
+      Pick<Prisma.CartProductUncheckedCreateInput, 'user_id'>,
+  ) {
+    const { user_id, cart_product_id, ...update_info } = info;
+    const exist = await this.cartRepo.findOneCartProduct({
+      cart_product_id,
+    });
+
+    if (!exist)
+      throw new BadRequestException(baseResponeStatus.CART_PRODUCT_NOT_EXIST);
+    if (user_id !== exist.user_id)
+      throw new BadRequestException(baseResponeStatus.CART_PRODUCT_INVALID);
+
+    return await this.cartRepo.updateCartProduct({
+      cart_product_id,
+      ...update_info,
+    });
   }
 }
