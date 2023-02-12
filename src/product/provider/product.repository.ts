@@ -57,7 +57,7 @@ export class ProductRepository {
    * 커서기반은 마지막으로 조회한 PK 값을 받아서 그뒤에있는 n개 줘!
    * 우선 나중에 구현.
    */
-  async getProductLsit({ page, archive }: { page: string; archive: string }) {
+  async getProductList({ page, archive }: { page: string; archive: string }) {
     const archive_id =
       archive && archive === 'all' ? undefined : archive ? archive : undefined;
     const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
@@ -80,7 +80,7 @@ export class ProductRepository {
     return { products, total_count };
   }
 
-  async getProductLsitCount({ archive }: { archive: string }) {
+  async getProductListCount({ archive }: { archive: string }) {
     const archive_id =
       archive && archive === 'all' ? undefined : archive ? archive : undefined;
 
@@ -92,5 +92,13 @@ export class ProductRepository {
     });
 
     return count;
+  }
+
+  /*quesion 더미데이터용 */
+  async getDummyData() {
+    const products = await this.prisma.product.findMany({
+      take: 100,
+    });
+    return products;
   }
 }

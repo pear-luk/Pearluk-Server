@@ -68,7 +68,7 @@ export class ProductService {
   }
 
   async getProductList({ page, archive }: { page: string; archive: string }) {
-    return await this.productRepo.getProductLsit({
+    return await this.productRepo.getProductList({
       page,
       archive,
     });

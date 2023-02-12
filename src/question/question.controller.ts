@@ -16,13 +16,17 @@ import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import { QuestionCreateInputDTO } from './dto/create_question.dto';
 import { QuestionSecretInputDTO } from './dto/secret_question.dto';
 import { QuestionUpdateInputDTO } from './dto/update_question.dto';
+import { QuestionFaker } from './provider/question.faker';
 import { QuestionService } from './provider/question.service';
 
 @ApiExtraModels(QuestionCreateInputDTO, QuestionUpdateInputDTO)
 @ApiTags('Question API')
 @Controller('questions')
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService) {}
+  constructor(
+    private readonly questionService: QuestionService,
+    private readonly questionFaker: QuestionFaker,
+  ) {}
 
   // @Get('/') //질문리스트 조회
   // @UseGuards(DevGuard)
@@ -87,5 +91,11 @@ export class QuestionController {
       question_id,
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Post('/faker')
+  async fakerData() {
+    const result = await this.questionFaker.createQuestion();
+    return result;
   }
 }
