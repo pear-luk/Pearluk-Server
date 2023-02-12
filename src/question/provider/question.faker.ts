@@ -13,7 +13,7 @@ export class QuestionFaker {
   ) {}
 
   async createQuestion() {
-    const products = await this.productRepo.getDummyData;
+    const products = await this.productRepo.getDummyData();
     const fakerData: Prisma.QuestionUncheckedCreateInput[] = new Array(10000)
       .fill(0)
       .map(() => {
