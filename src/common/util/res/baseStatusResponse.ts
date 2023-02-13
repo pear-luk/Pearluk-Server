@@ -89,6 +89,11 @@ export const baseResponeStatus = {
     code: RESCODE + CART + NOT_EXIST,
     message: '장바구니에 존재하지않는 상품입니다.',
   },
+  CART_PRODUCT_EXIST: {
+    is_success: false,
+    code: RESCODE + CART + EXIST,
+    message: '장바구니에 이미 존재하는 상품입니다.',
+  },
 
   CART_PRODUCT_INVALID: {
     is_success: false,
