@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
 import { ProductRepository } from './../../product/provider/product.repository';
+import { CurrentUserDTO } from './../../user/dto/current_user.dto';
 import { CartProductUpdateInputDTO } from './../dto/update_cart_product.dto';
 import { CartRepository } from './cart.repository';
 
@@ -71,5 +72,9 @@ export class CartService {
       throw new BadRequestException(baseResponeStatus.CART_PRODUCT_INVALID);
 
     return await this.cartRepo.deleteCartProduct(cart_product_id);
+  }
+
+  async deleteCart(user: CurrentUserDTO) {
+    return await this.cartRepo.deleteCart(user);
   }
 }
