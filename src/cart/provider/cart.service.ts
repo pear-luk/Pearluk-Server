@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
 import { ProductRepository } from './../../product/provider/product.repository';
-import { CurrentUserDTO } from './../../user/dto/current_user.dto';
 import { CartProductUpdateInputDTO } from './../dto/update_cart_product.dto';
 import { CartRepository } from './cart.repository';
 
@@ -20,17 +19,10 @@ export class CartService {
   async createCartProduct(
     info: Omit<Prisma.CartProductUncheckedCreateInput, 'cart_product_id'>,
   ) {
-    const { product_id, user_id } = info;
+    const { product_id } = info;
     const exist_product = await this.productRepo.findOneProduct({ product_id });
     if (!exist_product)
       throw new BadRequestException(baseResponeStatus.PRODUCT_NOT_EXIST);
-    const exist_cart_product = await this.cartRepo.findOneCartProduct({
-      user_id,
-      product_id,
-      status: 'ACTIVE',
-    });
-    if (exist_cart_product)
-      throw new BadRequestException(baseResponeStatus.CART_PRODUCT_EXIST);
 
     return await this.cartRepo.createCartProduct(info);
   }
@@ -72,9 +64,5 @@ export class CartService {
       throw new BadRequestException(baseResponeStatus.CART_PRODUCT_INVALID);
 
     return await this.cartRepo.deleteCartProduct(cart_product_id);
-  }
-
-  async deleteCart(user: CurrentUserDTO) {
-    return await this.cartRepo.deleteCart(user);
   }
 }

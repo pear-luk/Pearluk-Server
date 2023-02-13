@@ -25,7 +25,7 @@ export class CartController {
   @UseGuards(DevGuard)
   async getCartProductList(@CurrentUser() user: CurrentUserDTO) {
     const result = await this.cartService.getCartProductList(user.user_id);
-    console.log(result);
+
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
@@ -42,7 +42,6 @@ export class CartController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  // /:cart_product_id 가 더 restful 한듯 함. 추후 교체예정
   @Patch('/')
   @UseGuards(DevGuard)
   async updateCartProduct(
@@ -56,7 +55,6 @@ export class CartController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
-  // 1개 지우기,
   @Put('/:cart_product_id')
   @UseGuards(DevGuard)
   async deleteStatusCartProduct(
@@ -67,19 +65,6 @@ export class CartController {
       cart_product_id,
       user_id: user.user_id,
     });
-    return new BaseResponse(baseResponeStatus.SUCCESS, result);
-  }
-
-  /**
-   *
-   * 여러개 지우기. (현재 장바구니 제거)
-   * 장바구니 전체 삭제이기에 따로 cart_product 정보가 필요없음
-   * 활성화된 장바구니 상품들을 전체 비활성화하면됨.
-   * */
-  @Put('/')
-  @UseGuards(DevGuard)
-  async deletestatusCartProducts(@CurrentUser() user: CurrentUserDTO) {
-    const result = await this.cartService.deleteCart(user);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

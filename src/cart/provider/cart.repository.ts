@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
-import { CurrentUserDTO } from './../../user/dto/current_user.dto';
 
 @Injectable()
 export class CartRepository {
@@ -11,12 +10,6 @@ export class CartRepository {
   async getCartProductList(user_id: string) {
     return this.prisma.cartProduct.findMany({
       where: { user_id, status: 'ACTIVE' as E_status },
-      select: {
-        cart_product_id: true,
-        product_id: true,
-        count: true,
-        product: true,
-      },
     });
   }
 
@@ -28,7 +21,7 @@ export class CartRepository {
     });
   }
 
-  async findOneCartProduct(info: Partial<Prisma.CartProductWhereInput>) {
+  async findOneCartProduct(info: Prisma.CartProductWhereInput) {
     return await this.prisma.cartProduct.findFirst({ where: info });
   }
 
@@ -47,13 +40,6 @@ export class CartRepository {
   async deleteCartProduct(cart_product_id: string) {
     return await this.prisma.cartProduct.update({
       where: { cart_product_id },
-      data: { status: 'DELETED' },
-    });
-  }
-
-  async deleteCart({ user_id }: CurrentUserDTO) {
-    return await this.prisma.cartProduct.updateMany({
-      where: { user_id },
       data: { status: 'DELETED' },
     });
   }
