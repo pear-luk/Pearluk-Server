@@ -81,7 +81,6 @@ export class QuestionRepository {
         status: 'ACTIVE',
       },
     });
-    console.log(product_id, user_id, type);
 
     return { questions, total_count };
   }
