@@ -53,7 +53,7 @@ export class QuestionCreateInputDTO
 
   @ApiProperty({
     name: 'password',
-    description: '질문 비공개 열람시 필요 비밀번호',
+    description: '비공개 질문 열람시 필요 비밀번호',
     type: 'string',
   })
   @IsOptional()
@@ -79,6 +79,7 @@ export const questionCreateInputEX: QuestionCreateInputDTO = {
   product_id: '01GRQS1264SEPMJ4ERPW97SJ38',
 };
 export const questionCreateResponseEX = {
+  question_id: '01GRZVVDYCCFP745YR3RCM4YWX',
   type: 0,
   product_id: '01GRQS1264SEPMJ4ERPW97SJ38',
   created_at: '2023-01-25T09:50:16.383Z',
