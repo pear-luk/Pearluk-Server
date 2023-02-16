@@ -107,4 +107,20 @@ export const baseResponeStatus = {
     code: RESCODE + QUESTION + EXIST,
     message: '이미 존재하는 질문입니다.',
   },
+
+  PASSWORD_NOT_NEEDED: {
+    is_success: false,
+    code: RESCODE + QUESTION + INVALID,
+    message: '공개글이므로 비밀번호는 입력하지 않습니다',
+  },
+  PASSWORD_NEEDED: {
+    is_success: false,
+    code: RESCODE + QUESTION + INVALID,
+    message: '비밀글에 비밀번호가 필요합니다',
+  },
+  QUESTION_PASSWORD_INVALID: {
+    is_success: false,
+    code: RESCODE + QUESTION + INVALID,
+    message: '비밀번호가 틀렸습니다',
+  },
 };
