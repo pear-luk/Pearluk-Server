@@ -99,8 +99,23 @@ export class QuestionService {
     return exist;
   }
 
-  async getQuestionList({ page }: { page: string }) {
+  async getQuestionList({
+    product,
+    user,
+    _type, //querystring 때문에 _type이라 둠
+    page,
+  }: {
+    product: string;
+    user: string;
+    _type: string;
+    page: string;
+  }) {
+    console.log(_type, page, product);
+    const type = Number(_type); //Number로 타입변경
     return await this.questionRepo.getQuestionList({
+      product,
+      user,
+      type,
       page,
     });
   }

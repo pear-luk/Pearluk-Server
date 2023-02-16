@@ -52,27 +52,61 @@ export class QuestionRepository {
   }
 
   /*** 조회 ***/
-  async getQuestionList({ page }: { page: string }) {
+  async getQuestionList({
+    product,
+    user,
+    type,
+    page,
+  }: {
+    product: string;
+    user: string;
+    type: number;
+    page: string;
+  }) {
+    const product_id =
+      product && product === 'all' ? undefined : product ? product : undefined;
+    const user_id =
+      user && user === 'all' ? undefined : user ? user : undefined;
     const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
     const questions = await this.prisma.question.findMany({
+      where: { product_id, user_id, type },
       skip,
       take: 10,
     });
     const total_count = await this.prisma.question.count({
       where: {
+        product_id,
+        user_id,
+        type,
         status: 'ACTIVE',
       },
     });
+    console.log(product_id, user_id, type);
 
     return { questions, total_count };
   }
 
-  async getQuestionListCount() {
-    const count = await this.prisma.question.count({
-      where: {
-        status: 'ACTIVE',
-      },
-    });
-    return count;
-  }
+  // async getQuestionListCount({
+  //   product,
+  //   user,
+  //   type,
+  // }: {
+  //   product: string;
+  //   user: string;
+  //   type: number;
+  // }) {
+  //   const product_id =
+  //     product && product === 'all' ? undefined : product ? product : undefined;
+  //   const user_id =
+  //     user && user === 'all' ? undefined : user ? user : undefined;
+  //   const count = await this.prisma.question.count({
+  //     where: {
+  //       product_id,
+  //       user_id,
+  //       type,
+  //       status: 'ACTIVE',
+  //     },
+  //   });
+  //   return count;
+  // }
 }
