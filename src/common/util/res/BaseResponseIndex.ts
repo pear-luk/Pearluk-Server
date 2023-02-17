@@ -9,6 +9,7 @@ export const INDEX = {
   PRODUCT: 40000,
   CART: 50000,
   QUESTION: 60000,
+  ANSWER: 70000,
 };
 
 export const REQ_ERR_CODE = {};

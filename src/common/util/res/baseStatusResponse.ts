@@ -7,7 +7,8 @@
 
 import { INDEX, RESCODE, RES_ERR_CODE } from './BaseResponseIndex';
 
-const { AUTH, USER, ARCHIVE, CATEGORY, PRODUCT, CART, QUESTION } = INDEX;
+const { AUTH, USER, ARCHIVE, CATEGORY, PRODUCT, CART, QUESTION, ANSWER } =
+  INDEX;
 const { EXIST, NOT_EXIST, FAILURE, EXPIRED, NOT_AUTHORIZED, INVALID } =
   RES_ERR_CODE;
 export const baseResponeStatus = {
@@ -113,14 +114,28 @@ export const baseResponeStatus = {
     code: RESCODE + QUESTION + INVALID,
     message: '공개글이므로 비밀번호는 입력하지 않습니다',
   },
+
   PASSWORD_NEEDED: {
     is_success: false,
     code: RESCODE + QUESTION + INVALID,
     message: '비밀글에 비밀번호가 필요합니다',
   },
+
   QUESTION_PASSWORD_INVALID: {
     is_success: false,
     code: RESCODE + QUESTION + INVALID,
     message: '비밀번호가 틀렸습니다',
+  },
+
+  ANSWER_NOT_EXIST: {
+    is_success: false,
+    code: RESCODE + ANSWER + NOT_EXIST,
+    message: '존재하지 않는 답변입니다.',
+  },
+
+  ANSWER_EXIST: {
+    is_success: false,
+    code: RESCODE + ANSWER + EXIST,
+    message: '이미 존재하는 답변입니다.',
   },
 };
