@@ -1,6 +1,7 @@
 import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { AnswerModule } from './answer/answer.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArchiveModule } from './archive/archive.module';
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     ProductModule,
     OrderModule,
     QuestionModule,
+    AnswerModule,
     CartModule,
   ],
   controllers: [AppController],
