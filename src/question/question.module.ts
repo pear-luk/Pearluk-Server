@@ -10,6 +10,6 @@ import { QuestionController } from './question.controller';
   imports: [ProductModule, UserModule],
   controllers: [QuestionController],
   providers: [QuestionService, QuestionRepository, QuestionFaker],
-  exports: [],
+  exports: [QuestionRepository],
 })
 export class QuestionModule {}
