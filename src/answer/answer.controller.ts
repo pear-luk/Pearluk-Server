@@ -11,18 +11,18 @@
 // export class AnswerController {
 //   constructor(private readonly answerService: AnswerService) {}
 
-//   @ApiBearerAuth()
-//   @ApiOperation({
-//     summary: '답변 생성 API',
-//     description: `
-//       답변 생성 API입니다.
-//       관리자만 접근이 가능합니다.
+// //   @ApiBearerAuth()
+// //   @ApiOperation({
+// //     summary: '답변 생성 API',
+// //     description: `
+// //       답변 생성 API입니다.
+// //       관리자만 접근이 가능합니다.
 
-//       필요한 정보
-//       - question_id: 질문 - String ULID
-//       - product_id: 상품 - String ULID
-//     `,
-//   })
+// //       필요한 정보
+// //       - question_id: 질문 - String ULID
+// //       - product_id: 상품 - String ULID
+// //     `,
+// //   })
 //   @Post('/')
 //   @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
 //   async createAnswer(@Body() answerInputDTO: AnswerCreateInputDTO) {
