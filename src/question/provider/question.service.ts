@@ -34,11 +34,9 @@ export class QuestionService {
       throw new BadRequestException(baseResponeStatus.USER_NOT_EXIST);
 
     if (secret_mode == 0 && password)
-      throw new BadRequestException(
-        '공개글이므로 비밀번호는 입력하지 않습니다',
-      );
+      throw new BadRequestException(baseResponeStatus.PASSWORD_NOT_NEEDED);
     if (secret_mode == 1 && !password)
-      throw new BadRequestException('비밀글에 비밀번호가 필요합니다');
+      throw new BadRequestException(baseResponeStatus.PASSWORD_NEEDED);
 
     //const hashed_password = this.transformPassword(password);
     info = {
@@ -66,12 +64,10 @@ export class QuestionService {
       throw new BadRequestException(baseResponeStatus.PRODUCT_NOT_EXIST);
 
     if (secret_mode == 0 && password)
-      throw new BadRequestException(
-        '공개글이므로 비밀번호는 입력하지 않습니다',
-      );
+      throw new BadRequestException(baseResponeStatus.PASSWORD_NOT_NEEDED);
 
     if (secret_mode == 1 && !password)
-      throw new BadRequestException('비밀글에 비밀번호가 필요합니다');
+      throw new BadRequestException(baseResponeStatus.PASSWORD_NEEDED);
 
     const updatedQuestion = await this.questionRepo.updateQuestion(info);
     return updatedQuestion;
@@ -99,8 +95,22 @@ export class QuestionService {
     return exist;
   }
 
-  async getQuestionList({ page }: { page: string }) {
+  async getQuestionList({
+    product,
+    user,
+    _type, //querystring 때문에 _type이라 둠
+    page,
+  }: {
+    product: string;
+    user: string;
+    _type: string;
+    page: string;
+  }) {
+    const type = Number(_type); //Number로 타입변경
     return await this.questionRepo.getQuestionList({
+      product,
+      user,
+      type,
       page,
     });
   }
@@ -114,7 +124,8 @@ export class QuestionService {
     });
     if (!exist)
       throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
-    if (!password) throw new BadRequestException('비밀번호를 입력해주세요');
+    if (!password)
+      throw new BadRequestException(baseResponeStatus.PASSWORD_NEEDED);
 
     if (
       !(await this.comparePassword({
@@ -122,7 +133,9 @@ export class QuestionService {
         hashed_password: exist.password,
       }))
     )
-      throw new BadRequestException('비밀번호가 틀렸습니다');
+      throw new BadRequestException(
+        baseResponeStatus.QUESTION_PASSWORD_INVALID,
+      );
     return exist;
   }
 

@@ -9,16 +9,28 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiExtraModels,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+  getSchemaPath,
+} from '@nestjs/swagger';
+import { E_status } from '@prisma/client';
+import { ApiResponseDTO } from '../common/decorator/ApiResponse';
 import { DevGuard } from '../common/guard/devGuard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
-import { QuestionCreateInputDTO } from './dto/create_question.dto';
+import {
+  QuestionCreateInputDTO,
+  questionCreateInputEX,
+  questionCreateResponseEX,
+} from './dto/create_question.dto';
 import { QuestionSecretInputDTO } from './dto/secret_question.dto';
 import { QuestionUpdateInputDTO } from './dto/update_question.dto';
 import { QuestionFaker } from './provider/question.faker';
 import { QuestionService } from './provider/question.service';
-
 @ApiExtraModels(QuestionCreateInputDTO, QuestionUpdateInputDTO)
 @ApiTags('Question API')
 @Controller('questions')
@@ -28,13 +40,55 @@ export class QuestionController {
     private readonly questionFaker: QuestionFaker,
   ) {}
 
-  // @Get('/') //질문리스트 조회
-  // @UseGuards(DevGuard)
-  // async getQuestionList() {
-  //   const result = '성공';
-  //   return result;
-  // }
+  @ApiOperation({
+    summary: '질문 생성 API',
+    description: `
+  질문 생성 API입니다
 
+  필요한정보.
+  - title: 질문 제목 - String
+  - contents: 질문 내용 - String
+  - user_id: 유저 아이디 - String
+  - type ?: 질문 유형 - Number
+  - secret_mode ?: 질문 비공개 유무 - Number
+  - password ?: 비공개 질문 열람시 필요 비밀번호 - String
+  - product_id ?: 상품 아이디 - String
+  `,
+  })
+  @ApiBody({
+    schema: { $ref: getSchemaPath(QuestionCreateInputDTO) },
+    examples: {
+      CREATE_QUESTION: {
+        description: '질문 생성 예시',
+        value: questionCreateInputEX,
+      },
+    },
+  })
+  @ApiResponseDTO(
+    200,
+    new BaseResponse(baseResponeStatus.SUCCESS, questionCreateResponseEX),
+    '성공',
+  )
+  @ApiResponseDTO(
+    400.4,
+    baseResponeStatus.PASSWORD_NEEDED,
+    '비밀번호가 필요할때',
+  )
+  @ApiResponseDTO(
+    400.3,
+    baseResponeStatus.PASSWORD_NOT_NEEDED,
+    '비밀번호가 필요하지 않을때',
+  )
+  @ApiResponseDTO(
+    400.2,
+    baseResponeStatus.USER_NOT_EXIST,
+    '유저가 존재하지 않을때',
+  )
+  @ApiResponseDTO(
+    400.1,
+    baseResponeStatus.PRODUCT_NOT_EXIST,
+    '상품이 존재하지 않을때',
+  )
   @Post('/') //질문 생성
   @UseGuards(DevGuard)
   async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
@@ -84,6 +138,33 @@ export class QuestionController {
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
+  @ApiOperation({
+    summary: '질문 삭제 API',
+    description: `
+    질문 삭제 API입니다
+
+    params
+    - question_id: 질문 id - String ULID
+    `,
+  })
+  @ApiParam({
+    name: 'question_id',
+    type: 'string',
+    example: questionCreateResponseEX.question_id,
+  })
+  @ApiResponseDTO(
+    200,
+    new BaseResponse(baseResponeStatus.SUCCESS, {
+      ...questionCreateResponseEX,
+      status: E_status.DELETED,
+    }),
+    '성공',
+  )
+  @ApiResponseDTO(
+    400.1,
+    baseResponeStatus.QUESTION_NOT_EXIST,
+    '질문이 존재하지 않을때',
+  )
   @Put('/:question_id') //질문 삭제
   @UseGuards(DevGuard)
   async deleteStatusQuestion(@Param('question_id') question_id: string) {
