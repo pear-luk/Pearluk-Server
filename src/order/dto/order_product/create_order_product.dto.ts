@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional } from 'class-validator';
 import { IsULID } from 'src/common/decorator/IsULID';
 
@@ -21,4 +22,8 @@ export class OrderProductCreatInputDTO
 
   @IsNumber()
   price: bigint | number;
+
+  @IsOptional()
+  @Transform(() => undefined)
+  product?: undefined;
 }

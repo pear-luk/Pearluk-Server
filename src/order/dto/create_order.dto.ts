@@ -55,8 +55,9 @@ export class OrderCreateInputDTO
   @Type(() => RecipientInfoCreateInputDTO)
   recipient_info: RecipientInfoCreateInputDTO;
 
+  @IsOptional()
   @IsObject()
   @ValidateNested()
   @Type(() => PaymentInfoCreateInputDTO)
-  payment_info: PaymentInfoCreateInputDTO;
+  payment_info?: PaymentInfoCreateInputDTO;
 }

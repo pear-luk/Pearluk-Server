@@ -28,7 +28,6 @@ export class OrderController {
     user: CurrentUserDTO,
     @Body() orderCreateInputDTO: OrderCreateInputDTO,
   ) {
-    console.log(orderCreateInputDTO);
     const result = await this.orderService.createOrder({
       user,
       order_info: orderCreateInputDTO,
