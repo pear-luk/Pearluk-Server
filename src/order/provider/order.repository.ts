@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ulid } from 'ulid';
 import { CurrentUserDTO } from './../../user/dto/current_user.dto';
@@ -103,5 +104,9 @@ export class OrderRepository {
       },
     });
     return newOrder;
+  }
+
+  async getOrder(info: Partial<Prisma.OrderWhereInput>) {
+    return this.prisma.order.findFirst({ where: info });
   }
 }
