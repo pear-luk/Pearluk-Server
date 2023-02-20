@@ -34,6 +34,16 @@ export class OrderCreateInputDTO
   @IsNumber()
   total_price: bigint | number;
 
+  /**
+   * -
+   * -2. 반품/교환
+   * -1. 주문취소
+   * 0. 결제대기중
+   * 1. 배송준비중
+   * 2. 배송중
+   * 3. 배송완료
+   * 4. 구매확정
+   */
   @IsNumber()
   order_status: number;
 
@@ -55,8 +65,9 @@ export class OrderCreateInputDTO
   @Type(() => RecipientInfoCreateInputDTO)
   recipient_info: RecipientInfoCreateInputDTO;
 
+  @IsOptional()
   @IsObject()
   @ValidateNested()
   @Type(() => PaymentInfoCreateInputDTO)
-  payment_info: PaymentInfoCreateInputDTO;
+  payment_info?: PaymentInfoCreateInputDTO;
 }

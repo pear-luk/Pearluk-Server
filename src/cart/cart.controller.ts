@@ -14,6 +14,7 @@ import { baseResponeStatus } from '../common/util/res/baseStatusResponse';
 import { DevGuard } from './../common/guard/devGuard';
 import { CurrentUserDTO } from './../user/dto/current_user.dto';
 import { CartProductCreateInputDTO } from './dto/create_cart_product.dto';
+import { CartDeleteInputDTO } from './dto/delete_cart.dto';
 import { CartProductUpdateInputDTO } from './dto/update_cart_product.dto';
 import { CartService } from './provider/cart.service';
 
@@ -71,15 +72,21 @@ export class CartController {
   }
 
   /**
+   * 제거할 Cart Product 값을 받아서 삭제.
    *
-   * 여러개 지우기. (현재 장바구니 제거)
-   * 장바구니 전체 삭제이기에 따로 cart_product 정보가 필요없음
-   * 활성화된 장바구니 상품들을 전체 비활성화하면됨.
    * */
   @Put('/')
   @UseGuards(DevGuard)
-  async deletestatusCartProducts(@CurrentUser() user: CurrentUserDTO) {
-    const result = await this.cartService.deleteCart(user);
+  async deletestatusCartProducts(
+    @CurrentUser() user: CurrentUserDTO,
+    @Body() cartDeleteInputDTO: CartDeleteInputDTO,
+  ) {
+    console.log(cartDeleteInputDTO);
+    const result = await this.cartService.deleteCart({
+      ...cartDeleteInputDTO,
+      ...user,
+    });
+
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

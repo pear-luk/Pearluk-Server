@@ -4,6 +4,7 @@ import { CurrentUserDTO } from '../user/dto/current_user.dto';
 import { CurrentUser } from './../common/decorator/current-user.decorator';
 import { DevGuard } from './../common/guard/devGuard';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
+import { OrderConfirmDTO } from './dto/confirm_order.dto';
 import { OrderCreateInputDTO } from './dto/create_order.dto';
 import { OrderService } from './provider/order.service';
 
@@ -28,11 +29,16 @@ export class OrderController {
     user: CurrentUserDTO,
     @Body() orderCreateInputDTO: OrderCreateInputDTO,
   ) {
-    console.log(orderCreateInputDTO);
     const result = await this.orderService.createOrder({
       user,
       order_info: orderCreateInputDTO,
     });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Post('/confirm')
+  async approvalPayment(@Body() orderConfirmDTO: OrderConfirmDTO) {
+    await this.orderService.confirmOrder(orderConfirmDTO);
+    return new BaseResponse(baseResponeStatus.SUCCESS);
   }
 }

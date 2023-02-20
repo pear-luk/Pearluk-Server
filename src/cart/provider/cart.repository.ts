@@ -4,6 +4,9 @@ import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 import { CurrentUserDTO } from './../../user/dto/current_user.dto';
 
+import { CartDeleteInputDTO } from './../dto/delete_cart.dto';
+
+
 @Injectable()
 export class CartRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -51,9 +54,19 @@ export class CartRepository {
     });
   }
 
-  async deleteCart({ user_id }: CurrentUserDTO) {
+
+  async deleteCart({
+    user_id,
+    product_list,
+  }: CartDeleteInputDTO & CurrentUserDTO) {
     return await this.prisma.cartProduct.updateMany({
-      where: { user_id },
+      where: {
+        cart_product_id: {
+          in: product_list.map((product) => product.cart_product_id),
+        },
+        user_id,
+      },
+
       data: { status: 'DELETED' },
     });
   }
