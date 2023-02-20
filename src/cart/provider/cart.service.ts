@@ -3,7 +3,9 @@ import { Prisma } from '@prisma/client';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
 import { ProductRepository } from './../../product/provider/product.repository';
 import { CurrentUserDTO } from './../../user/dto/current_user.dto';
+
 import { CartDeleteInputDTO } from './../dto/delete_cart.dto';
+
 import { CartProductUpdateInputDTO } from './../dto/update_cart_product.dto';
 import { CartRepository } from './cart.repository';
 
@@ -75,7 +77,9 @@ export class CartService {
     return await this.cartRepo.deleteCartProduct(cart_product_id);
   }
 
+
   async deleteCart(data: CartDeleteInputDTO & CurrentUserDTO) {
     return await this.cartRepo.deleteCart(data);
+
   }
 }

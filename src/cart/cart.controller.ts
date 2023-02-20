@@ -86,6 +86,7 @@ export class CartController {
       ...cartDeleteInputDTO,
       ...user,
     });
+
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }

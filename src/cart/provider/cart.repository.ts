@@ -3,7 +3,9 @@ import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 import { CurrentUserDTO } from './../../user/dto/current_user.dto';
+
 import { CartDeleteInputDTO } from './../dto/delete_cart.dto';
+
 
 @Injectable()
 export class CartRepository {
@@ -52,6 +54,7 @@ export class CartRepository {
     });
   }
 
+
   async deleteCart({
     user_id,
     product_list,
@@ -63,6 +66,7 @@ export class CartRepository {
         },
         user_id,
       },
+
       data: { status: 'DELETED' },
     });
   }
