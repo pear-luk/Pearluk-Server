@@ -107,6 +107,12 @@ export class OrderRepository {
   }
 
   async getOrder(info: Partial<Prisma.OrderWhereInput>) {
-    return this.prisma.order.findFirst({ where: info });
+    return await this.prisma.order.findFirst({ where: info });
+  }
+
+  async createOrderPaymentInfo(info: Prisma.PaymentInfoUncheckedCreateInput) {
+    return await this.prisma.paymentInfo.create({
+      data: info,
+    });
   }
 }

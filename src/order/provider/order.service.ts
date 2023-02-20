@@ -44,6 +44,16 @@ export class OrderService {
     if (Number(order.total_price) !== amount) {
       throw new BadRequestException('돈안맞자나!!!');
     }
+    /**
+     * confirm이 에러가 날시.
+     * 1. order의 status를 INACTIVE로 변환
+     * 2. order_status -> 주문실패
+     *
+     *
+     * confirm성공 할시
+     * 1. payment_info 생성.
+     * 2.
+     */
 
     const confirm = await this.httpService.axiosRef.post(
       'https://api.tosspayments.com/v1/payments/confirm',
@@ -61,6 +71,20 @@ export class OrderService {
       },
     );
 
-    console.log(confirm);
+    if (!confirm) {
+      throw new BadRequestException('결제 승인 에러');
+    }
+    const {
+      method,
+      status: payment_status,
+    }: { method: string; status: string } = confirm.data;
+    console.log(confirm.data);
+
+    // return await this.orderRepo.createOrderPaymentInfo({
+    //   order_id,
+    //   key: payment_key,
+    //   method,
+    //   payment_status,
+    // });
   }
 }

@@ -38,6 +38,7 @@ export class OrderController {
 
   @Post('/confirm')
   async approvalPayment(@Body() orderConfirmDTO: OrderConfirmDTO) {
-    const result = await this.orderService.confirmOrder(orderConfirmDTO);
+    await this.orderService.confirmOrder(orderConfirmDTO);
+    return new BaseResponse(baseResponeStatus.SUCCESS);
   }
 }
