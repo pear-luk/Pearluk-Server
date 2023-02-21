@@ -132,6 +132,7 @@ export class OrderRepository {
     });
   }
 
+
   async getOrderDetail(info: Partial<Prisma.OrderWhereInput>) {
     return await this.prisma.order.findFirst({
       select: {
@@ -165,4 +166,5 @@ export class OrderRepository {
       where: info,
     });
   }
+
 }

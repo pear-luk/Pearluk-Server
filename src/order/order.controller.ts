@@ -50,6 +50,7 @@ export class OrderController {
     return new BaseResponse(baseResponeStatus.SUCCESS);
   }
 
+
   @Get('/:order_id')
   @UseGuards(DevGuard)
   async getOrderDetail(
@@ -59,4 +60,5 @@ export class OrderController {
     const result = await this.orderService.getOrderDetail({ order_id, user });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
+
 }

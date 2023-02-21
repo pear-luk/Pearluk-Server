@@ -104,6 +104,7 @@ export class OrderService {
       throw new BadRequestException('존재하지않는 결제 정보입니다.');
     }
 
+
     const updatedPayment = await this.orderRepo.updatePaymentStatus({
       order_id: orderId,
       secret,
@@ -132,5 +133,6 @@ export class OrderService {
       );
 
     return order;
+
   }
 }
