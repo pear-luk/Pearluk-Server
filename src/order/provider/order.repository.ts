@@ -131,4 +131,40 @@ export class OrderRepository {
       where: { order_id },
     });
   }
+
+
+  async getOrderDetail(info: Partial<Prisma.OrderWhereInput>) {
+    return await this.prisma.order.findFirst({
+      select: {
+        order_id: true,
+        name: true,
+        use_point: true,
+        total_price: true,
+        order_status: true,
+        customer_info: true,
+        recipient_info: true,
+        payment_info: true,
+
+        order_products: {
+          select: {
+            product_id: true,
+            count: true,
+            price: true,
+            use_coupon: true,
+            product: {
+              select: {
+                name: true,
+                price: true,
+                imgs: true,
+              },
+            },
+          },
+        },
+        shipping: true,
+        created_at: true,
+      },
+      where: info,
+    });
+  }
+
 }
