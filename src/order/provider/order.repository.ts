@@ -115,4 +115,20 @@ export class OrderRepository {
       data: info,
     });
   }
+
+  async getPaymentInfo(info: Prisma.PaymentInfoWhereInput) {
+    return this.prisma.paymentInfo.findFirst({
+      where: info,
+    });
+  }
+
+  async updatePaymentStatus(
+    info: Partial<Prisma.PaymentInfoUncheckedCreateInput>,
+  ) {
+    const { order_id, payment_status, transaction_key } = info;
+    return await this.prisma.paymentInfo.update({
+      data: { payment_status, transaction_key },
+      where: { order_id },
+    });
+  }
 }

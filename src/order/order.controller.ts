@@ -6,6 +6,7 @@ import { DevGuard } from './../common/guard/devGuard';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
 import { OrderConfirmDTO } from './dto/confirm_order.dto';
 import { OrderCreateInputDTO } from './dto/create_order.dto';
+import { ITossWebHook } from './interface/webhook.interface';
 import { OrderService } from './provider/order.service';
 
 @Controller('/orders')
@@ -39,6 +40,13 @@ export class OrderController {
   @Post('/confirm')
   async approvalPayment(@Body() orderConfirmDTO: OrderConfirmDTO) {
     await this.orderService.confirmOrder(orderConfirmDTO);
+    return new BaseResponse(baseResponeStatus.SUCCESS);
+  }
+
+  //토스 측에서 api 요청 보내는 것임 .
+  @Post('/status')
+  async tossWebHookVirtualAccount(@Body() tossWebHookDTO: ITossWebHook) {
+    await this.orderService.updatePaymentInfo(tossWebHookDTO);
     return new BaseResponse(baseResponeStatus.SUCCESS);
   }
 }
