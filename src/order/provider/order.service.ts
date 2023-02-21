@@ -111,4 +111,26 @@ export class OrderService {
     });
     console.log(updatedPayment);
   }
+
+  async getOrderDetail({
+    order_id,
+    user,
+  }: {
+    order_id: string;
+    user: CurrentUserDTO;
+  }) {
+    const { user_id } = user;
+
+    const order = await this.orderRepo.getOrderDetail({
+      order_id,
+      user_id,
+    });
+
+    if (!order)
+      throw new BadRequestException(
+        '존재하지않거나 접근권한이 없는 주문내역입니다.',
+      );
+
+    return order;
+  }
 }

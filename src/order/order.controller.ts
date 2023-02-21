@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { BaseResponse } from '../common/util/res/BaseResponse';
 import { CurrentUserDTO } from '../user/dto/current_user.dto';
 import { CurrentUser } from './../common/decorator/current-user.decorator';
@@ -48,5 +48,15 @@ export class OrderController {
   async tossWebHookVirtualAccount(@Body() tossWebHookDTO: ITossWebHook) {
     await this.orderService.updatePaymentInfo(tossWebHookDTO);
     return new BaseResponse(baseResponeStatus.SUCCESS);
+  }
+
+  @Get('/:order_id')
+  @UseGuards(DevGuard)
+  async getOrderDetail(
+    @Param('order_id') order_id: string,
+    @CurrentUser() user: CurrentUserDTO,
+  ) {
+    const result = await this.orderService.getOrderDetail({ order_id, user });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }
