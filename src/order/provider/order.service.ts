@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { OrderConfirmDTO } from '../dto/confirm_order.dto';
 import { CurrentUserDTO } from './../../user/dto/current_user.dto';
 import { OrderCreateInputDTO } from './../dto/create_order.dto';
+import { ITossWebHook } from './../interface/webhook.interface';
 import { OrderRepository } from './order.repository';
 
 @Injectable()
@@ -44,16 +45,6 @@ export class OrderService {
     if (Number(order.total_price) !== amount) {
       throw new BadRequestException('돈안맞자나!!!');
     }
-    /**
-     * confirm이 에러가 날시.
-     * 1. order의 status를 INACTIVE로 변환
-     * 2. order_status -> 주문실패
-     *
-     *
-     * confirm성공 할시
-     * 1. payment_info 생성.
-     * 2.
-     */
 
     const confirm = await this.httpService.axiosRef.post(
       'https://api.tosspayments.com/v1/payments/confirm',
@@ -74,17 +65,50 @@ export class OrderService {
     if (!confirm) {
       throw new BadRequestException('결제 승인 에러');
     }
+    console.log(confirm.data);
+
     const {
       method,
       status: payment_status,
-    }: { method: string; status: string } = confirm.data;
-    console.log(confirm.data);
+      virtualAccount = null,
+      secret,
+    }: {
+      method: string;
+      status: string;
+      secret?: string;
+      virtualAccount?: {
+        accountNumber: string;
+        bankCode: string;
+        dueDate: string;
+        expired: boolean;
+      };
+    } = confirm.data;
 
-    // return await this.orderRepo.createOrderPaymentInfo({
-    //   order_id,
-    //   key: payment_key,
-    //   method,
-    //   payment_status,
-    // });
+    return await this.orderRepo.createOrderPaymentInfo({
+      order_id,
+      key: payment_key,
+      method,
+      payment_status,
+      account_number: virtualAccount?.accountNumber,
+      bank_code: virtualAccount?.bankCode,
+      secret,
+    });
+  }
+
+  async updatePaymentInfo({ orderId, secret, status }: ITossWebHook) {
+    const payment = await this.orderRepo.getPaymentInfo({
+      order_id: orderId,
+      secret,
+    });
+    if (!payment) {
+      throw new BadRequestException('존재하지않는 결제 정보입니다.');
+    }
+
+    const updatedPayment = await this.orderRepo.updatePaymentStatus({
+      order_id: orderId,
+      secret,
+      payment_status: status,
+    });
+    console.log(updatedPayment);
   }
 }

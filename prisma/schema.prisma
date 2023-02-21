@@ -231,14 +231,21 @@ model Shipping {
 }
 
 model PaymentInfo {
-  order_id       String   @id @db.Char(26)
-  key            String   @db.VarChar(200)
-  method         String   @db.VarChar(60)
-  payment_status String   @db.VarChar(20)
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
-  status         E_status @default(ACTIVE)
-  order          Order    @relation("ORDER_PAYMENT", fields: [order_id], references: [order_id])
+  order_id              String   @id @db.Char(26)
+  key                   String   @db.VarChar(200)
+  method                String   @db.VarChar(60)
+  payment_status        String   @db.VarChar(20)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @default(now()) @updatedAt
+  status                E_status @default(ACTIVE)
+  account_number        String?  @db.VarChar(20)
+  bank_code             String?  @db.VarChar(10)
+  refund_account_number String?  @db.VarChar(30)
+  refund_bank_code      String?  @db.VarChar(10)
+  refund_holder_name    String?  @db.VarChar(30)
+  secret                String?  @db.VarChar(60)
+  transaction_key       String?  @db.VarChar(200)
+  order                 Order    @relation("ORDER_PAYMENT", fields: [order_id], references: [order_id])
 
   @@map("payment_infos")
 }
