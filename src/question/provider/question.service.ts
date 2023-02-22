@@ -98,15 +98,14 @@ export class QuestionService {
   async getQuestionList({
     product,
     user,
-    _type, //querystring 때문에 _type이라 둠
+    type,
     page,
   }: {
-    product: string;
-    user: string;
-    _type: string;
-    page: string;
+    product?: string;
+    user?: string;
+    type?: string;
+    page?: string;
   }) {
-    const type = Number(_type); //Number로 타입변경
     return await this.questionRepo.getQuestionList({
       product,
       user,

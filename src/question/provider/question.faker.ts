@@ -13,14 +13,11 @@ export class QuestionFaker {
   ) {}
 
   async createQuestion() {
-    const products = [
-      ...(await this.productRepo.getDummyData()),
-      { product_id: null },
-    ];
+    const products = [...(await this.productRepo.getDummyData())];
     const fakerData: Prisma.QuestionUncheckedCreateInput[] = new Array(10000)
       .fill(0)
       .map(() => {
-        return {
+        const mock = {
           question_id: ulid(),
           product_id:
             products[
@@ -28,11 +25,15 @@ export class QuestionFaker {
             ].product_id,
           title: faker.lorem.words(3),
           contents: faker.lorem.lines(3),
-          type: faker.datatype.number({ min: 0, max: 2 }),
+          type: faker.datatype.number({ min: 0, max: 1 }),
           secret_mode: faker.datatype.number({ min: 0, max: 1 }),
           password: faker.lorem.words(10),
           user_id: '01GRHG8YXFWVHZ6272EZPGXRD9',
         };
+        if (mock.type === 0) mock.product_id = null;
+        if (mock.secret_mode === 0) mock.password = null;
+
+        return mock;
       });
     return await this.prisma.question.createMany({ data: fakerData });
   }

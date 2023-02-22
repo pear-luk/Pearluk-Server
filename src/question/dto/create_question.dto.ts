@@ -76,7 +76,9 @@ export const questionCreateInputEX: QuestionCreateInputDTO = {
   type: 0,
   secret_mode: 0,
   password: '23232323',
-  product_id: '01GRQS1264SEPMJ4ERPW97SJ38',
+
+  // 배송관련 질문은 이게 필요가 없음.
+  // product_id: '01GRQS1264SEPMJ4ERPW97SJ38',
 };
 export const questionCreateResponseEX = {
   question_id: '01GRZVVDYCCFP745YR3RCM4YWX',

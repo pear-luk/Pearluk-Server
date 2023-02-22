@@ -49,7 +49,9 @@ export class QuestionController {
   - title: 질문 제목 - String
   - contents: 질문 내용 - String
   - user_id: 유저 아이디 - String
-  - type ?: 질문 유형 - Number
+  - type ?: 질문 유형 - Number (E_QuestionType)
+    0. 배송관련 질문
+    1. 상품 관련 질문. 
   - secret_mode ?: 질문 비공개 유무 - Number
   - password ?: 비공개 질문 열람시 필요 비밀번호 - String
   - product_id ?: 상품 아이디 - String
@@ -107,8 +109,17 @@ export class QuestionController {
 
   @Get('/') //질문 조회
   @UseGuards(DevGuard)
-  async getQuestionList(@Query() query) {
+  async getQuestionList(
+    @Query()
+    query: {
+      product?: string; // 상품관련 질문 조회를 할때
+      user?: string; // 이건 빼는게 날수도. API를 하나 더만들어서 토큰기반으로 가져오는게 더 날거같음.
+      type?: string; // type 1 = 상품 관련 0 = qa 페이지 관련.
+      page?: string;
+    },
+  ) {
     const result = await this.questionService.getQuestionList(query);
+    console.log(result);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
