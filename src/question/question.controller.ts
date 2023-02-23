@@ -119,7 +119,6 @@ export class QuestionController {
     },
   ) {
     const result = await this.questionService.getQuestionList(query);
-    console.log(result);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
