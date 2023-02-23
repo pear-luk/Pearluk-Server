@@ -5,9 +5,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from './../common/options/multer.options';
-
-import { S3Service } from './S3.service';
+import { multerOptions } from '../common/options/multer.options';
+import { UploadService } from './upload.service';
 
 /**
  * 이미지 업로드를 할때
@@ -17,16 +16,17 @@ import { S3Service } from './S3.service';
  */
 
 @Controller('/upload')
-export class S3Controller {
-  constructor(private readonly s3Service: S3Service) {}
+export class UploadController {
+  constructor(private readonly s3Service: UploadService) {}
 
-  @Post('/qustion')
+  @Post('/question/:question_id')
   @UseInterceptors(FilesInterceptor('imgs', 10, multerOptions('products')))
-  async uploaFiles(@UploadedFiles() files: Array<Express.MulterS3.File>) {
+  async uploadQustionImg(@UploadedFiles() files: Array<Express.MulterS3.File>) {
     console.log(files);
 
     return this.s3Service.uploadFiles(files);
   }
+
   // @Post('/qustion')
   // @UseInterceptors(FileInterceptor('imgs'))
   // async uploaFile(@UploadedFile() file: Express.MulterS3.File) {

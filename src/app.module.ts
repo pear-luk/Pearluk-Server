@@ -14,7 +14,7 @@ import { LoginModule } from './login/login.module';
 import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { QuestionModule } from './question/question.module';
-import { S3Module } from './S3/S3.module';
+import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -31,7 +31,7 @@ import { UserModule } from './user/user.module';
     QuestionModule,
     AnswerModule,
     CartModule,
-    S3Module,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
