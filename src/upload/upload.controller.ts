@@ -1,5 +1,6 @@
 import {
   Controller,
+  Param,
   Post,
   UploadedFiles,
   UseInterceptors,
@@ -17,21 +18,14 @@ import { UploadService } from './upload.service';
 
 @Controller('/upload')
 export class UploadController {
-  constructor(private readonly s3Service: UploadService) {}
+  constructor(private readonly uploadService: UploadService) {}
 
-  @Post('/question/:question_id')
-  @UseInterceptors(FilesInterceptor('imgs', 10, multerOptions('products')))
-  async uploadQustionImg(@UploadedFiles() files: Array<Express.MulterS3.File>) {
-    console.log(files);
-
-    return this.s3Service.uploadFiles(files);
+  @Post('/questions/:question_id')
+  @UseInterceptors(FilesInterceptor('imgs', 10, multerOptions('questions')))
+  async uploadQustionImg(
+    @UploadedFiles() files: Array<Express.MulterS3.File>,
+    @Param('question_id') question_id: string,
+  ) {
+    return await this.uploadService.uploadQuestionImgs(files, question_id);
   }
-
-  // @Post('/qustion')
-  // @UseInterceptors(FileInterceptor('imgs'))
-  // async uploaFile(@UploadedFile() file: Express.MulterS3.File) {
-  //   console.log(file);
-
-  //   return this.s3Service.uploadFile(file);
-  // }
 }

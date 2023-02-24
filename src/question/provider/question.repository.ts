@@ -21,7 +21,32 @@ export class QuestionRepository {
   }
 
   async findOneQuestion(info: Prisma.QuestionWhereInput) {
-    const question = await this.prisma.question.findFirst({ where: info });
+    const question = await this.prisma.question.findFirst({
+      select: {
+        question_id: true,
+        title: true,
+        type: true,
+        secret_mode: true,
+        product_id: true,
+        created_at: true,
+        user: {
+          select: {
+            nickname: true,
+          },
+        },
+        password: true,
+        imgs: true,
+        answers: {
+          select: {
+            answer_id: true,
+            contents: true,
+            created_at: true,
+            imgs: true,
+          },
+        },
+      },
+      where: { ...info, status: 'ACTIVE' },
+    });
     return question;
   }
 
