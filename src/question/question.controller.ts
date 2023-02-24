@@ -190,4 +190,10 @@ export class QuestionController {
     const result = await this.questionFaker.createQuestion();
     return result;
   }
+  @Post('/faker/post/img')
+  @UseGuards(DevGuard)
+  async fakerImgData() {
+    const result = await this.questionFaker.createQuestionImg();
+    return result;
+  }
 }
