@@ -29,6 +29,7 @@ export class QuestionRepository {
         secret_mode: true,
         product_id: true,
         created_at: true,
+        contents: true,
         user: {
           select: {
             nickname: true,

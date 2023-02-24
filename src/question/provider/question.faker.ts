@@ -4,17 +4,20 @@ import { Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ProductRepository } from '../../product/provider/product.repository';
+import { QuestionService } from './question.service';
 
 @Injectable()
 export class QuestionFaker {
   constructor(
     private readonly productRepo: ProductRepository,
     private readonly prisma: PrismaService,
+    private readonly questionService: QuestionService,
   ) {}
 
   async createQuestion() {
     const products = [...(await this.productRepo.getDummyData())];
     const users = await this.prisma.user.findMany();
+    const password = await this.questionService.transformPassword('1234');
     const fakerData: Prisma.QuestionUncheckedCreateInput[] = new Array(10000)
       .fill(0)
       .map(() => {
@@ -28,7 +31,7 @@ export class QuestionFaker {
           contents: faker.lorem.lines(2),
           type: faker.datatype.number({ min: 0, max: 1 }),
           secret_mode: faker.datatype.number({ min: 0, max: 1 }),
-          password: faker.lorem.words(10),
+          password,
           user_id:
             users[faker.datatype.number({ min: 0, max: users.length - 1 })]
               .user_id,
@@ -45,22 +48,23 @@ export class QuestionFaker {
   async createQuestionImg() {
     const fakerData = await (
       await this.prisma.question.findMany()
-    )
-      .map((question) => {
-        return Array(faker.datatype.number({ min: 0, max: 10 }))
-          .fill(0)
-          .map(() => ({
-            question_id: question.question_id,
-            question_img_id: ulid(),
-            url: faker.image.animals(),
-            sequence: faker.datatype.number({ min: 0, max: 10 }),
-          }));
-      })
-      .map(async (fake) => {
+    ).map((question) => {
+      return Array(faker.datatype.number({ min: 1, max: 10 }))
+        .fill(0)
+        .map(() => ({
+          question_id: question.question_id,
+          question_img_id: ulid(),
+          url: faker.image.animals(),
+          sequence: faker.datatype.number({ min: 0, max: 10 }),
+        }));
+    });
+
+    return Promise.all(
+      fakerData.map(async (fake) => {
         await this.prisma.questionImg.createMany({
           data: fake,
         });
-      });
-    return fakerData;
+      }),
+    );
   }
 }

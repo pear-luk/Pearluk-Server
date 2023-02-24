@@ -19,9 +19,11 @@ import {
 } from '@nestjs/swagger';
 import { E_status } from '@prisma/client';
 import { ApiResponseDTO } from '../common/decorator/ApiResponse';
+import { CurrentUser } from '../common/decorator/current-user.decorator';
 import { DevGuard } from '../common/guard/devGuard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
+import { CurrentUserDTO } from './../user/dto/current_user.dto';
 import {
   QuestionCreateInputDTO,
   questionCreateInputEX,
@@ -93,8 +95,15 @@ export class QuestionController {
   )
   @Post('/') //질문 생성
   @UseGuards(DevGuard)
-  async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
-    const result = await this.questionService.createQuestion(questionInputDTO);
+  async createQuestion(
+    @Body() questionInputDTO: QuestionCreateInputDTO,
+    @CurrentUser() user: CurrentUserDTO,
+  ) {
+    const { user_id } = user;
+    const result = await this.questionService.createQuestion({
+      ...questionInputDTO,
+      user_id,
+    });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 

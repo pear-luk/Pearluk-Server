@@ -5,7 +5,8 @@ import { IsULID } from 'src/common/decorator/IsULID';
 import { E_QuestionType } from '../interface/question_type.enum';
 
 export class QuestionCreateInputDTO
-  implements Omit<Prisma.QuestionUncheckedCreateInput, 'question_id'>
+  implements
+    Omit<Prisma.QuestionUncheckedCreateInput, 'question_id' | 'user_id'>
 {
   @ApiProperty({
     name: 'title',
@@ -23,13 +24,14 @@ export class QuestionCreateInputDTO
   @IsString()
   contents: string;
 
-  @ApiProperty({
-    name: 'user_id',
-    description: '유저 id',
-    type: 'string',
-  })
-  @IsULID()
-  user_id: string;
+  // 이건 JWT 가드 이용해야함.
+  // @ApiProperty({
+  //   name: 'user_id',
+  //   description: '유저 id',
+  //   type: 'string',
+  // })
+  // @IsULID()
+  // user_id: string;
 
   @ApiProperty({
     name: 'type',
@@ -72,7 +74,7 @@ export class QuestionCreateInputDTO
 export const questionCreateInputEX: QuestionCreateInputDTO = {
   title: '질문제목1',
   contents: '질문있어요오오오오',
-  user_id: '01GRHG8YXFWVHZ6272EZPGXRD9',
+
   type: 0,
   secret_mode: 0,
   password: '23232323',
