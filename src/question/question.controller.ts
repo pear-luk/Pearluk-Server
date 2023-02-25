@@ -19,9 +19,11 @@ import {
 } from '@nestjs/swagger';
 import { E_status } from '@prisma/client';
 import { ApiResponseDTO } from '../common/decorator/ApiResponse';
+import { CurrentUser } from '../common/decorator/current-user.decorator';
 import { DevGuard } from '../common/guard/devGuard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
+import { CurrentUserDTO } from './../user/dto/current_user.dto';
 import {
   QuestionCreateInputDTO,
   questionCreateInputEX,
@@ -49,7 +51,9 @@ export class QuestionController {
   - title: 질문 제목 - String
   - contents: 질문 내용 - String
   - user_id: 유저 아이디 - String
-  - type ?: 질문 유형 - Number
+  - type ?: 질문 유형 - Number (E_QuestionType)
+    0. 배송관련 질문
+    1. 상품 관련 질문. 
   - secret_mode ?: 질문 비공개 유무 - Number
   - password ?: 비공개 질문 열람시 필요 비밀번호 - String
   - product_id ?: 상품 아이디 - String
@@ -91,8 +95,15 @@ export class QuestionController {
   )
   @Post('/') //질문 생성
   @UseGuards(DevGuard)
-  async createQuestion(@Body() questionInputDTO: QuestionCreateInputDTO) {
-    const result = await this.questionService.createQuestion(questionInputDTO);
+  async createQuestion(
+    @Body() questionInputDTO: QuestionCreateInputDTO,
+    @CurrentUser() user: CurrentUserDTO,
+  ) {
+    const { user_id } = user;
+    const result = await this.questionService.createQuestion({
+      ...questionInputDTO,
+      user_id,
+    });
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 
@@ -107,7 +118,15 @@ export class QuestionController {
 
   @Get('/') //질문 조회
   @UseGuards(DevGuard)
-  async getQuestionList(@Query() query) {
+  async getQuestionList(
+    @Query()
+    query: {
+      product?: string; // 상품관련 질문 조회를 할때
+      user?: string; // 이건 빼는게 날수도. API를 하나 더만들어서 토큰기반으로 가져오는게 더 날거같음.
+      type?: string; // type 1 = 상품 관련 0 = qa 페이지 관련.
+      page?: string;
+    },
+  ) {
     const result = await this.questionService.getQuestionList(query);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
@@ -178,6 +197,12 @@ export class QuestionController {
   @UseGuards(DevGuard)
   async fakerData() {
     const result = await this.questionFaker.createQuestion();
+    return result;
+  }
+  @Post('/faker/post/img')
+  @UseGuards(DevGuard)
+  async fakerImgData() {
+    const result = await this.questionFaker.createQuestionImg();
     return result;
   }
 }

@@ -19,12 +19,14 @@ export class QuestionService {
     private readonly config: ConfigService,
   ) {}
 
-  async createQuestion(info: QuestionCreateInputDTO) {
+  async createQuestion(info: QuestionCreateInputDTO & { user_id: string }) {
     const { product_id, user_id, secret_mode, password } = info;
-    const productExist = await this.productRepo.findOneProduct({
-      product_id,
-    });
-    if (!productExist)
+    const productExist =
+      product_id &&
+      (await this.productRepo.findOneProduct({
+        product_id,
+      }));
+    if (!productExist && product_id)
       throw new BadRequestException(baseResponeStatus.PRODUCT_NOT_EXIST);
 
     const userExist = await this.userRepo.findOneUser({
@@ -38,12 +40,14 @@ export class QuestionService {
     if (secret_mode == 1 && !password)
       throw new BadRequestException(baseResponeStatus.PASSWORD_NEEDED);
 
-    //const hashed_password = this.transformPassword(password);
-    info = {
+    const hashed_password =
+      secret_mode === 1 && (await this.transformPassword(password));
+
+    // await this.transformPassword(password),
+    const newQuestion = await this.questionRepo.createQuestion({
       ...info,
-      password: await this.transformPassword(password),
-    };
-    const newQuestion = await this.questionRepo.createQuestion(info);
+      password: hashed_password || null,
+    });
     return newQuestion;
   }
 
@@ -84,6 +88,7 @@ export class QuestionService {
 
   async getQuestion(info: Prisma.QuestionWhereUniqueInput) {
     const exist = await this.questionRepo.findOneQuestion(info);
+    console.log(exist);
     if (!exist)
       throw new BadRequestException(baseResponeStatus.QUESTION_NOT_EXIST);
     const value = {
@@ -98,15 +103,14 @@ export class QuestionService {
   async getQuestionList({
     product,
     user,
-    _type, //querystring 때문에 _type이라 둠
+    type,
     page,
   }: {
-    product: string;
-    user: string;
-    _type: string;
-    page: string;
+    product?: string;
+    user?: string;
+    type?: string;
+    page?: string;
   }) {
-    const type = Number(_type); //Number로 타입변경
     return await this.questionRepo.getQuestionList({
       product,
       user,

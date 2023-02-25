@@ -21,7 +21,33 @@ export class QuestionRepository {
   }
 
   async findOneQuestion(info: Prisma.QuestionWhereInput) {
-    const question = await this.prisma.question.findFirst({ where: info });
+    const question = await this.prisma.question.findFirst({
+      select: {
+        question_id: true,
+        title: true,
+        type: true,
+        secret_mode: true,
+        product_id: true,
+        created_at: true,
+        contents: true,
+        user: {
+          select: {
+            nickname: true,
+          },
+        },
+        password: true,
+        imgs: true,
+        answers: {
+          select: {
+            answer_id: true,
+            contents: true,
+            created_at: true,
+            imgs: true,
+          },
+        },
+      },
+      where: { ...info, status: 'ACTIVE' },
+    });
     return question;
   }
 
@@ -58,26 +84,48 @@ export class QuestionRepository {
     type,
     page,
   }: {
-    product: string;
-    user: string;
-    type: number;
-    page: string;
+    product?: string;
+    user?: string;
+    type?: string;
+    page?: string;
   }) {
     const product_id =
       product && product === 'all' ? undefined : product ? product : undefined;
+
     const user_id =
       user && user === 'all' ? undefined : user ? user : undefined;
-    const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
+
+    const skip = !isNaN(Number(page)) ? (Number(page) - 1) * 20 : 0;
+
+    const _type = !isNaN(Number(type)) ? Number(type) : { in: [0, 1] };
+
     const questions = await this.prisma.question.findMany({
-      where: { product_id, user_id, type },
+      select: {
+        question_id: true,
+        title: true,
+        type: true,
+        secret_mode: true,
+        product_id: true,
+        created_at: true,
+        user: {
+          select: {
+            nickname: true,
+          },
+        },
+      },
+
+      where: { product_id, user_id, type: _type },
       skip,
-      take: 10,
+      take: 20,
+      orderBy: {
+        question_id: 'desc',
+      },
     });
     const total_count = await this.prisma.question.count({
       where: {
         product_id,
         user_id,
-        type,
+        type: _type,
         status: 'ACTIVE',
       },
     });
