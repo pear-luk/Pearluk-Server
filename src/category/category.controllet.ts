@@ -19,6 +19,7 @@ import {
 import { E_status } from '@prisma/client';
 import { ApiResponseDTO } from './../common/decorator/ApiResponse';
 import { AdminAuthGuard } from './../common/guard/adminGuard';
+import { DevGuard } from './../common/guard/devGuard';
 import { JwtAccessAuthGuard } from './../common/guard/JWT/jwt.guard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
@@ -97,7 +98,8 @@ export class CategoryController {
   }
 
   @Get('/')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  @UseGuards(DevGuard)
   async getCategoryList() {
     const result = await this.categoryService.getCategoryList();
     return new BaseResponse(baseResponeStatus.SUCCESS, result);

@@ -45,6 +45,10 @@ export class ArchiveRepository {
   }
 
   async getArchiveListAll() {
-    return await this.prisma.archive.findMany();
+    return await this.prisma.archive.findMany({
+      orderBy: {
+        archive_id: 'desc',
+      },
+    });
   }
 }
