@@ -19,6 +19,22 @@ export class CategoryRepository {
 
   async findOneCategory(info: Prisma.CategoryWhereInput) {
     const category = await this.prisma.category.findFirst({
+      select: {
+        category_id: true,
+        name: true,
+        status: true,
+        parent_category_id: true,
+        child_categories: {
+          select: {
+            category_id: true,
+            name: true,
+            status: true,
+          },
+          where: {
+            status: E_status.ACTIVE,
+          },
+        },
+      },
       where: info,
     });
 
