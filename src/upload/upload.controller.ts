@@ -28,4 +28,12 @@ export class UploadController {
   ) {
     return await this.uploadService.uploadQuestionImgs(files, question_id);
   }
+  @Post('/products/:product_id')
+  @UseInterceptors(FilesInterceptor('imgs', 10, multerOptions('questions')))
+  async uploadProductImg(
+    @UploadedFiles() files: Array<Express.MulterS3.File>,
+    @Param('product_id') product_id: string,
+  ) {
+    return await this.uploadService.uploadProductImgs(files, product_id);
+  }
 }

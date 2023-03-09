@@ -21,6 +21,21 @@ export class UploadService {
     });
     return newImgs;
   }
+  async uploadProductImgs(imgs: Express.MulterS3.File[], product_id: string) {
+    if (!imgs) {
+      //임시 에러
+      throw new BadRequestException('파일이 존재하지 않습니다.');
+    }
+    const newImgs = await this.prisma.productImg.createMany({
+      data: imgs.map((img, i) => ({
+        product_img_id: ulid(),
+        product_id,
+        sequence: i + 1,
+        url: img.location,
+      })),
+    });
+    return newImgs;
+  }
 
   uploadFile(file: Express.MulterS3.File) {
     console.log(file);
