@@ -174,12 +174,13 @@ export class ArchiveController {
     },
   })
   @Put('/:archive_id')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  @UseGuards(DevGuard)
   async deleteStatusArchive(@Param('archive_id') archive_id) {
+    console.log(archive_id);
     const result = await this.archiveService.deleteStatusArchive({
       archive_id,
     });
-
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 

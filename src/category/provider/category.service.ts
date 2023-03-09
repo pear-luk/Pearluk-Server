@@ -1,12 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { E_status, Prisma } from '@prisma/client';
 import { CategoryUpdateInputDTO } from '../dto/update_category.dto';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
+import { PrismaService } from './../../prisma/prisma.service';
 import { CategoryCreateInputDTO } from './../dto/create_category.dto';
 import { CategoryRepository } from './category.repository';
 @Injectable()
 export class CategoryService {
-  constructor(private readonly categoryRepo: CategoryRepository) {}
+  constructor(
+    private readonly categoryRepo: CategoryRepository,
+    private readonly prisma: PrismaService,
+  ) {}
 
   /**리팩토링필요 */
   async createCategory(info: CategoryCreateInputDTO) {
@@ -75,7 +79,18 @@ export class CategoryService {
     const exist = await this.categoryRepo.findOneCategory(info);
     if (!exist)
       throw new BadRequestException(baseResponeStatus.CATEGORY_NOT_EXIST);
-
+    if (exist.child_categories.length > 0) {
+      throw new BadRequestException('자식 카테고리를 제거해주세요');
+    }
+    const categoryProducts = await this.prisma.product.findMany({
+      where: {
+        category_id: exist.category_id,
+        status: E_status.ACTIVE,
+      },
+    });
+    if (categoryProducts.length > 0) {
+      throw new BadRequestException('상품을 모두 제거해주세요');
+    }
     const deletedCategory = await this.categoryRepo.deleteStatusCategory(info);
     return deletedCategory;
   }

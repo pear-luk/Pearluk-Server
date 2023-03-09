@@ -20,7 +20,20 @@ export class ProductRepository {
   }
 
   async findOneProduct(info: Prisma.ProductWhereInput) {
-    const product = await this.prisma.product.findFirst({ where: info });
+    const product = await this.prisma.product.findFirst({
+      select: {
+        product_id: true,
+        name: true,
+        price: true,
+        introduce: true,
+        quantity: true,
+        product_status: true,
+        archive: true,
+        category: true,
+        imgs: true,
+      },
+      where: info,
+    });
     return product;
   }
 
@@ -63,6 +76,17 @@ export class ProductRepository {
     const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
 
     const products = await this.prisma.product.findMany({
+      select: {
+        product_id: true,
+        name: true,
+        price: true,
+        introduce: true,
+        quantity: true,
+        product_status: true,
+        archive: true,
+        category: true,
+        imgs: true,
+      },
       where: { archive_id },
       skip,
       take: 10,

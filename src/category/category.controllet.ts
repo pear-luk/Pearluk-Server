@@ -19,6 +19,7 @@ import {
 import { E_status } from '@prisma/client';
 import { ApiResponseDTO } from './../common/decorator/ApiResponse';
 import { AdminAuthGuard } from './../common/guard/adminGuard';
+import { DevGuard } from './../common/guard/devGuard';
 import { JwtAccessAuthGuard } from './../common/guard/JWT/jwt.guard';
 import { BaseResponse } from './../common/util/res/BaseResponse';
 import { baseResponeStatus } from './../common/util/res/baseStatusResponse';
@@ -88,6 +89,7 @@ export class CategoryController {
   )
   @Post('/')
   // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  @UseGuards(DevGuard)
   async createCategory(@Body() categoryCreateInputDto: CategoryCreateInputDTO) {
     const result = await this.categoryService.createCategory(
       categoryCreateInputDto,
@@ -97,7 +99,8 @@ export class CategoryController {
   }
 
   @Get('/')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  @UseGuards(DevGuard)
   async getCategoryList() {
     const result = await this.categoryService.getCategoryList();
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
@@ -214,7 +217,8 @@ export class CategoryController {
     '해당 카테고리가 존재하지 않을경우',
   )
   @Put('/:category_id')
-  @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  // @UseGuards(JwtAccessAuthGuard, AdminAuthGuard)
+  @UseGuards(DevGuard)
   async deleteStatusCategory(@Param('category_id') category_id) {
     return this.categoryService.deleteStatusCategory({ category_id });
   }

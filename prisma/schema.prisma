@@ -117,59 +117,63 @@ model ProductImg {
 }
 
 model Answer {
-  answer_id   String   @id @db.Char(26)
-  contents    String   @db.Text
-  question_id String   @db.Char(26)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
-  status      E_status @default(ACTIVE)
-  question    Question @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
-  imgs AnswerImg[] @relation("ANSWER_ANSWER_IMG")
-  
+  answer_id   String      @id @db.Char(26)
+  contents    String      @db.Text
+  question_id String      @db.Char(26)
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @default(now()) @updatedAt
+  status      E_status    @default(ACTIVE)
+  imgs        AnswerImg[] @relation("ANSWER_ANSWER_IMG")
+  question    Question    @relation("ANSWER_QUESTION", fields: [question_id], references: [question_id])
+
   @@index([question_id], map: "answers_question_id_fkey")
   @@map("answers")
 }
+
 model AnswerImg {
-  answer_img_id String  @id @db.Char(26)
-  answer_id     String  @db.Char(26)
-  sequence       Int
-  url            String  @db.MediumText
+  answer_img_id String @id @db.Char(26)
+  answer_id     String @db.Char(26)
+  sequence      Int
+  url           String @db.MediumText
   answer        Answer @relation("ANSWER_ANSWER_IMG", fields: [answer_id], references: [answer_id])
 
   @@index([answer_id], map: "answer_imgs_answer_id_fkey")
   @@map("answer_imgs")
 }
+
 model Question {
-  question_id String   @id @db.Char(26)
-  contents    String   @db.Text
-  type        Int?     @db.TinyInt
-  secret_mode Int?     @default(0) @db.TinyInt
-  password    String?  @db.VarChar(100)
-  user_id     String   @db.Char(26)
-  product_id  String?  @db.Char(26)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
-  status      E_status @default(ACTIVE)
-  title       String   @db.VarChar(100)
-  answers     Answer[] @relation("ANSWER_QUESTION")
-  product     Product? @relation("QUESTION_PRODUCT", fields: [product_id], references: [product_id])
-  user        User     @relation("QUESTION_USER", fields: [user_id], references: [user_id])
-  imgs QuestionImg[] @relation("QUESTION_QUESTION_IMG")
+  question_id String        @id @db.Char(26)
+  contents    String        @db.Text
+  type        Int?          @db.TinyInt
+  secret_mode Int?          @default(0) @db.TinyInt
+  password    String?       @db.VarChar(100)
+  user_id     String        @db.Char(26)
+  product_id  String?       @db.Char(26)
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @default(now()) @updatedAt
+  status      E_status      @default(ACTIVE)
+  title       String        @db.VarChar(100)
+  answers     Answer[]      @relation("ANSWER_QUESTION")
+  imgs        QuestionImg[] @relation("QUESTION_QUESTION_IMG")
+  product     Product?      @relation("QUESTION_PRODUCT", fields: [product_id], references: [product_id])
+  user        User          @relation("QUESTION_USER", fields: [user_id], references: [user_id])
 
   @@index([product_id], map: "questions_product_id_fkey")
   @@index([user_id], map: "questions_user_id_fkey")
   @@map("questions")
 }
+
 model QuestionImg {
-  question_img_id String  @id @db.Char(26)
-  question_id     String  @db.Char(26)
-  sequence       Int
-  url            String  @db.MediumText
+  question_img_id String   @id @db.Char(26)
+  question_id     String   @db.Char(26)
+  sequence        Int
+  url             String   @db.MediumText
   question        Question @relation("QUESTION_QUESTION_IMG", fields: [question_id], references: [question_id])
 
   @@index([question_id], map: "question_imgs_question_id_fkey")
   @@map("question_imgs")
 }
+
 model Order {
   order_id       String              @id @db.Char(26)
   user_id        String              @db.Char(26)

@@ -19,6 +19,22 @@ export class CategoryRepository {
 
   async findOneCategory(info: Prisma.CategoryWhereInput) {
     const category = await this.prisma.category.findFirst({
+      select: {
+        category_id: true,
+        name: true,
+        status: true,
+        parent_category_id: true,
+        child_categories: {
+          select: {
+            category_id: true,
+            name: true,
+            status: true,
+          },
+          where: {
+            status: E_status.ACTIVE,
+          },
+        },
+      },
       where: info,
     });
 
@@ -47,12 +63,20 @@ export class CategoryRepository {
             category_id: true,
             name: true,
             status: true,
-            child_categories: true,
+          },
+          where: {
+            status: E_status.ACTIVE,
           },
         },
       },
-      where: { status: E_status.ACTIVE, parent_category_id: null },
+      where: {
+        status: E_status.ACTIVE,
+        parent_category_id: null,
+      },
     });
+    categories
+      .filter((a) => a.child_categories.length > 0)
+      .forEach((a) => console.log(a.child_categories));
     return categories;
   }
 

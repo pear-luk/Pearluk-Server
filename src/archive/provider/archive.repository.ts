@@ -45,6 +45,13 @@ export class ArchiveRepository {
   }
 
   async getArchiveListAll() {
-    return await this.prisma.archive.findMany();
+    return await this.prisma.archive.findMany({
+      where: {
+        status: 'ACTIVE',
+      },
+      orderBy: {
+        archive_id: 'desc',
+      },
+    });
   }
 }
