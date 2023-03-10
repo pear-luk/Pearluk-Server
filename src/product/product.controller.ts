@@ -199,6 +199,7 @@ export class ProductController {
 
   @Get('/')
   async getProductList(@Query() qurey) {
+    console.log(qurey);
     const result = await this.productService.getProductList(qurey);
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
