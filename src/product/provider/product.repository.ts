@@ -3,7 +3,11 @@ import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 import { ProductCreateInputDTO } from './../dto/create_product.dto';
-import { ProductUpdateInputDTO } from './../dto/update_product.dto';
+import {
+  ProductUpdateInputDTO,
+  ProductUpdateManyInputDTO,
+} from './../dto/update_product.dto';
+import { IProductListQuery } from './../interface/product.query';
 
 @Injectable()
 export class ProductRepository {
@@ -73,15 +77,12 @@ export class ProductRepository {
    */
   async getProductList({
     page,
+    search,
     archive,
     parentCategory,
     childCategory,
-  }: {
-    page: string;
-    archive: string;
-    parentCategory: string;
-    childCategory: string;
-  }) {
+  }: IProductListQuery) {
+    const productName = search === 'undefined' ? undefined : search;
     const archive_id =
       archive && (archive === 'all' || archive === 'undefined')
         ? undefined
@@ -108,10 +109,11 @@ export class ProductRepository {
         product_status: true,
         archive: true,
         category: true,
-        imgs: true,
+        imgs: { orderBy: { sequence: 'asc' } },
       },
       where: {
         archive_id,
+        name: { contains: productName },
         category: {
           category_id,
           parent_category_id,
@@ -126,6 +128,8 @@ export class ProductRepository {
     const total_count = await this.prisma.product.count({
       where: {
         archive_id,
+        name: { contains: productName },
+
         category: {
           category_id,
           parent_category_id,
@@ -149,6 +153,17 @@ export class ProductRepository {
     });
 
     return count;
+  }
+
+  async updateManyProduct(
+    productUpdateManyInputDTO: ProductUpdateManyInputDTO,
+  ) {
+    const { products, ...info } = productUpdateManyInputDTO;
+
+    return await this.prisma.product.updateMany({
+      where: { OR: products },
+      data: info,
+    });
   }
 
   /*question 더미데이터용 */

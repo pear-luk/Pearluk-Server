@@ -30,6 +30,7 @@ import {
 } from './dto/create_product.dto';
 import {
   ProductUpdateInputDTO,
+  ProductUpdateManyInputDTO,
   updateProductInputEX,
 } from './dto/update_product.dto';
 import { ProductFaker } from './provider/product.faker';
@@ -210,6 +211,17 @@ export class ProductController {
   @Get('/:product_id')
   async getProduct(@Param('product_id') product_id: string) {
     const result = await this.productService.getProduct({ product_id });
+    return new BaseResponse(baseResponeStatus.SUCCESS, result);
+  }
+
+  @Patch('/')
+  async updateManyProduct(
+    @Body() productUpdateManyInputDTO: ProductUpdateManyInputDTO,
+  ) {
+    const result = await this.productService.updateManyProduct(
+      productUpdateManyInputDTO,
+    );
+
     return new BaseResponse(baseResponeStatus.SUCCESS, result);
   }
 }
