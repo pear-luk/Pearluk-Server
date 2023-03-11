@@ -3,7 +3,11 @@ import { E_status, Prisma } from '@prisma/client';
 import { ulid } from 'ulid';
 import { PrismaService } from './../../prisma/prisma.service';
 import { ProductCreateInputDTO } from './../dto/create_product.dto';
-import { ProductUpdateInputDTO } from './../dto/update_product.dto';
+import {
+  ProductUpdateInputDTO,
+  ProductUpdateManyInputDTO,
+} from './../dto/update_product.dto';
+import { IProductListQuery } from './../interface/product.query';
 
 @Injectable()
 export class ProductRepository {
@@ -30,10 +34,11 @@ export class ProductRepository {
         product_status: true,
         archive: true,
         category: true,
-        imgs: true,
+        imgs: { orderBy: { sequence: 'asc' } },
       },
       where: info,
     });
+    console.log(product);
     return product;
   }
 
@@ -70,9 +75,28 @@ export class ProductRepository {
    * 커서기반은 마지막으로 조회한 PK 값을 받아서 그뒤에있는 n개 줘!
    * 우선 나중에 구현.
    */
-  async getProductList({ page, archive }: { page: string; archive: string }) {
+  async getProductList({
+    page,
+    search,
+    archive,
+    parentCategory,
+    childCategory,
+  }: IProductListQuery) {
+    const productName = search === 'undefined' ? undefined : search;
     const archive_id =
-      archive && archive === 'all' ? undefined : archive ? archive : undefined;
+      archive && (archive === 'all' || archive === 'undefined')
+        ? undefined
+        : archive
+        ? archive
+        : undefined;
+    const category_id =
+      childCategory === 'all' || childCategory === 'undefined'
+        ? undefined
+        : childCategory;
+    const parent_category_id =
+      parentCategory === 'all' || parentCategory === 'undefined'
+        ? undefined
+        : parentCategory;
     const skip = !isNaN(Number([page])) ? (Number([page]) - 1) * 10 : 0;
 
     const products = await this.prisma.product.findMany({
@@ -85,9 +109,16 @@ export class ProductRepository {
         product_status: true,
         archive: true,
         category: true,
-        imgs: true,
+        imgs: { orderBy: { sequence: 'asc' } },
       },
-      where: { archive_id },
+      where: {
+        archive_id,
+        name: { contains: productName },
+        category: {
+          category_id,
+          parent_category_id,
+        },
+      },
       skip,
       take: 10,
       orderBy: {
@@ -97,6 +128,12 @@ export class ProductRepository {
     const total_count = await this.prisma.product.count({
       where: {
         archive_id,
+        name: { contains: productName },
+
+        category: {
+          category_id,
+          parent_category_id,
+        },
         status: 'ACTIVE',
       },
     });
@@ -116,6 +153,17 @@ export class ProductRepository {
     });
 
     return count;
+  }
+
+  async updateManyProduct(
+    productUpdateManyInputDTO: ProductUpdateManyInputDTO,
+  ) {
+    const { products, ...info } = productUpdateManyInputDTO;
+
+    return await this.prisma.product.updateMany({
+      where: { OR: products },
+      data: info,
+    });
   }
 
   /*question 더미데이터용 */

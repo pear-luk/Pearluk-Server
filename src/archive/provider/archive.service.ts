@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { E_status, Prisma } from '@prisma/client';
 import { baseResponeStatus } from './../../common/util/res/baseStatusResponse';
+import { PrismaService } from './../../prisma/prisma.service';
 import {
   ArchiveUpdateInputDTO,
   ArchiveUpdateParamsDTO,
@@ -9,7 +10,10 @@ import { ArchiveRepository } from './archive.repository';
 
 @Injectable()
 export class ArchiveService {
-  constructor(private readonly archiveRepo: ArchiveRepository) {}
+  constructor(
+    private readonly archiveRepo: ArchiveRepository,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async createArchive(info: Omit<Prisma.ArchiveCreateInput, 'archive_id'>) {
     const { title } = info;
@@ -48,6 +52,15 @@ export class ArchiveService {
     const exist = await this.archiveRepo.findOneArcive({ archive_id });
     if (!exist) {
       throw new BadRequestException(baseResponeStatus.ARCHIVE_NOT_EXIST);
+    }
+    const archiveProducts = await this.prisma.product.findMany({
+      where: {
+        archive_id: exist.archive_id,
+        status: E_status.ACTIVE,
+      },
+    });
+    if (archiveProducts.length > 0) {
+      throw new BadRequestException('아카이브 상품들을 모두 제거해주세요');
     }
     const deletedArchive = await this.archiveRepo.deleteStatusArchive(info);
     return deletedArchive;
